@@ -21,3 +21,19 @@
     if (event.matches) closeMenu();
   });
 })();
+
+// Track the contact CTA without interrupting navigation or GA4 outbound clicks.
+(() => {
+  const cta = document.getElementById("trial-lesson-cta");
+  if (!cta) return;
+
+  cta.addEventListener("click", () => {
+    if (typeof window.gtag !== "function") return;
+
+    window.gtag("event", "click_trial_lesson", {
+      cta_location: "contact_section",
+      cta_text: cta.textContent.trim(),
+      link_url: cta.href,
+    });
+  });
+})();
