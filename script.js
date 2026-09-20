@@ -30,7 +30,7 @@
   cta.addEventListener("click", () => {
     if (typeof window.gtag !== "function") return;
 
-    window.gtag("event", "click_trial_lesson", {
+    window.gtag("event", "facebook_click", {
       cta_location: "contact_section",
       cta_text: cta.textContent.trim(),
       link_url: cta.href,
