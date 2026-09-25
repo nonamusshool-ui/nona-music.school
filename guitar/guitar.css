@@ -73,10 +73,28 @@
 .guitar-faq details p { color: var(--muted); margin: 14px 0 0; font-size: .94rem; }
 .guitar-page .contact-section { padding-top: 20px; }
 .guitar-page .contact-card { min-width: 0; }
-.application-layout { display: grid; grid-template-columns: .68fr 1.32fr; align-items: start; gap: 50px; }
+.application-cta { display: flex; align-items: center; justify-content: space-between; gap: 36px; padding: 40px; border-radius: var(--radius); background: var(--lime); }
+.application-cta .button { flex: none; }
 .application-intro > p:not(.eyebrow) { color: var(--muted); font-size: 1.06rem; }
-.application-note { color: #9cb977; font-size: 8rem; line-height: 1; margin-top: 40px; }
-.application-form { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 34px; box-shadow: 0 14px 42px #17543c0b; }
+.application-intro > p:last-child { margin-bottom: 0; }
+html.application-modal-open, body.application-modal-open { overflow: hidden; }
+.application-modal { width: min(720px, calc(100% - 32px)); max-width: none; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); margin: auto; padding: 0; border: 0; border-radius: var(--radius); background: #fff; color: var(--ink); box-shadow: 0 24px 80px #103d2c40; overflow-y: auto; overscroll-behavior: contain; }
+.application-modal::backdrop { background: #102d22bd; }
+.modal-header { position: sticky; top: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 28px 32px 20px; border-bottom: 1px solid var(--line); background: #fff; }
+.modal-header .eyebrow { margin-bottom: 8px; }
+.modal-header h2 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.modal-close { flex: none; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: var(--paper); color: var(--green); font: inherit; font-size: 1.8rem; line-height: 1; cursor: pointer; }
+.modal-close:hover { background: var(--lime); }
+.modal-content { padding: 28px 32px 32px; }
+.package-summary { display: grid; gap: 4px; margin-bottom: 24px; padding: 18px 20px; border: 1px solid #c8d6bb; border-radius: 16px; background: var(--lime); }
+.package-summary[hidden], .application-form[hidden] { display: none; }
+.package-summary span { color: var(--muted); font-size: .82rem; }
+.package-summary strong { color: var(--green); font-size: 1.16rem; }
+.modal-success { padding: 24px; border: 1px solid #c8d6bb; border-radius: 16px; background: var(--lime); }
+.modal-success[hidden] { display: none; }
+.modal-success strong { display: block; margin-bottom: 10px; color: var(--green); font-size: 1.3rem; }
+.modal-success p { margin: 0; }
+.application-form { padding: 0; }
 .botcheck { display: none !important; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .form-field { min-width: 0; }
@@ -96,9 +114,6 @@
 .form-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 26px; }
 .form-actions button:disabled { cursor: wait; opacity: .7; transform: none; }
 .form-status { flex: 1 1 245px; margin: 0; font-size: .9rem; }
-.form-status.is-success { color: var(--green); font-weight: 700; }
-.form-status.is-success strong, .form-status.is-success span { display: block; }
-.form-status.is-success span { font-weight: 400; }
 .form-status.is-error { color: #a33523; font-weight: 700; }
 
 @media (max-width: 1100px) {
@@ -111,8 +126,7 @@
   .guitar-page .mobile-menu > nav a { display: block; padding: 12px; min-height: 44px; }
   .audience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .package-grid, .special-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .application-layout { grid-template-columns: 1fr; gap: 20px; }
-  .application-note { display: none; }
+  .application-cta { flex-wrap: wrap; }
 }
 @media (max-width: 720px) {
   .guitar-page .hero { padding-block: 54px 82px; }
@@ -137,7 +151,11 @@
   .future-card { display: block; }
   .future-photo { width: 120px; margin-bottom: 23px; }
   .guitar-page .hero-actions .button { width: 100%; }
-  .application-form { padding: 22px 18px; }
+  .application-cta { padding: 28px 22px; }
+  .application-cta .button { width: 100%; }
+  .application-modal { width: calc(100% - 16px); max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); border-radius: 18px; }
+  .modal-header { padding: 20px 18px 16px; }
+  .modal-content { padding: 20px 18px 24px; }
   .form-grid { grid-template-columns: 1fr; }
   .form-wide { grid-column: auto; }
   .form-actions .button { width: 100%; }

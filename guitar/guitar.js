@@ -1,16 +1,66 @@
 (() => {
+  const dialog = document.getElementById("application-modal");
   const form = document.getElementById("guitar-application");
-  if (!form) return;
+  if (!dialog || !form) return;
 
-  const packageSelect = form.elements.lesson_package;
+  const packageInput = form.elements.lesson_package;
+  const packageLabel = document.getElementById("package-summary-label");
+  const packageValue = document.getElementById("selected-package");
+  const packageSummary = dialog.querySelector(".package-summary");
+  const success = document.getElementById("modal-success");
   const submitButton = form.querySelector('button[type="submit"]');
+  const closeButton = dialog.querySelector(".modal-close");
   const status = document.getElementById("form-status");
+  const unspecified = "Ще не визначився";
+  let opener = null;
+  let pageScrollY = 0;
   let submitting = false;
 
+  const openApplication = (trigger, selectedPackage = unspecified) => {
+    if (dialog.open) return;
+    opener = trigger;
+    packageInput.value = selectedPackage;
+    packageLabel.textContent = selectedPackage === unspecified ? "Пакет занять" : "Обраний пакет";
+    packageValue.textContent = selectedPackage === unspecified ? "Пакет ще не обрано" : selectedPackage;
+    packageSummary.hidden = false;
+    success.hidden = true;
+    form.hidden = false;
+    status.className = "form-status";
+    status.textContent = "";
+    pageScrollY = window.scrollY;
+    dialog.showModal();
+    document.documentElement.classList.add("application-modal-open");
+    document.body.classList.add("application-modal-open");
+    form.elements.student_name.focus({ preventScroll: true });
+  };
+
   document.querySelectorAll("[data-package]").forEach((link) => {
-    link.addEventListener("click", () => {
-      packageSelect.value = link.dataset.package;
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      openApplication(link, link.dataset.package);
     });
+  });
+
+  document.querySelectorAll("[data-open-application]").forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      openApplication(trigger);
+    });
+  });
+
+  closeButton.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (event) => {
+    if (event.target !== dialog) return;
+    const bounds = dialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) {
+      dialog.close();
+    }
+  });
+  dialog.addEventListener("close", () => {
+    document.documentElement.classList.remove("application-modal-open");
+    document.body.classList.remove("application-modal-open");
+    opener?.focus({ preventScroll: true });
+    window.scrollTo(0, pageScrollY);
   });
 
   form.addEventListener("submit", async (event) => {
@@ -22,7 +72,7 @@
     submitButton.textContent = "Надсилаємо...";
     status.className = "form-status";
     status.textContent = "";
-    const selectedPackage = packageSelect.value;
+    const selectedPackage = packageInput.value;
 
     try {
       const response = await fetch(form.action, {
@@ -34,12 +84,10 @@
       if (!response.ok || result.success !== true) throw new Error("Web3Forms rejected the submission");
 
       form.reset();
-      status.classList.add("is-success");
-      const heading = document.createElement("strong");
-      heading.textContent = "Заявку надіслано ✓";
-      const message = document.createElement("span");
-      message.textContent = "Дякуємо! НОНА зв’яжеться з вами, щоб домовитися про заняття.";
-      status.replaceChildren(heading, message);
+      form.hidden = true;
+      packageSummary.hidden = true;
+      success.hidden = false;
+      success.focus({ preventScroll: true });
       if (typeof window.gtag === "function") {
         try {
           window.gtag("event", "generate_lead", {
