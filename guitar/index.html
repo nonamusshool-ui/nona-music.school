@@ -30,7 +30,7 @@
       gtag('config', 'G-H3QLF10CVM');
     </script>
     <script src="../script.js?v=5" defer></script>
-    <script src="guitar.js?v=2" defer></script>
+    <script src="guitar.js?v=3" defer></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -186,7 +186,7 @@
           <button class="modal-close" type="button" aria-label="Закрити форму">×</button>
         </div>
         <div class="modal-content">
-          <div class="package-summary"><span id="package-summary-label">Пакет занять</span><strong id="selected-package">Пакет ще не обрано</strong></div>
+          <div class="package-summary" hidden><span>Обрано:</span><strong id="selected-package"></strong></div>
           <div class="modal-success" id="modal-success" role="status" tabindex="-1" hidden><strong>Заявку надіслано ✓</strong><p>Дякуємо! НОНА зв’яжеться з вами, щоб домовитися про заняття.</p></div>
           <form class="application-form" id="guitar-application" action="https://api.web3forms.com/submit" method="POST">
             <input type="hidden" name="access_key" value="d5ddd926-25a9-42a1-a2eb-9858e84b4393" />
@@ -201,6 +201,7 @@
               <div class="form-field"><label for="student-phone">Телефон / Viber</label><input id="student-phone" name="phone" type="tel" placeholder="+380..." autocomplete="tel" required /></div>
               <div class="form-field"><label for="student-telegram">Telegram <span class="optional">необов’язково</span></label><input id="student-telegram" name="telegram" type="text" placeholder="@username" /></div>
               <div class="form-field"><label for="student-experience">Досвід гри</label><select id="student-experience" name="experience" required><option value="" disabled selected>Обери свій рівень</option><option>Ніколи не грав / не грала</option><option>Трохи пробував / пробувала</option><option>Вже маю базові навички</option></select></div>
+              <div class="form-field package-picker" hidden><label for="lesson-package-select">Пакет занять</label><select id="lesson-package-select"><option>Ще не визначився</option><option>1 заняття — 290 грн</option><option>2 заняття — 570 грн</option><option>4 заняття — 1120 грн</option><option>6 занять — 1650 грн</option><option>8 занять — 2160 грн</option></select></div>
               <div class="form-field form-wide"><label for="student-message">Коментар <span class="optional">необов’язково</span></label><textarea id="student-message" name="message" rows="4" placeholder="Наприклад: які пісні хочеш навчитися грати або коли зручно займатися"></textarea></div>
             </div>
             <label class="consent-field"><input name="contact_consent" type="checkbox" value="Так" required /><span>Погоджуюсь на використання контактних даних для зв’язку щодо занять.</span></label>

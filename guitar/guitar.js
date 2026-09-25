@@ -4,7 +4,8 @@
   if (!dialog || !form) return;
 
   const packageInput = form.elements.lesson_package;
-  const packageLabel = document.getElementById("package-summary-label");
+  const packageSelect = document.getElementById("lesson-package-select");
+  const packagePicker = form.querySelector(".package-picker");
   const packageValue = document.getElementById("selected-package");
   const packageSummary = dialog.querySelector(".package-summary");
   const success = document.getElementById("modal-success");
@@ -19,10 +20,12 @@
   const openApplication = (trigger, selectedPackage = unspecified) => {
     if (dialog.open) return;
     opener = trigger;
+    const hasPackage = selectedPackage !== unspecified;
+    packageSelect.value = unspecified;
     packageInput.value = selectedPackage;
-    packageLabel.textContent = selectedPackage === unspecified ? "Пакет занять" : "Обраний пакет";
-    packageValue.textContent = selectedPackage === unspecified ? "Пакет ще не обрано" : selectedPackage;
-    packageSummary.hidden = false;
+    packageValue.textContent = hasPackage ? selectedPackage : "";
+    packageSummary.hidden = !hasPackage;
+    packagePicker.hidden = hasPackage;
     success.hidden = true;
     form.hidden = false;
     status.className = "form-status";
@@ -46,6 +49,10 @@
       event.preventDefault();
       openApplication(trigger);
     });
+  });
+
+  packageSelect.addEventListener("change", () => {
+    packageInput.value = packageSelect.value;
   });
 
   closeButton.addEventListener("click", () => dialog.close());
