@@ -73,6 +73,33 @@
 .guitar-faq details p { color: var(--muted); margin: 14px 0 0; font-size: .94rem; }
 .guitar-page .contact-section { padding-top: 20px; }
 .guitar-page .contact-card { min-width: 0; }
+.application-layout { display: grid; grid-template-columns: .68fr 1.32fr; align-items: start; gap: 50px; }
+.application-intro > p:not(.eyebrow) { color: var(--muted); font-size: 1.06rem; }
+.application-note { color: #9cb977; font-size: 8rem; line-height: 1; margin-top: 40px; }
+.application-form { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 34px; box-shadow: 0 14px 42px #17543c0b; }
+.botcheck { display: none !important; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.form-field { min-width: 0; }
+.form-field > label, .form-field legend { display: block; color: var(--ink); font-weight: 700; font-size: .9rem; margin-bottom: 8px; }
+.form-field input:not([type="radio"]), .form-field select, .form-field textarea { display: block; width: 100%; min-height: 52px; border: 1px solid #bdcdbb; border-radius: 12px; padding: 12px 14px; color: var(--ink); background: #fff; font: inherit; font-size: 1rem; }
+.form-field textarea { resize: vertical; }
+.form-field input:focus-visible, .form-field select:focus-visible, .form-field textarea:focus-visible, .consent-field input:focus-visible, .radio-row input:focus-visible { outline: 3px solid #dd9818; outline-offset: 2px; border-color: var(--green); }
+.form-field input::placeholder, .form-field textarea::placeholder { color: #738679; }
+.form-field .optional { color: var(--muted); font-weight: 400; font-size: .78rem; }
+.form-wide { grid-column: 1 / -1; }
+.student-type { border: 0; margin: 0; padding: 0; min-width: 0; }
+.radio-row { display: flex; gap: 9px; }
+.radio-row label { flex: 1; display: flex; align-items: center; gap: 7px; min-height: 52px; padding: 8px 11px; border: 1px solid #bdcdbb; border-radius: 12px; font-size: .9rem; cursor: pointer; }
+.radio-row input, .consent-field input { accent-color: var(--green); width: 18px; height: 18px; flex: none; }
+.consent-field { display: flex; align-items: flex-start; gap: 12px; margin-top: 24px; font-size: .85rem; cursor: pointer; }
+.consent-field input { margin: 2px 0 0; }
+.form-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 26px; }
+.form-actions button:disabled { cursor: wait; opacity: .7; transform: none; }
+.form-status { flex: 1 1 245px; margin: 0; font-size: .9rem; }
+.form-status.is-success { color: var(--green); font-weight: 700; }
+.form-status.is-success strong, .form-status.is-success span { display: block; }
+.form-status.is-success span { font-weight: 400; }
+.form-status.is-error { color: #a33523; font-weight: 700; }
 
 @media (max-width: 1100px) {
   .guitar-page .desktop-navigation { display: none; }
@@ -84,6 +111,8 @@
   .guitar-page .mobile-menu > nav a { display: block; padding: 12px; min-height: 44px; }
   .audience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .package-grid, .special-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .application-layout { grid-template-columns: 1fr; gap: 20px; }
+  .application-note { display: none; }
 }
 @media (max-width: 720px) {
   .guitar-page .hero { padding-block: 54px 82px; }
@@ -108,4 +137,8 @@
   .future-card { display: block; }
   .future-photo { width: 120px; margin-bottom: 23px; }
   .guitar-page .hero-actions .button { width: 100%; }
+  .application-form { padding: 22px 18px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-wide { grid-column: auto; }
+  .form-actions .button { width: 100%; }
 }
