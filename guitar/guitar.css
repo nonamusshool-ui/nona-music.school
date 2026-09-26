@@ -74,7 +74,8 @@
 .ready-layout ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
 .ready-layout li { background: #fff; border-radius: 15px; padding: 18px; font-weight: 700; font-size: .94rem; }
 .ready-layout li::before { content: "✓"; color: #658e35; margin-right: 10px; }
-.future-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; }
+.future-grid { display: flex; justify-content: center; }
+.future-grid .future-card { width: min(100%, 820px); }
 .future-card { min-width: 0; background: #f0f3ea; border-radius: 24px; padding: 30px; display: flex; align-items: center; gap: 25px; }
 .future-card p:last-child { color: var(--muted); margin-bottom: 0; }
 .future-fields { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
@@ -82,9 +83,24 @@
 .future-card h2 { font-size: clamp(1.5rem, 2.25vw, 2rem); }
 .future-photo { flex: 0 0 38%; aspect-ratio: 4/5; border: 1px dashed #a5b89c; border-radius: 16px; background: #e0ead4; display: grid; place-items: center; }
 .future-photo span { font-size: 5rem; color: #7ea45a; }
-.testimonials { display: block; position: relative; overflow: hidden; background: var(--green); color: #fff; }
-.testimonials p:last-of-type { color: #d0dfcf; }
-.quote-mark { position: absolute; right: 24px; bottom: -66px; font-size: 15rem; line-height: 1; opacity: .13; }
+.reviews-section { padding-top: 0; }
+.review-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.review-card { grid-column: span 2; min-width: 0; padding: 26px; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
+.review-card:nth-child(2n) { background: #f4f7e8; }
+.review-card:nth-child(4) { grid-column: 2 / span 2; }
+.review-card:nth-child(5) { grid-column: 4 / span 2; }
+.review-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; min-height: 48px; }
+.review-category { color: var(--green); font-size: .72rem; font-weight: 800; letter-spacing: .08em; }
+.review-quote-mark { color: #b28a16; font-size: 3.5rem; font-weight: 700; line-height: .75; }
+.review-card blockquote { margin: 14px 0 0; }
+.review-card blockquote p { margin: 0; font-size: .98rem; line-height: 1.65; }
+.review-person { display: flex; align-items: center; gap: 12px; margin-top: 24px; padding-top: 17px; border-top: 1px solid var(--line); }
+.review-avatar { display: grid; flex: none; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: var(--lime); color: var(--green); font-weight: 800; }
+.review-card:nth-child(2n) .review-avatar { background: var(--yellow); }
+.review-card:nth-child(3) .review-avatar { background: var(--green); color: #fff; }
+.review-person strong, .review-person span:not(.review-avatar) { display: block; }
+.review-person strong { color: var(--green); line-height: 1.25; }
+.review-person div span { color: var(--muted); font-size: .83rem; }
 .guitar-faq { columns: 2; column-gap: 24px; }
 .guitar-faq details { break-inside: avoid; border: 1px solid var(--line); border-radius: 16px; margin-bottom: 13px; padding: 18px 21px; background: #fff; }
 .guitar-faq summary { cursor: pointer; font-weight: 700; }
@@ -146,6 +162,8 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
   .guitar-page .mobile-menu > nav a { display: block; padding: 12px; min-height: 44px; }
   .audience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .package-grid, .special-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .review-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .review-card, .review-card:nth-child(4), .review-card:nth-child(5) { grid-column: auto; }
   .application-cta { flex-wrap: wrap; }
 }
 @media (max-width: 720px) {
@@ -157,7 +175,7 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
   .guitar-page.application-modal-open .mobile-action-bar { display: none; }
   .guitar-page .hero { padding-block: 54px 82px; }
   .guitar-page .hero-art { transform: none; }
-  .program-layout, .ready-layout, .future-grid { grid-template-columns: 1fr; gap: 32px; }
+  .program-layout, .ready-layout { grid-template-columns: 1fr; gap: 32px; }
   .guitar-program, .guitar-prices { padding-block: 64px; }
   .new-student-promo-steps { grid-template-columns: 1fr; gap: 8px; }
   .new-student-promo-plus { line-height: 1; text-align: center; }
@@ -171,6 +189,8 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
   .step-grid p { margin: 0; }
   .package-grid, .special-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .special-panel { padding: 25px 20px; }
+  .review-grid { display: flex; gap: 14px; overflow-x: auto; margin-inline: -20px; padding: 0 20px 16px; scroll-snap-type: x mandatory; scroll-padding-inline: 20px; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
+  .review-card { flex: 0 0 min(420px, calc(100vw - 88px)); padding: 22px; scroll-snap-align: start; }
   .guitar-faq { columns: 1; }
   .future-photo { flex-basis: 33%; }
 }
