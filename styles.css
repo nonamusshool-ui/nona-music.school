@@ -5,7 +5,7 @@
   --yellow: #f4cb3c;
   --lime: #eaf0ce;
   --paper: #fafbf5;
-  --muted: #5e7167;
+  --muted: #556a5f;
   --line: #d9e2d7;
   --radius: 24px;
   font-family: Arial, "Segoe UI", sans-serif;
@@ -305,7 +305,7 @@ h2 > span {
 }
 .benefit-grid span {
   font-size: 0.75rem;
-  color: #738865;
+  color: #536747;
   margin-right: 18px;
 }
 .section {

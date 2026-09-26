@@ -85,7 +85,7 @@
 .teacher-video-card:only-child { width: min(100%, 820px); justify-self: center; }
 .teacher-video-card video { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 16px; background: var(--green); }
 .teacher-video-caption { padding: 20px 4px 3px; }
-.teacher-video-caption span { color: #657f3f; font-size: .73rem; font-weight: 800; letter-spacing: .08em; }
+.teacher-video-caption span { color: #536a34; font-size: .73rem; font-weight: 800; letter-spacing: .08em; }
 .teacher-video-caption h3 { margin: 7px 0 5px; font-size: clamp(1.25rem, 2vw, 1.65rem); }
 .teacher-video-caption p { margin: 0; color: var(--muted); font-size: .92rem; }
 .reviews-section { padding-top: 0; }
