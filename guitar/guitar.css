@@ -81,7 +81,7 @@
 html.application-modal-open, body.application-modal-open { overflow: hidden; }
 .application-modal { width: min(720px, calc(100% - 32px)); max-width: none; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); margin: auto; padding: 0; border: 0; border-radius: var(--radius); background: #fff; color: var(--ink); box-shadow: 0 24px 80px #103d2c40; overflow-y: auto; overscroll-behavior: contain; }
 .application-modal::backdrop { background: #102d22bd; }
-.modal-header { position: sticky; top: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 28px 32px 20px; border-bottom: 1px solid var(--line); background: #fff; }
+.modal-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 28px 32px 20px; border-bottom: 1px solid var(--line); background: #fff; }
 .modal-header .eyebrow { margin-bottom: 8px; }
 .modal-header h2 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
 .modal-intro { max-width: 540px; margin: 12px 0 0; color: var(--muted); font-size: .91rem; line-height: 1.5; }
