@@ -31,13 +31,24 @@
 .step-grid span { color: #739543; font-size: 2.8rem; font-weight: 800; line-height: 1; letter-spacing: -2px; }
 .step-grid h3 { font-size: 1.4rem; line-height: 1.22; margin: 22px 0 12px; }
 .step-grid p { color: var(--muted); }
+.new-student-promo { padding-top: 0; }
+.new-student-promo-card { padding: clamp(28px, 4vw, 48px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--lime); }
+.new-student-promo-card h2 { max-width: 750px; margin-bottom: 26px; }
+.new-student-promo-steps { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 18px; max-width: 950px; margin-bottom: 22px; }
+.new-student-promo-step { display: grid; gap: 6px; min-width: 0; padding: 20px 24px; border-radius: 16px; background: #fff; }
+.new-student-promo-step span { color: var(--muted); font-size: .88rem; font-weight: 700; }
+.new-student-promo-step strong { color: var(--green); font-size: clamp(1.45rem, 2.4vw, 2rem); line-height: 1.2; }
+.new-student-promo-plus { color: var(--green); font-size: 2rem; font-weight: 700; }
+.new-student-promo-card > p:not(.eyebrow) { max-width: 810px; margin: 0 0 18px; color: var(--muted); }
+.new-student-promo-tag { display: inline-block; padding: 5px 12px; border-radius: 100px; background: var(--yellow); color: var(--green); font-size: .78rem; font-weight: 800; }
 .guitar-prices { background: #eff3e9; padding-block: 96px; }
-.trial-banner { display: flex; align-items: center; gap: clamp(24px, 5vw, 64px); margin-bottom: 26px; padding: 24px 30px; border-radius: var(--radius); background: var(--green); color: #fff; }
-.trial-banner-price { display: flex; flex: none; align-items: baseline; gap: 16px; }
-.trial-banner-price span { color: #d8e6a2; font-size: .8rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.trial-banner-price strong { color: var(--yellow); font-size: clamp(2.8rem, 5vw, 4rem); line-height: 1; letter-spacing: -.05em; white-space: nowrap; }
-.trial-banner-price small { font-size: .4em; letter-spacing: 0; }
-.trial-banner p { max-width: 460px; margin: 0; color: #e5eee6; }
+.trial-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 26px; padding: 24px 30px; border-radius: var(--radius); background: var(--green); color: #fff; }
+.trial-banner-stages { display: flex; align-items: center; gap: 20px; }
+.trial-banner-stage { min-width: 0; }
+.trial-banner-stage span { display: block; margin-bottom: 5px; color: #d8e6a2; font-size: .8rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.trial-banner-stage strong { display: block; color: var(--yellow); font-size: clamp(1.35rem, 2.1vw, 1.8rem); line-height: 1.2; white-space: nowrap; }
+.trial-banner-plus { color: #d8e6a2; font-size: 1.6rem; font-weight: 700; }
+.trial-banner p { max-width: 310px; margin: 0; color: #e5eee6; }
 .package-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; align-items: stretch; }
 .package-card { min-width: 0; position: relative; border-radius: 20px; border: 1px solid var(--line); background: #fff; padding: 26px 20px 23px; display: flex; flex-direction: column; }
 .package-card.featured { background: var(--yellow); border-color: #e2bb31; }
@@ -148,7 +159,11 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
   .guitar-page .hero-art { transform: none; }
   .program-layout, .ready-layout, .future-grid { grid-template-columns: 1fr; gap: 32px; }
   .guitar-program, .guitar-prices { padding-block: 64px; }
-  .trial-banner { align-items: flex-start; flex-direction: column; gap: 12px; padding: 24px; }
+  .new-student-promo-steps { grid-template-columns: 1fr; gap: 8px; }
+  .new-student-promo-plus { line-height: 1; text-align: center; }
+  .trial-banner { align-items: stretch; flex-direction: column; gap: 20px; padding: 24px; }
+  .trial-banner-stages { align-items: stretch; flex-direction: column; gap: 8px; }
+  .trial-banner-plus { line-height: 1; text-align: center; }
   .step-grid { grid-template-columns: 1fr; gap: 18px; }
   .step-grid li { display: grid; grid-template-columns: 56px 1fr; column-gap: 14px; }
   .step-grid span { grid-row: span 2; font-size: 2rem; }
