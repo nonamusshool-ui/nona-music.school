@@ -80,15 +80,14 @@
 .ready-layout ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
 .ready-layout li { background: #fff; border-radius: 15px; padding: 18px; font-weight: 700; font-size: .94rem; }
 .ready-layout li::before { content: "✓"; color: #658e35; margin-right: 10px; }
-.future-grid { display: flex; justify-content: center; }
-.future-grid .future-card { width: min(100%, 820px); }
-.future-card { min-width: 0; background: #f0f3ea; border-radius: 24px; padding: 30px; display: flex; align-items: center; gap: 25px; }
-.future-card p:last-child { color: var(--muted); margin-bottom: 0; }
-.future-fields { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
-.future-fields span { border: 1px dashed #a5b89c; border-radius: 100px; color: var(--muted); font-size: .73rem; padding: 3px 9px; }
-.future-card h2 { font-size: clamp(1.5rem, 2.25vw, 2rem); }
-.future-photo { flex: 0 0 38%; aspect-ratio: 4/5; border: 1px dashed #a5b89c; border-radius: 16px; background: #e0ead4; display: grid; place-items: center; }
-.future-photo span { font-size: 5rem; color: #7ea45a; }
+.teacher-video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 22px; }
+.teacher-video-card { min-width: 0; margin: 0; padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); background: #f0f3ea; box-shadow: 0 16px 34px #103d2c0d; }
+.teacher-video-card:only-child { width: min(100%, 820px); justify-self: center; }
+.teacher-video-card video { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 16px; background: var(--green); }
+.teacher-video-caption { padding: 20px 4px 3px; }
+.teacher-video-caption span { color: #657f3f; font-size: .73rem; font-weight: 800; letter-spacing: .08em; }
+.teacher-video-caption h3 { margin: 7px 0 5px; font-size: clamp(1.25rem, 2vw, 1.65rem); }
+.teacher-video-caption p { margin: 0; color: var(--muted); font-size: .92rem; }
 .reviews-section { padding-top: 0; }
 .review-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; align-items: start; }
 .review-card { grid-column: span 2; min-width: 0; padding: 26px; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
@@ -201,15 +200,14 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
   .review-grid { display: flex; gap: 14px; overflow-x: auto; margin-inline: -20px; padding: 0 20px 16px; scroll-snap-type: x mandatory; scroll-padding-inline: 20px; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
   .review-card { flex: 0 0 min(420px, calc(100vw - 88px)); padding: 22px; scroll-snap-align: start; }
   .guitar-faq { columns: 1; }
-  .future-photo { flex-basis: 33%; }
 }
 @media (max-width: 480px) {
   .audience-grid, .skill-grid, .package-grid, .special-grid, .ready-layout ul { grid-template-columns: 1fr; }
   .audience-card { min-height: 0; }
   .package-card h3, .special-grid strong { font-size: 2.2rem; }
   .special-grid article { padding: 20px; }
-  .future-card { display: block; }
-  .future-photo { width: 120px; margin-bottom: 23px; }
+  .teacher-video-card { padding: 14px; }
+  .teacher-video-caption { padding: 17px 4px 4px; }
   .guitar-page .hero-actions .button { width: 100%; }
   .application-cta { padding: 28px 22px; }
   .application-cta .button { width: 100%; }
