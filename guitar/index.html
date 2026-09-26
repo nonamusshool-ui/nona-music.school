@@ -21,7 +21,7 @@
     <meta property="og:image:alt" content="НОНА Music School — обкладинка школи з гітарою, клавішами та нотами" />
     <link rel="icon" href="../assets/favicon.png" type="image/png" sizes="96x96" />
     <link rel="stylesheet" href="../styles.css?v=2" />
-    <link rel="stylesheet" href="guitar.css?v=5" />
+    <link rel="stylesheet" href="guitar.css?v=6" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3QLF10CVM"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -30,7 +30,7 @@
       gtag('config', 'G-H3QLF10CVM');
     </script>
     <script src="../script.js?v=6" defer></script>
-    <script src="guitar.js?v=4" defer></script>
+    <script src="guitar.js?v=5" defer></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -155,6 +155,7 @@
             </div>
             <p>Після цих двох безкоштовних етапів можна продовжити навчання за одним із платних пакетів нижче.</p>
           </div>
+          <p class="pricing-category-label">СТАНДАРТНІ ПАКЕТИ</p>
           <div class="package-grid">
             <article class="package-card"><p class="package-count">1 заняття</p><h3>290 <span>грн</span></h3><p>290 грн / заняття</p><a href="#application" data-package="1 заняття — 290 грн">Обрати пакет <span aria-hidden="true">↗</span></a></article>
             <article class="package-card"><p class="package-count">2 заняття</p><h3>570 <span>грн</span></h3><p>285 грн / заняття</p><a href="#application" data-package="2 заняття — 570 грн">Обрати пакет <span aria-hidden="true">↗</span></a></article>
@@ -167,7 +168,13 @@
 
       <section class="section wrap" id="special" aria-labelledby="special-title">
         <div class="special-panel">
-          <div class="guitar-section-head"><p class="eyebrow">СПЕЦІАЛЬНА ВАРТІСТЬ</p><h2 id="special-title">Спеціальні умови для сімей УБД</h2><p>Деталі та умови уточнюйте у школи.</p></div>
+          <div class="guitar-section-head">
+            <p class="eyebrow">ОКРЕМА ПРОПОЗИЦІЯ</p>
+            <span class="special-badge">ДЛЯ СІМЕЙ УБД</span>
+            <h2 id="special-title">Спеціальна сімейна ціна</h2>
+            <p>Окрема вартість для сімей, які мають право на спеціальну пропозицію. Для її застосування потрібно підтвердити статус УБД учня, одного з батьків або опікуна. Школа перевірить підтвердження після заявки.</p>
+            <p class="special-confirmation-note">Документ не потрібно надсилати через сайт — школа уточнить спосіб підтвердження після заявки.</p>
+          </div>
           <div class="special-grid">
             <article><h3>1 заняття</h3><strong>250 грн</strong><p>250 грн / заняття</p></article>
             <article><h3>2 заняття</h3><strong>480 грн</strong><p>240 грн / заняття</p><small>Економія 20 грн</small></article>
@@ -176,8 +183,48 @@
             <article><h3>8 занять</h3><strong>1800 грн</strong><p>225 грн / заняття</p><small>Економія 200 грн</small></article>
           </div>
           <p class="special-note">Економію порівняно з такою ж кількістю окремих занять по 250 грн.</p>
+          <button class="button special-application-button" type="button" data-open-family-application>Подати заявку на спеціальну ціну <span aria-hidden="true">↗</span></button>
         </div>
       </section>
+
+      <dialog class="application-modal family-application-modal" id="family-application-modal" role="dialog" aria-modal="true" aria-labelledby="family-modal-title">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">ДЛЯ СІМЕЙ УБД</p>
+            <h2 id="family-modal-title">Заявка на спеціальну сімейну ціну</h2>
+            <p class="modal-intro">Заповніть коротку заявку. НОНА Music School зв’яжеться з вами, уточнить деталі та спосіб підтвердження права на спеціальну ціну.</p>
+            <p class="family-modal-note">Підтверджувальний документ не потрібно завантажувати на сайт.</p>
+          </div>
+          <button class="modal-close" type="button" aria-label="Закрити форму спеціальної ціни">×</button>
+        </div>
+        <div class="modal-content">
+          <div class="modal-success" id="family-modal-success" role="status" tabindex="-1" hidden>
+            <strong>Заявку на спеціальну ціну надіслано ✓</strong>
+            <p>Дякуємо! НОНА Music School зв’яжеться з вами, уточнить деталі та спосіб підтвердження права на спеціальну сімейну ціну.</p>
+          </div>
+          <form class="application-form" id="guitar-family-application" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="d5ddd926-25a9-42a1-a2eb-9858e84b4393" />
+            <input type="hidden" name="subject" value="Нова заявка на спеціальну сімейну ціну — НОНА Music School" />
+            <input type="hidden" name="from_name" value="НОНА Music School Website" />
+            <input type="hidden" name="lead_type" value="family_price" />
+            <input type="hidden" name="form_name" value="guitar_family_application" />
+            <input class="botcheck" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <div class="form-grid">
+              <div class="form-field"><label for="family-student-name">Ім’я</label><input id="family-student-name" name="student_name" type="text" autocomplete="name" required /></div>
+              <fieldset class="form-field student-type"><legend>Кого записуємо?</legend><div class="radio-row"><label><input type="radio" name="student_type" value="Себе" required /> Себе</label><label><input type="radio" name="student_type" value="Дитину" required /> Дитину</label></div></fieldset>
+              <div class="form-field"><label for="family-student-age">Вік учня</label><input id="family-student-age" name="student_age" type="number" inputmode="numeric" required /></div>
+              <div class="form-field"><label for="family-student-phone">Телефон / Viber</label><input id="family-student-phone" name="phone" type="tel" autocomplete="tel" required /></div>
+              <div class="form-field"><label for="family-student-telegram">Telegram <span class="optional">необов’язково</span></label><input id="family-student-telegram" name="telegram" type="text" placeholder="@username" /></div>
+              <div class="form-field"><label for="family-ubd-relation">Хто має статус УБД?</label><select id="family-ubd-relation" name="ubd_relation" required><option value="" disabled selected>Оберіть варіант</option><option>Сам учень</option><option>Мама або тато</option><option>Опікун</option></select></div>
+              <div class="form-field form-wide"><label for="family-lesson-package">Який пакет вас цікавить?</label><select id="family-lesson-package" name="lesson_package"><option>Ще не визначився</option><option>1 заняття — 250 грн</option><option>2 заняття — 480 грн</option><option>4 заняття — 940 грн</option><option>6 занять — 1380 грн</option><option>8 занять — 1800 грн</option></select></div>
+              <div class="form-field form-wide"><label for="family-message">Коментар <span class="optional">необов’язково</span></label><textarea id="family-message" name="message" rows="4" placeholder="За потреби залиште додаткову інформацію або зручний час для зв’язку."></textarea></div>
+            </div>
+            <label class="consent-field"><input name="eligibility_confirmation" type="checkbox" value="Так" required /><span>Підтверджую, що маю документ, який може підтвердити право на спеціальну сімейну ціну.</span></label>
+            <label class="consent-field"><input name="contact_consent" type="checkbox" value="Так" required /><span>Погоджуюсь на використання контактних даних для зв’язку щодо навчання та спеціальної пропозиції.</span></label>
+            <div class="form-actions"><button class="button" type="submit">Надіслати заявку</button><p class="form-status" id="family-form-status" role="status" aria-live="polite"></p></div>
+          </form>
+        </div>
+      </dialog>
 
       <section class="guitar-ready" id="ready" aria-labelledby="ready-title"><div class="wrap ready-layout"><div><p class="eyebrow">ПЕРЕД ПЕРШИМ УРОКОМ</p><h2 id="ready-title">Що потрібно для уроку</h2><p>Підготуй місце, де зручно грати й добре видно інструмент.</p></div><ul><li>Класична або акустична гітара</li><li>Стабільний інтернет</li><li>Телефон, планшет або комп’ютер</li><li>Камера та мікрофон</li></ul></div></section>
 
@@ -225,7 +272,7 @@
           <details><summary>Де проходять заняття?</summary><p>Онлайн у Google Meet. Потрібні інтернет, пристрій із камерою та мікрофоном і гітара.</p></details>
           <details><summary>Як обрати пакет?</summary><p>Після пробного та першого повного безкоштовного уроку можна обрати зручний платний пакет і графік.</p></details>
           <details><summary>Як працює безкоштовний старт для нових учнів?</summary><p>Пробний ознайомчий урок триває 30 хвилин і є безкоштовним. Для нових учнів після пробного заняття перший повний 60-хвилинний урок також безкоштовний. Після цього можна обрати зручний пакет занять.</p></details>
-          <details><summary>Для кого діють спеціальні умови УБД?</summary><p>Спеціальні ціни зазначені для сімей учасників бойових дій. Деталі та умови уточнюйте у школи.</p></details>
+          <details><summary>Для кого діє спеціальна сімейна ціна?</summary><p>Спеціальна ціна передбачена для сімей, де статус УБД має учень, один із батьків або опікун. Для застосування спеціальної ціни потрібно підтвердити відповідний статус. Після заявки школа зв’яжеться з вами та пояснить спосіб підтвердження.</p></details>
         </div>
       </section>
 

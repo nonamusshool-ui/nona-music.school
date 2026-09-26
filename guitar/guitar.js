@@ -18,7 +18,7 @@
   let submitting = false;
 
   const openApplication = (trigger, selectedPackage = unspecified) => {
-    if (dialog.open) return;
+    if (document.querySelector("dialog[open]")) return;
     opener = trigger;
     const hasPackage = selectedPackage !== unspecified;
     packageSelect.value = unspecified;
@@ -100,6 +100,97 @@
           window.gtag("event", "generate_lead", {
             form_name: "guitar_application",
             lead_type: "free_trial",
+            lesson_package: selectedPackage,
+          });
+        } catch (error) {
+          // Analytics must not replace a confirmed submission with an error message.
+        }
+      }
+    } catch (error) {
+      status.classList.add("is-error");
+      status.textContent = "Не вдалося надіслати заявку. Спробуйте ще раз або зв’яжіться зі школою телефоном.";
+    } finally {
+      submitting = false;
+      submitButton.disabled = false;
+      submitButton.textContent = "Надіслати заявку";
+    }
+  });
+})();
+
+(() => {
+  const dialog = document.getElementById("family-application-modal");
+  const form = document.getElementById("guitar-family-application");
+  if (!dialog || !form) return;
+
+  const success = document.getElementById("family-modal-success");
+  const submitButton = form.querySelector('button[type="submit"]');
+  const closeButton = dialog.querySelector(".modal-close");
+  const status = document.getElementById("family-form-status");
+  let opener = null;
+  let pageScrollY = 0;
+  let submitting = false;
+
+  document.querySelectorAll("[data-open-family-application]").forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (document.querySelector("dialog[open]")) return;
+      opener = trigger;
+      success.hidden = true;
+      form.hidden = false;
+      status.className = "form-status";
+      status.textContent = "";
+      pageScrollY = window.scrollY;
+      dialog.showModal();
+      document.documentElement.classList.add("application-modal-open");
+      document.body.classList.add("application-modal-open");
+      form.elements.student_name.focus({ preventScroll: true });
+    });
+  });
+
+  closeButton.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (event) => {
+    if (event.target !== dialog) return;
+    const bounds = dialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) {
+      dialog.close();
+    }
+  });
+  dialog.addEventListener("close", () => {
+    document.documentElement.classList.remove("application-modal-open");
+    document.body.classList.remove("application-modal-open");
+    opener?.focus({ preventScroll: true });
+    window.scrollTo(0, pageScrollY);
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (submitting || !form.reportValidity()) return;
+
+    submitting = true;
+    submitButton.disabled = true;
+    submitButton.textContent = "Надсилаємо...";
+    status.className = "form-status";
+    status.textContent = "";
+    const selectedPackage = form.elements.lesson_package.value;
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+      const result = await response.json();
+      if (!response.ok || result.success !== true) throw new Error("Web3Forms rejected the submission");
+
+      form.reset();
+      form.hidden = true;
+      success.hidden = false;
+      success.focus({ preventScroll: true });
+      if (typeof window.gtag === "function") {
+        try {
+          window.gtag("event", "generate_lead", {
+            form_name: "guitar_family_application",
+            lead_type: "family_price",
             lesson_package: selectedPackage,
           });
         } catch (error) {

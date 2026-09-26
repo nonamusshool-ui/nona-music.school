@@ -49,6 +49,7 @@
 .trial-banner-stage strong { display: block; color: var(--yellow); font-size: clamp(1.35rem, 2.1vw, 1.8rem); line-height: 1.2; white-space: nowrap; }
 .trial-banner-plus { color: #d8e6a2; font-size: 1.6rem; font-weight: 700; }
 .trial-banner p { max-width: 310px; margin: 0; color: #e5eee6; }
+.pricing-category-label { margin: 34px 0 14px; color: var(--green); font-size: .78rem; font-weight: 800; letter-spacing: .1em; }
 .package-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; align-items: stretch; }
 .package-card { min-width: 0; position: relative; border-radius: 20px; border: 1px solid var(--line); background: #fff; padding: 26px 20px 23px; display: flex; flex-direction: column; }
 .package-card.featured { background: var(--yellow); border-color: #e2bb31; }
@@ -61,6 +62,10 @@
 .package-card a { border-top: 1px solid #d9e2d7; padding-top: 15px; margin-top: auto; font-size: .82rem; font-weight: 700; text-decoration: none; }
 .package-card a span { margin-left: 6px; }
 .special-panel { padding: 40px; border-radius: 28px; background: #f4efcc; border: 1px solid #e7dfae; }
+.special-panel .guitar-section-head { max-width: 850px; }
+.special-badge { display: inline-block; margin-bottom: 15px; padding: 6px 13px; border-radius: 100px; background: var(--green); color: #fff; font-size: .74rem; font-weight: 800; letter-spacing: .07em; }
+.special-panel .guitar-section-head > p:not(.eyebrow) { margin-bottom: 12px; color: var(--muted); }
+.special-panel .guitar-section-head .special-confirmation-note { padding-left: 13px; border-left: 3px solid #a7b956; font-size: .92rem; }
 .special-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
 .special-grid article { min-width: 0; background: #fffdf1; border: 1px solid #e7dfae; border-radius: 17px; padding: 20px 16px; }
 .special-grid h3 { font-size: .88rem; margin-bottom: 15px; }
@@ -68,6 +73,7 @@
 .special-grid p { font-size: .83rem; color: var(--muted); margin-bottom: 7px; }
 .special-grid small { color: var(--green); font-weight: 700; }
 .special-note { color: var(--muted); font-size: .78rem; margin: 15px 0 0; }
+.special-application-button { margin-top: 24px; }
 .guitar-ready { padding-block: 72px; background: var(--lime); }
 .ready-layout { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 65px; }
 .ready-layout > div > p:last-child { color: var(--muted); }
@@ -118,6 +124,7 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
 .modal-header .eyebrow { margin-bottom: 8px; }
 .modal-header h2 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
 .modal-intro { max-width: 540px; margin: 12px 0 0; color: var(--muted); font-size: .91rem; line-height: 1.5; }
+.family-modal-note { max-width: 540px; margin: 14px 0 0; padding: 10px 14px; border-radius: 10px; background: var(--lime); color: var(--green); font-size: .86rem; }
 .modal-close { flex: none; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: var(--paper); color: var(--green); font: inherit; font-size: 1.8rem; line-height: 1; cursor: pointer; }
 .modal-close:hover { background: var(--lime); }
 .modal-content { padding: 28px 32px 32px; }
@@ -146,6 +153,7 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
 .radio-row input, .consent-field input { accent-color: var(--green); width: 18px; height: 18px; flex: none; }
 .consent-field { display: flex; align-items: flex-start; gap: 12px; margin-top: 24px; font-size: .85rem; cursor: pointer; }
 .consent-field input { margin: 2px 0 0; }
+.family-application-modal .consent-field + .consent-field { margin-top: 16px; }
 .form-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 26px; }
 .form-actions button:disabled { cursor: wait; opacity: .7; transform: none; }
 .form-status { flex: 1 1 245px; margin: 0; font-size: .9rem; }
@@ -189,6 +197,7 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
   .step-grid p { margin: 0; }
   .package-grid, .special-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .special-panel { padding: 25px 20px; }
+  .special-application-button { width: 100%; }
   .review-grid { display: flex; gap: 14px; overflow-x: auto; margin-inline: -20px; padding: 0 20px 16px; scroll-snap-type: x mandatory; scroll-padding-inline: 20px; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
   .review-card { flex: 0 0 min(420px, calc(100vw - 88px)); padding: 22px; scroll-snap-align: start; }
   .guitar-faq { columns: 1; }
