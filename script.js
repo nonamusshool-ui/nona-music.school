@@ -22,9 +22,9 @@
   });
 })();
 
-// Track the contact CTA without interrupting navigation or GA4 outbound clicks.
+// Track the Facebook contact link without interrupting navigation or GA4 outbound clicks.
 (() => {
-  const cta = document.getElementById("trial-lesson-cta");
+  const cta = document.getElementById("facebook-contact-cta");
   if (!cta) return;
 
   cta.addEventListener("click", () => {
