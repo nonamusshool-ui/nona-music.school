@@ -32,6 +32,12 @@
 .step-grid h3 { font-size: 1.4rem; line-height: 1.22; margin: 22px 0 12px; }
 .step-grid p { color: var(--muted); }
 .guitar-prices { background: #eff3e9; padding-block: 96px; }
+.trial-banner { display: flex; align-items: center; gap: clamp(24px, 5vw, 64px); margin-bottom: 26px; padding: 24px 30px; border-radius: var(--radius); background: var(--green); color: #fff; }
+.trial-banner-price { display: flex; flex: none; align-items: baseline; gap: 16px; }
+.trial-banner-price span { color: #d8e6a2; font-size: .8rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.trial-banner-price strong { color: var(--yellow); font-size: clamp(2.8rem, 5vw, 4rem); line-height: 1; letter-spacing: -.05em; white-space: nowrap; }
+.trial-banner-price small { font-size: .4em; letter-spacing: 0; }
+.trial-banner p { max-width: 460px; margin: 0; color: #e5eee6; }
 .package-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; align-items: stretch; }
 .package-card { min-width: 0; position: relative; border-radius: 20px; border: 1px solid var(--line); background: #fff; padding: 26px 20px 23px; display: flex; flex-direction: column; }
 .package-card.featured { background: var(--yellow); border-color: #e2bb31; }
@@ -117,6 +123,7 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
 .form-actions button:disabled { cursor: wait; opacity: .7; transform: none; }
 .form-status { flex: 1 1 245px; margin: 0; font-size: .9rem; }
 .form-status.is-error { color: #a33523; font-weight: 700; }
+.mobile-action-bar { display: none; }
 
 @media (max-width: 1100px) {
   .guitar-page .desktop-navigation { display: none; }
@@ -131,10 +138,17 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
   .application-cta { flex-wrap: wrap; }
 }
 @media (max-width: 720px) {
+  .guitar-page { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+  .mobile-action-bar { position: fixed; right: 0; bottom: 0; left: 0; z-index: 40; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 10px; padding: 10px max(16px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); border-top: 1px solid var(--line); background: #fff; box-shadow: 0 -8px 22px #103d2c16; }
+  .mobile-action-bar a { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 9px 12px; border-radius: 100px; font-size: .9rem; font-weight: 700; line-height: 1.2; text-align: center; text-decoration: none; touch-action: manipulation; }
+  .mobile-action-prices { background: var(--lime); color: var(--green); }
+  .mobile-action-trial { background: var(--green); color: #fff; }
+  .guitar-page.application-modal-open .mobile-action-bar { display: none; }
   .guitar-page .hero { padding-block: 54px 82px; }
   .guitar-page .hero-art { transform: none; }
   .program-layout, .ready-layout, .future-grid { grid-template-columns: 1fr; gap: 32px; }
   .guitar-program, .guitar-prices { padding-block: 64px; }
+  .trial-banner { align-items: flex-start; flex-direction: column; gap: 12px; padding: 24px; }
   .step-grid { grid-template-columns: 1fr; gap: 18px; }
   .step-grid li { display: grid; grid-template-columns: 56px 1fr; column-gap: 14px; }
   .step-grid span { grid-row: span 2; font-size: 2rem; }
