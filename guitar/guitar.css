@@ -5,6 +5,7 @@
 .guitar-page .hero-art { transform: rotate(1deg); }
 .hero-facts { display: flex; flex-wrap: wrap; gap: 9px; list-style: none; padding: 0; margin: 30px 0 0; }
 .hero-facts li { background: var(--lime); color: var(--green); border-radius: 100px; padding: 7px 13px; font-size: .8rem; font-weight: 700; }
+.hero-facts .free-lesson-fact { background: var(--yellow); }
 .guitar-section-head { max-width: 720px; margin-bottom: 34px; }
 .guitar-section-head h2 { margin-bottom: 14px; }
 .guitar-section-head > p:last-child { color: var(--muted); font-size: 1.05rem; margin-bottom: 0; }
@@ -83,6 +84,7 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
 .modal-header { position: sticky; top: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 28px 32px 20px; border-bottom: 1px solid var(--line); background: #fff; }
 .modal-header .eyebrow { margin-bottom: 8px; }
 .modal-header h2 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.modal-intro { max-width: 540px; margin: 12px 0 0; color: var(--muted); font-size: .91rem; line-height: 1.5; }
 .modal-close { flex: none; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: var(--paper); color: var(--green); font: inherit; font-size: 1.8rem; line-height: 1; cursor: pointer; }
 .modal-close:hover { background: var(--lime); }
 .modal-content { padding: 28px 32px 32px; }

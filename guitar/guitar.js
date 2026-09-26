@@ -99,6 +99,7 @@
         try {
           window.gtag("event", "generate_lead", {
             form_name: "guitar_application",
+            lead_type: "free_trial",
             lesson_package: selectedPackage,
           });
         } catch (error) {
