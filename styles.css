@@ -141,6 +141,10 @@ nav a:hover {
 .mobile-menu {
   display: none;
 }
+.home-mobile-action-bar,
+.hero-free-trial-note {
+  display: none;
+}
 .hero {
   display: grid;
   grid-template-columns: 1.08fr 1fr;
@@ -680,6 +684,37 @@ h2 > span {
   }
 }
 @media (max-width: 720px) {
+  .home-page {
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+  .home-mobile-action-bar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    display: block;
+    padding: 10px max(16px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    border-top: 1px solid var(--line);
+    background: #fff;
+    box-shadow: 0 -8px 22px #103d2c16;
+  }
+  .home-mobile-action-bar a {
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 16px;
+    border-radius: 100px;
+    background: var(--green);
+    color: #fff;
+    font-size: .9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+  }
   .wrap {
     width: calc(100% - 40px);
   }
@@ -743,6 +778,14 @@ h2 > span {
   }
   .hero-note {
     font-size: 0.75rem;
+    margin-top: 10px;
+  }
+  .hero-free-trial-note {
+    display: block;
+    margin: 14px 0 0;
+    color: var(--green);
+    font-size: .9rem;
+    font-weight: 700;
   }
   .hero-art {
     max-width: 500px;

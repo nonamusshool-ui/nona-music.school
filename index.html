@@ -186,6 +186,10 @@ nav a:hover {
 .mobile-menu {
   display: none;
 }
+.home-mobile-action-bar,
+.hero-free-trial-note {
+  display: none;
+}
 .hero {
   display: grid;
   grid-template-columns: 1.08fr 1fr;
@@ -725,6 +729,37 @@ h2 > span {
   }
 }
 @media (max-width: 720px) {
+  .home-page {
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+  .home-mobile-action-bar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    display: block;
+    padding: 10px max(16px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    border-top: 1px solid var(--line);
+    background: #fff;
+    box-shadow: 0 -8px 22px #103d2c16;
+  }
+  .home-mobile-action-bar a {
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 16px;
+    border-radius: 100px;
+    background: var(--green);
+    color: #fff;
+    font-size: .9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+  }
   .wrap {
     width: calc(100% - 40px);
   }
@@ -788,6 +823,14 @@ h2 > span {
   }
   .hero-note {
     font-size: 0.75rem;
+    margin-top: 10px;
+  }
+  .hero-free-trial-note {
+    display: block;
+    margin: 14px 0 0;
+    color: var(--green);
+    font-size: .9rem;
+    font-weight: 700;
   }
   .hero-art {
     max-width: 500px;
@@ -1048,7 +1091,7 @@ h2 > span {
 }
     </script>
   </head>
-  <body>
+  <body class="home-page">
     <a class="skip" href="#main">Перейти до змісту</a>
     <header class="header">
       <div class="wrap header-inner">
@@ -1074,6 +1117,9 @@ h2 > span {
         <a class="button button-small header-cta" href="/guitar/#application">Записатися</a>
       </div>
     </header>
+    <nav class="home-mobile-action-bar" aria-label="Швидкий запис">
+      <a href="/guitar/#application">Безкоштовний пробний урок</a>
+    </nav>
     <main id="main">
       <section class="hero wrap" aria-labelledby="hero-title">
         <div class="hero-copy">
@@ -1083,10 +1129,11 @@ h2 > span {
             Музика для себе, у своєму темпі, з підтримкою викладача. Зараз наш основний напрям — онлайн-уроки гітари для початківців: дітей і дорослих. Від першого акорду до улюблених мелодій та пісень.
           </p>
           <div class="hero-actions">
-            <a class="button" href="/guitar/"
-              >Хочу грати на гітарі <span aria-hidden="true">↗</span></a
+            <a class="button" href="/guitar/#application"
+              >Спробувати гітару безкоштовно <span aria-hidden="true">↗</span></a
             ><a class="text-link" href="#learning">Про навчання</a>
           </div>
+          <p class="hero-free-trial-note">Пробний урок 30 хв — безкоштовно</p>
           <p class="hero-note">
             Класична та акустична гітара · Від 9 до 30 років
           </p>

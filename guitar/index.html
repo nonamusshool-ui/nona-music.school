@@ -20,8 +20,8 @@
     <meta property="og:image:height" content="399" />
     <meta property="og:image:alt" content="НОНА Music School — обкладинка школи з гітарою, клавішами та нотами" />
     <link rel="icon" href="../assets/favicon.png" type="image/png" sizes="96x96" />
-    <link rel="stylesheet" href="../styles.css?v=3" />
-    <link rel="stylesheet" href="guitar.css?v=8" />
+    <link rel="stylesheet" href="../styles.css?v=4" />
+    <link rel="stylesheet" href="guitar.css?v=9" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3QLF10CVM"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -30,7 +30,7 @@
       gtag('config', 'G-H3QLF10CVM');
     </script>
     <script src="../script.js?v=6" defer></script>
-    <script src="guitar.js?v=5" defer></script>
+    <script src="guitar.js?v=6" defer></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -63,20 +63,20 @@
         </a>
         <nav class="desktop-navigation" aria-label="Навігація сторінкою">
           <a href="#about">Про уроки</a><a href="#program">Програма</a><a href="#how">Як проходить</a>
-          <a href="#prices">Ціни</a><a href="#reviews">Відгуки</a><a href="#faq">FAQ</a><a href="#application" data-open-application>Безкоштовний урок</a>
+          <a href="#prices">Ціни</a><a href="#reviews">Відгуки</a><a href="#faq">FAQ</a><a href="#application" data-open-application data-cta-location="navigation">Безкоштовний урок</a>
         </nav>
         <details class="mobile-menu">
           <summary class="menu-toggle" aria-controls="guitar-navigation">Меню <span aria-hidden="true">☰</span></summary>
           <nav id="guitar-navigation" aria-label="Мобільна навігація">
             <a href="#about">Про уроки</a><a href="#program">Програма</a><a href="#how">Як проходить</a>
-            <a href="#prices">Ціни</a><a href="#reviews">Відгуки</a><a href="#faq">FAQ</a><a href="#application" data-open-application>Безкоштовний урок</a>
+            <a href="#prices">Ціни</a><a href="#reviews">Відгуки</a><a href="#faq">FAQ</a><a href="#application" data-open-application data-cta-location="navigation">Безкоштовний урок</a>
           </nav>
         </details>
       </div>
     </header>
     <nav class="mobile-action-bar" aria-label="Швидкі дії">
       <a class="mobile-action-prices" href="#prices">Ціни</a>
-      <a class="mobile-action-trial" href="#application" data-open-application>Безкоштовний урок</a>
+      <a class="mobile-action-trial" href="#application" data-open-application data-cta-location="mobile_sticky_bar">Безкоштовний урок</a>
     </nav>
     <main id="main">
       <section class="hero wrap guitar-hero" aria-labelledby="hero-title">
@@ -85,17 +85,27 @@
           <h1 id="hero-title">Навчися грати на гітарі <span>з нуля</span></h1>
           <p class="lead">Індивідуальні онлайн-заняття з класичної та акустичної гітари для дітей і дорослих. У своєму темпі — від перших нот і табулатур до улюблених мелодій та пісень.</p>
           <div class="hero-actions">
-            <a class="button" href="#application" data-open-application>Записатися на безкоштовний пробний урок <span aria-hidden="true">↗</span></a>
+            <a class="button" href="#application" data-open-application data-cta-location="hero">Записатися на безкоштовний пробний урок <span aria-hidden="true">↗</span></a>
             <a class="text-link" href="#prices">Переглянути ціни</a>
           </div>
           <ul class="hero-facts" aria-label="Коротко про заняття">
-            <li>Онлайн у Google Meet</li><li class="free-lesson-fact">Пробний урок — 30 хв безкоштовно</li><li>Заняття після пробного — 60 хв</li><li>Для початківців</li><li>Класична та акустична гітара</li>
+            <li class="desktop-hero-fact">Онлайн у Google Meet</li><li class="free-lesson-fact">Пробний урок — 30 хв безкоштовно</li><li class="mobile-hero-fact">Індивідуальні заняття</li><li class="mobile-hero-fact">Для дітей і дорослих</li><li class="desktop-hero-fact">Заняття після пробного — 60 хв</li><li class="desktop-hero-fact">Для початківців</li><li class="desktop-hero-fact">Класична та акустична гітара</li>
           </ul>
         </div>
         <div class="hero-art">
           <div class="art-top"><span>МУЗИКА ПОЧИНАЄТЬСЯ З ТЕБЕ</span><span aria-hidden="true">♪</span></div>
           <img class="cover" src="../assets/school-cover-960.webp" srcset="../assets/school-cover-480.webp 480w, ../assets/school-cover-640.webp 640w, ../assets/school-cover-800.webp 800w, ../assets/school-cover-960.webp 960w" sizes="(max-width: 720px) calc(100vw - 40px), 45vw" width="960" height="399" alt="Фірмова обкладинка НОНА Music School з гітарою та нотами" fetchpriority="high" />
           <div class="art-bottom"><p>Перший звук.<br /><strong>Твоя музична історія.</strong></p><span class="round-note" aria-hidden="true">♫</span></div>
+        </div>
+      </section>
+
+      <section class="section wrap early-trust" aria-labelledby="early-trust-title">
+        <div class="early-trust-card">
+          <p class="eyebrow">ВІДГУКИ</p>
+          <h2 id="early-trust-title">Учні вже навчаються у НОНА</h2>
+          <blockquote>«Донька в захваті! Почали з розбору легких табулатур її улюблених пісень, тому мотивація просто зашкалює.»</blockquote>
+          <p>Марина, мама учениці</p>
+          <a class="text-link" href="#reviews">Читати всі відгуки ↗</a>
         </div>
       </section>
 
@@ -111,7 +121,7 @@
 
       <section class="guitar-program" id="program" aria-labelledby="program-title">
         <div class="wrap program-layout">
-          <div><p class="eyebrow">ВІД ПЕРШОГО ЗВУКУ</p><h2 id="program-title">Чого ти <span>навчишся</span></h2><p>Кожну нову навичку закріплюємо музикою, яку хочеться грати.</p><a class="text-link" href="#application" data-open-application>Безкоштовний пробний урок ↗</a></div>
+          <div><p class="eyebrow">ВІД ПЕРШОГО ЗВУКУ</p><h2 id="program-title">Чого ти <span>навчишся</span></h2><p>Кожну нову навичку закріплюємо музикою, яку хочеться грати.</p><a class="text-link" href="#application" data-open-application data-cta-location="program">Безкоштовний пробний урок ↗</a></div>
           <div class="skill-grid" aria-label="Навички на уроках">
             <div class="skill-card"><span>01</span><strong>Положення рук</strong><p>Зручна посадка, правильна постановка рук і чисте звучання.</p></div>
             <div class="skill-card"><span>02</span><strong>Ноти й табулатури</strong><p>Навчишся читати ноти та таби й використовувати їх під час гри.</p></div>
@@ -144,7 +154,7 @@
         </div>
       </section>
 
-      <section class="guitar-prices" id="prices" aria-labelledby="prices-title">
+      <section class="guitar-prices" id="prices" aria-labelledby="prices-title" data-cta-location="pricing">
         <div class="wrap">
           <div class="guitar-section-head"><p class="eyebrow">ФОРМАТ І ВАРТІСТЬ</p><h2 id="prices-title">Обери свій формат занять</h2><p>Платні пакети нижче — для 60-хвилинних занять після безкоштовного старту.</p></div>
           <div class="trial-banner">
@@ -156,7 +166,7 @@
             <p>Після цих двох безкоштовних етапів можна продовжити навчання за одним із платних пакетів нижче.</p>
           </div>
           <p class="pricing-category-label">СТАНДАРТНІ ПАКЕТИ</p>
-          <div class="package-grid">
+          <div class="package-grid" data-cta-location="package_card">
             <article class="package-card"><p class="package-count">1 заняття</p><h3>290 <span>грн</span></h3><p>290 грн / заняття</p><a href="#application" data-package="1 заняття — 290 грн">Обрати пакет <span aria-hidden="true">↗</span></a></article>
             <article class="package-card"><p class="package-count">2 заняття</p><h3>570 <span>грн</span></h3><p>285 грн / заняття</p><a href="#application" data-package="2 заняття — 570 грн">Обрати пакет <span aria-hidden="true">↗</span></a></article>
             <article class="package-card"><p class="package-count">4 заняття</p><h3>1120 <span>грн</span></h3><p>280 грн / заняття</p><a href="#application" data-package="4 заняття — 1120 грн">Обрати пакет <span aria-hidden="true">↗</span></a></article>
@@ -296,7 +306,7 @@
       <section class="section wrap" id="application" aria-labelledby="application-title">
         <div class="application-cta">
           <div class="application-intro"><p class="eyebrow">ПЕРШИЙ КРОК ДО МУЗИКИ</p><h2 id="application-title">Готовий почати?</h2><p>Залиш заявку на безкоштовний пробний урок — школа зв’яжеться з тобою та узгодить час.</p></div>
-          <button class="button" type="button" data-open-application>Записатися на пробний урок <span aria-hidden="true">↗</span></button>
+          <button class="button" type="button" data-open-application data-cta-location="application_section">Записатися на пробний урок <span aria-hidden="true">↗</span></button>
         </div>
       </section>
 
@@ -320,10 +330,15 @@
               <fieldset class="form-field student-type"><legend>Кого записуємо?</legend><div class="radio-row"><label><input type="radio" name="student_type" value="Себе" required /> Себе</label><label><input type="radio" name="student_type" value="Дитину" required /> Дитину</label></div></fieldset>
               <div class="form-field"><label for="student-age">Вік учня</label><input id="student-age" name="student_age" type="number" min="6" max="100" inputmode="numeric" required /></div>
               <div class="form-field"><label for="student-phone">Телефон / Viber</label><input id="student-phone" name="phone" type="tel" placeholder="+380..." autocomplete="tel" required /></div>
-              <div class="form-field"><label for="student-telegram">Telegram <span class="optional">необов’язково</span></label><input id="student-telegram" name="telegram" type="text" placeholder="@username" /></div>
-              <div class="form-field"><label for="student-experience">Досвід гри</label><select id="student-experience" name="experience" required><option value="" disabled selected>Обери свій рівень</option><option>Ніколи не грав / не грала</option><option>Трохи пробував / пробувала</option><option>Вже маю базові навички</option></select></div>
               <div class="form-field package-picker" hidden><label for="lesson-package-select">Який пакет розглядаєш для подальшого навчання?</label><select id="lesson-package-select"><option>Ще не визначився</option><option>1 заняття — 290 грн</option><option>2 заняття — 570 грн</option><option>4 заняття — 1120 грн</option><option>6 занять — 1650 грн</option><option>8 занять — 2160 грн</option></select></div>
-              <div class="form-field form-wide"><label for="student-message">Коментар <span class="optional">необов’язково</span></label><textarea id="student-message" name="message" rows="4" placeholder="Наприклад: які пісні хочеш навчитися грати або коли зручно займатися"></textarea></div>
+              <details class="form-extras form-wide" open>
+                <summary>Додати більше інформації</summary>
+                <div class="form-extras-grid">
+                  <div class="form-field"><label for="student-telegram">Telegram <span class="optional">необов’язково</span></label><input id="student-telegram" name="telegram" type="text" placeholder="@username" /></div>
+                  <div class="form-field"><label for="student-experience">Досвід гри <span class="optional">необов’язково</span></label><select id="student-experience" name="experience"><option value="" selected>Обери свій рівень</option><option>Ніколи не грав / не грала</option><option>Трохи пробував / пробувала</option><option>Вже маю базові навички</option></select></div>
+                  <div class="form-field form-wide"><label for="student-message">Коментар <span class="optional">необов’язково</span></label><textarea id="student-message" name="message" rows="4" placeholder="Наприклад: які пісні хочеш навчитися грати або коли зручно займатися"></textarea></div>
+                </div>
+              </details>
             </div>
             <label class="consent-field"><input name="contact_consent" type="checkbox" value="Так" required /><span>Погоджуюсь на використання контактних даних для зв’язку щодо занять.</span></label>
             <div class="form-actions"><button class="button" type="submit">Надіслати заявку</button><p class="form-status" id="form-status" role="status" aria-live="polite"></p></div>

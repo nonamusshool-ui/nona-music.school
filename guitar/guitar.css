@@ -6,6 +6,7 @@
 .hero-facts { display: flex; flex-wrap: wrap; gap: 9px; list-style: none; padding: 0; margin: 30px 0 0; }
 .hero-facts li { background: var(--lime); color: var(--green); border-radius: 100px; padding: 7px 13px; font-size: .8rem; font-weight: 700; }
 .hero-facts .free-lesson-fact { background: var(--yellow); }
+.mobile-hero-fact, .early-trust { display: none; }
 .guitar-section-head { max-width: 720px; margin-bottom: 34px; }
 .guitar-section-head h2 { margin-bottom: 14px; }
 .guitar-section-head > p:last-child { color: var(--muted); font-size: 1.05rem; margin-bottom: 0; }
@@ -138,6 +139,9 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
 .application-form { padding: 0; }
 .botcheck { display: none !important; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.form-extras { min-width: 0; }
+.form-extras summary { display: none; }
+.form-extras-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .form-field { min-width: 0; }
 .form-field > label, .form-field legend { display: block; color: var(--ink); font-weight: 700; font-size: .9rem; margin-bottom: 8px; }
 .form-field input:not([type="radio"]), .form-field select, .form-field textarea { display: block; width: 100%; min-height: 52px; border: 1px solid #bdcdbb; border-radius: 12px; padding: 12px 14px; color: var(--ink); background: #fff; font: inherit; font-size: 1rem; }
@@ -175,13 +179,33 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
 }
 @media (max-width: 720px) {
   .guitar-page { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+  .guitar-page .header-inner { min-height: 64px; flex-wrap: nowrap; gap: 12px; padding-block: 5px; }
+  .guitar-page .wordmark { font-size: 1.65rem; }
+  .guitar-page .brand-caption { margin-top: 3px; font-size: .55rem; letter-spacing: 2.5px; }
+  .guitar-page .mobile-menu > summary { min-height: 44px; padding: 8px 12px; }
   .mobile-action-bar { position: fixed; right: 0; bottom: 0; left: 0; z-index: 40; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 10px; padding: 10px max(16px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); border-top: 1px solid var(--line); background: #fff; box-shadow: 0 -8px 22px #103d2c16; }
   .mobile-action-bar a { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 9px 12px; border-radius: 100px; font-size: .9rem; font-weight: 700; line-height: 1.2; text-align: center; text-decoration: none; touch-action: manipulation; }
   .mobile-action-prices { background: var(--lime); color: var(--green); }
   .mobile-action-trial { background: var(--green); color: #fff; }
   .guitar-page.application-modal-open .mobile-action-bar { display: none; }
-  .guitar-page .hero { padding-block: 54px 82px; }
+  .guitar-page .hero { padding-block: 36px 40px; gap: 28px; }
   .guitar-page .hero-art { transform: none; }
+  .hero-facts { margin-top: 20px; }
+  .hero-facts .desktop-hero-fact { display: none; }
+  .hero-facts .mobile-hero-fact { display: list-item; }
+  .early-trust { display: block; padding-block: 20px 4px; }
+  .early-trust-card { padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: var(--lime); }
+  .early-trust-card .eyebrow { margin-bottom: 10px; }
+  .early-trust-card h2 { margin-bottom: 12px; font-size: 1.45rem; }
+  .early-trust-card blockquote { margin: 0 0 10px; line-height: 1.5; }
+  .early-trust-card p:not(.eyebrow) { margin: 0 0 12px; color: var(--muted); font-size: .85rem; }
+  .new-student-promo { display: none; }
+  .form-extras summary { display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding: 10px 14px; border: 1px solid #bdcdbb; border-radius: 12px; color: var(--green); font-weight: 700; cursor: pointer; list-style: none; }
+  .form-extras summary::-webkit-details-marker { display: none; }
+  .form-extras summary::marker { content: ""; }
+  .form-extras summary::after { content: "+"; font-size: 1.25rem; line-height: 1; }
+  .form-extras[open] summary::after { content: "−"; }
+  .form-extras-grid { grid-template-columns: 1fr; margin-top: 16px; }
   .program-layout, .ready-layout { grid-template-columns: 1fr; gap: 32px; }
   .guitar-program, .guitar-prices { padding-block: 64px; }
   .new-student-promo-steps { grid-template-columns: 1fr; gap: 8px; }

@@ -8,6 +8,8 @@
   const packagePicker = form.querySelector(".package-picker");
   const packageValue = document.getElementById("selected-package");
   const packageSummary = dialog.querySelector(".package-summary");
+  const formExtras = form.querySelector(".form-extras");
+  const smartphone = window.matchMedia("(max-width: 720px)");
   const success = document.getElementById("modal-success");
   const submitButton = form.querySelector('button[type="submit"]');
   const closeButton = dialog.querySelector(".modal-close");
@@ -16,6 +18,14 @@
   let opener = null;
   let pageScrollY = 0;
   let submitting = false;
+
+  const syncExtraFields = () => { formExtras.open = !smartphone.matches; };
+  syncExtraFields();
+  if (typeof smartphone.addEventListener === "function") {
+    smartphone.addEventListener("change", syncExtraFields);
+  } else {
+    smartphone.addListener(syncExtraFields);
+  }
 
   const openApplication = (trigger, selectedPackage = unspecified) => {
     if (document.querySelector("dialog[open]")) return;
@@ -26,6 +36,7 @@
     packageValue.textContent = hasPackage ? selectedPackage : "";
     packageSummary.hidden = !hasPackage;
     packagePicker.hidden = hasPackage;
+    if (smartphone.matches) formExtras.open = false;
     success.hidden = true;
     form.hidden = false;
     status.className = "form-status";
@@ -34,7 +45,17 @@
     dialog.showModal();
     document.documentElement.classList.add("application-modal-open");
     document.body.classList.add("application-modal-open");
-    form.elements.student_name.focus({ preventScroll: true });
+    (smartphone.matches ? closeButton : form.elements.student_name).focus({ preventScroll: true });
+    if (typeof window.gtag === "function") {
+      try {
+        window.gtag("event", "trial_form_open", {
+          form_name: "guitar_application",
+          cta_location: trigger.closest("[data-cta-location]")?.dataset.ctaLocation ?? "other",
+        });
+      } catch (error) {
+        // Analytics must not interrupt opening the form.
+      }
+    }
   };
 
   document.querySelectorAll("[data-package]").forEach((link) => {
@@ -143,7 +164,7 @@
       dialog.showModal();
       document.documentElement.classList.add("application-modal-open");
       document.body.classList.add("application-modal-open");
-      form.elements.student_name.focus({ preventScroll: true });
+      (window.matchMedia("(max-width: 720px)").matches ? closeButton : form.elements.student_name).focus({ preventScroll: true });
     });
   });
 
