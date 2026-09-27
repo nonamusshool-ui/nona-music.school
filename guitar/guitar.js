@@ -138,6 +138,20 @@
   });
 })();
 
+document.querySelectorAll("[data-phone-click-location]").forEach((link) => {
+  link.addEventListener("click", () => {
+    if (typeof window.gtag !== "function") return;
+    try {
+      window.gtag("event", "phone_click", {
+        cta_location: link.dataset.phoneClickLocation,
+        link_url: link.getAttribute("href"),
+      });
+    } catch (error) {
+      // Analytics must not interrupt the phone link.
+    }
+  });
+});
+
 (() => {
   const dialog = document.getElementById("family-application-modal");
   const form = document.getElementById("guitar-family-application");

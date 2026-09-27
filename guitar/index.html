@@ -21,7 +21,7 @@
     <meta property="og:image:alt" content="НОНА Music School — обкладинка школи з гітарою, клавішами та нотами" />
     <link rel="icon" href="../assets/favicon.png" type="image/png" sizes="96x96" />
     <link rel="stylesheet" href="../styles.css?v=4" />
-    <link rel="stylesheet" href="guitar.css?v=9" />
+    <link rel="stylesheet" href="guitar.css?v=10" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3QLF10CVM"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -30,7 +30,7 @@
       gtag('config', 'G-H3QLF10CVM');
     </script>
     <script src="../script.js?v=6" defer></script>
-    <script src="guitar.js?v=6" defer></script>
+    <script src="guitar.js?v=7" defer></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -306,7 +306,14 @@
       <section class="section wrap" id="application" aria-labelledby="application-title">
         <div class="application-cta">
           <div class="application-intro"><p class="eyebrow">ПЕРШИЙ КРОК ДО МУЗИКИ</p><h2 id="application-title">Готовий почати?</h2><p>Залиш заявку на безкоштовний пробний урок — школа зв’яжеться з тобою та узгодить час.</p></div>
-          <button class="button" type="button" data-open-application data-cta-location="application_section">Записатися на пробний урок <span aria-hidden="true">↗</span></button>
+          <div class="application-actions">
+            <button class="button" type="button" data-open-application data-cta-location="application_section">Записатися на пробний урок <span aria-hidden="true">↗</span></button>
+            <div class="application-phone-note">
+              <p>Не хочете заповнювати форму?</p>
+              <span>Зателефонуйте — допоможемо записатися на пробний урок.</span>
+              <a href="tel:+380732152008" data-phone-click-location="application_section">073 215 20 08</a>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -325,6 +332,7 @@
             <input type="hidden" name="lead_type" value="free_trial" />
             <input type="hidden" name="lesson_package" value="Ще не визначився" />
             <input class="botcheck" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <p class="modal-phone-note">Зручніше телефоном? <a href="tel:+380732152008" data-phone-click-location="application_modal">073 215 20 08</a></p>
             <div class="form-grid">
               <div class="form-field"><label for="student-name">Ім’я</label><input id="student-name" name="student_name" type="text" placeholder="Як до тебе звертатися?" autocomplete="name" required /></div>
               <fieldset class="form-field student-type"><legend>Кого записуємо?</legend><div class="radio-row"><label><input type="radio" name="student_type" value="Себе" required /> Себе</label><label><input type="radio" name="student_type" value="Дитину" required /> Дитину</label></div></fieldset>

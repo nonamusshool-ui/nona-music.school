@@ -114,9 +114,15 @@
 .guitar-page .contact-section { padding-top: 20px; }
 .guitar-page .contact-card { min-width: 0; }
 .application-cta { display: flex; align-items: center; justify-content: space-between; gap: 36px; padding: 40px; border-radius: var(--radius); background: var(--lime); }
-.application-cta .button { flex: none; }
+.application-actions { flex: 0 1 340px; min-width: 0; }
+.application-actions .button { width: 100%; }
 .application-intro > p:not(.eyebrow) { color: var(--muted); font-size: 1.06rem; }
 .application-intro > p:last-child { margin-bottom: 0; }
+.application-phone-note { margin-top: 12px; color: var(--muted); font-size: .84rem; line-height: 1.4; }
+.application-phone-note p { margin: 0 0 2px; font-weight: 700; }
+.application-phone-note span { display: block; }
+.application-phone-note a, .modal-phone-note a { display: inline-flex; align-items: center; min-height: 44px; color: var(--green); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.application-phone-note a:focus-visible, .modal-phone-note a:focus-visible { outline: 3px solid #dd9818; outline-offset: 2px; border-radius: 3px; }
 html.application-modal-open, body.application-modal-open { overflow: hidden; }
 .application-modal { width: min(720px, calc(100% - 32px)); max-width: none; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); margin: auto; padding: 0; border: 0; border-radius: var(--radius); background: #fff; color: var(--ink); box-shadow: 0 24px 80px #103d2c40; overflow-y: auto; overscroll-behavior: contain; }
 .application-modal::backdrop { background: #102d22bd; }
@@ -124,6 +130,7 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
 .modal-header .eyebrow { margin-bottom: 8px; }
 .modal-header h2 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
 .modal-intro { max-width: 540px; margin: 12px 0 0; color: var(--muted); font-size: .91rem; line-height: 1.5; }
+.modal-phone-note { display: flex; align-items: center; flex-wrap: wrap; column-gap: 7px; margin: -6px 0 16px; color: var(--muted); font-size: .84rem; }
 .family-modal-note { max-width: 540px; margin: 14px 0 0; padding: 10px 14px; border-radius: 10px; background: var(--lime); color: var(--green); font-size: .86rem; }
 .modal-close { flex: none; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: var(--paper); color: var(--green); font: inherit; font-size: 1.8rem; line-height: 1; cursor: pointer; }
 .modal-close:hover { background: var(--lime); }
@@ -234,7 +241,7 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
   .teacher-video-caption { padding: 17px 4px 4px; }
   .guitar-page .hero-actions .button { width: 100%; }
   .application-cta { padding: 28px 22px; }
-  .application-cta .button { width: 100%; }
+  .application-actions { flex-basis: 100%; }
   .application-modal { width: calc(100% - 16px); max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); border-radius: 18px; }
   .modal-header { padding: 20px 18px 16px; }
   .modal-content { padding: 20px 18px 24px; }
