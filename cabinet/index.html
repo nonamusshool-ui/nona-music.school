@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="uk" data-required-role="student">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#17543c" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Кабінет учня | НОНА Music School</title>
+    <link rel="icon" href="../assets/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="../assets/css/cabinet.css" />
+    <script type="module" src="../assets/js/dashboard.js"></script>
+  </head>
+  <body class="cabinet-page">
+    <a class="skip-link" href="#main">Перейти до змісту</a>
+    <div class="cabinet-check" id="cabinet-loading" role="status" aria-live="polite"><div class="cabinet-check-inner"><h1>Перевіряємо доступ…</h1><p>Завантажуємо ваш кабінет.</p></div></div>
+    <div class="cabinet-check" id="cabinet-problem" hidden><div class="cabinet-check-inner"><h1>Не вдалося перевірити доступ</h1><p>Перевірте з’єднання й спробуйте ще раз.</p><button class="button" id="cabinet-retry" type="button">Спробувати ще раз</button></div></div>
+    <div id="private-content" hidden>
+      <header class="cabinet-header">
+        <div class="shell cabinet-header-inner">
+          <a class="brand" href="../" aria-label="НОНА Music School — на головну"><span class="brand-mark">Н<span>О</span>НА.</span><span class="brand-caption">MUSIC SCHOOL</span></a>
+          <div class="cabinet-header-actions"><div class="account-id"><span class="avatar" data-user-initial aria-hidden="true"></span><span class="account-name" data-user-name></span></div><button class="button button-quiet" id="sign-out" type="button">Вийти</button></div>
+        </div>
+      </header>
+      <main class="shell cabinet-main" id="main">
+        <section class="welcome-card" aria-labelledby="welcome-title"><p class="eyebrow">КАБІНЕТ УЧНЯ</p><h1 id="welcome-title">Привіт, <span data-user-name></span> 👋</h1><p>Тут з’являтимуться ваші уроки, пакет і повідомлення від викладача.</p></section>
+        <div class="section-heading"><h2>Моє навчання</h2><p>Уся важлива інформація в одному місці.</p></div>
+        <div class="dashboard-grid">
+          <section class="dashboard-card" aria-labelledby="next-lesson-title"><div class="card-title-row"><div><p class="eyebrow">РОЗКЛАД</p><h3 id="next-lesson-title">Наступний урок</h3></div><span class="icon-tile" aria-hidden="true">♫</span></div><div class="empty-state"><strong>Наступний урок ще не заплановано</strong><p>Дата, час, викладач і посилання на Google Meet з’являться тут після підтвердження заняття.</p></div></section>
+          <section class="dashboard-card" aria-labelledby="package-title"><div class="card-title-row"><div><p class="eyebrow">ЗАНЯТТЯ</p><h3 id="package-title">Мій пакет</h3></div><span class="icon-tile" aria-hidden="true">◌</span></div><div class="placeholder-stats" aria-label="Дані пакета ще не додано"><div><span>Придбано</span><strong>—</strong></div><div><span>Проведено</span><strong>—</strong></div><div><span>Залишилось</span><strong>—</strong></div></div><div class="empty-state"><strong>Активного пакета поки немає</strong><p>Інформація з’явиться після призначення пакета школою.</p></div></section>
+          <section class="dashboard-card" aria-labelledby="teacher-title"><div class="card-title-row"><div><p class="eyebrow">НАВЧАННЯ</p><h3 id="teacher-title">Мій викладач</h3></div><span class="icon-tile" aria-hidden="true">♪</span></div><div class="empty-state"><strong>Викладача ще не призначено</strong><p>Інформація з’явиться тут, коли школа узгодить заняття.</p></div></section>
+          <section class="dashboard-card" aria-labelledby="messages-title"><div class="card-title-row"><div><p class="eyebrow">ЗВ’ЯЗОК</p><h3 id="messages-title">Повідомлення</h3></div><span class="quiet-pill">Незабаром</span></div><div class="empty-state"><strong>Повідомлень поки немає</strong><p>Тут з’явиться листування з викладачем і позначка нових повідомлень.</p></div></section>
+          <section class="dashboard-card dashboard-card-wide" aria-labelledby="history-title"><p class="eyebrow">ВАШ ШЛЯХ</p><h3 id="history-title">Історія уроків</h3><div class="empty-state"><strong>Історія з’явиться після першого заняття.</strong><p>Проведені уроки можна буде переглянути тут.</p></div></section>
+        </div>
+        <p class="status" id="cabinet-status" role="status" aria-live="polite"></p>
+        <footer class="cabinet-footer">НОНА Music School · <a href="../">На головну</a></footer>
+      </main>
+    </div>
+    <noscript><p class="shell status is-error">Для входу до кабінету потрібно увімкнути JavaScript.</p></noscript>
+  </body>
+</html>

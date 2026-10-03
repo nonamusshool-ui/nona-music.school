@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#17543c" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Перевірка доступу | НОНА Music School</title>
+    <link rel="icon" href="../../assets/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="../../assets/css/cabinet.css" />
+    <script type="module" src="../../assets/js/callback.js"></script>
+  </head>
+  <body class="auth-page">
+    <a class="skip-link" href="#main">Перейти до змісту</a>
+    <header class="shell auth-top">
+      <a class="brand" href="../../" aria-label="НОНА Music School — на головну">
+        <span class="brand-mark">Н<span>О</span>НА.</span><span class="brand-caption">MUSIC SCHOOL</span>
+      </a>
+      <a href="../../">На головну ↗</a>
+    </header>
+    <main class="shell callback-wrap" id="main">
+      <div class="callback-card" aria-live="polite">
+        <section id="callback-loading" aria-labelledby="checking-title">
+          <div class="callback-mark" aria-hidden="true">♪</div>
+          <p class="eyebrow">ОСОБИСТИЙ КАБІНЕТ</p>
+          <h1 id="checking-title">Перевіряємо доступ…</h1>
+          <p>Зачекайте мить, поки ми перевіримо обліковий запис.</p>
+        </section>
+        <section id="callback-pending" aria-labelledby="pending-title" hidden>
+          <div class="callback-mark" aria-hidden="true">♪</div>
+          <p class="eyebrow">НОНА Music School</p>
+          <h1 id="pending-title">Доступ до кабінету ще не активовано</h1>
+          <p>Зверніться до адміністратора НОНА Music School.</p>
+          <button class="button" type="button" data-sign-out>Вийти</button>
+          <p class="status" data-logout-status role="status"></p>
+        </section>
+        <section id="callback-problem" aria-labelledby="problem-title" hidden>
+          <div class="callback-mark" aria-hidden="true">!</div>
+          <p class="eyebrow">НОНА Music School</p>
+          <h1 id="problem-title">Не вдалося перевірити доступ</h1>
+          <p>Спробуйте ще раз. Якщо проблема повторюється, зверніться до школи.</p>
+          <div class="callback-actions">
+            <button class="button" id="callback-retry" type="button">Спробувати ще раз</button>
+            <a class="button button-light" href="../../login/">До входу</a>
+          </div>
+        </section>
+        <noscript><p class="status is-error">Для перевірки доступу потрібно увімкнути JavaScript.</p></noscript>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#17543c" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Особистий кабінет | НОНА Music School</title>
+    <link rel="icon" href="../assets/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="../assets/css/cabinet.css" />
+    <script type="module" src="../assets/js/login.js"></script>
+  </head>
+  <body class="auth-page">
+    <a class="skip-link" href="#main">Перейти до змісту</a>
+    <header class="shell auth-top">
+      <a class="brand" href="../" aria-label="НОНА Music School — на головну">
+        <span class="brand-mark">Н<span>О</span>НА.</span><span class="brand-caption">MUSIC SCHOOL</span>
+      </a>
+      <a href="../">На головну ↗</a>
+    </header>
+    <main class="shell auth-layout" id="main">
+      <section class="auth-intro" aria-labelledby="login-title">
+        <p class="eyebrow">НОНА Music School</p>
+        <h1 id="login-title">Особистий кабінет</h1>
+        <p>Уроки, розклад і зв’язок з викладачем — в одному місці.</p>
+      </section>
+      <section class="auth-card" aria-labelledby="sign-in-title">
+        <p class="eyebrow">РАДІ ВАС БАЧИТИ</p>
+        <h2 id="sign-in-title">Увійти до НОНА</h2>
+        <p>Оберіть зручний спосіб входу до свого кабінету.</p>
+        <button class="button google-button" id="google-sign-in" type="button">
+          <svg class="google-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+            <path fill="#EA4335" d="M12 4.75c1.7 0 3.23.58 4.43 1.72l3.28-3.28C17.72 1.31 15.12.25 12 .25 7.41.25 3.42 2.88 1.48 6.71l3.82 2.97C6.2 6.78 8.89 4.75 12 4.75Z" />
+            <path fill="#4285F4" d="M23.5 12.27c0-.77-.07-1.5-.19-2.21H12v4.5h6.45a5.54 5.54 0 0 1-2.4 3.64l3.72 2.88c2.17-2 3.73-4.96 3.73-8.81Z" />
+            <path fill="#FBBC05" d="M5.3 14.32A7.27 7.27 0 0 1 4.9 12c0-.8.14-1.58.4-2.32L1.48 6.71A11.7 11.7 0 0 0 .25 12c0 1.9.45 3.7 1.23 5.29l3.82-2.97Z" />
+            <path fill="#34A853" d="M12 23.75c3.12 0 5.74-1.03 7.77-2.67l-3.72-2.88c-1.04.69-2.38 1.05-4.05 1.05-3.11 0-5.8-2.03-6.7-4.93l-3.82 2.97A11.73 11.73 0 0 0 12 23.75Z" />
+          </svg>
+          Продовжити через Google
+        </button>
+        <div class="auth-divider" aria-hidden="true">або</div>
+        <form class="auth-form" id="email-sign-in">
+          <label for="login-email">Електронна пошта</label>
+          <input id="login-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" required />
+          <button class="button button-light" type="submit">Отримати посилання для входу</button>
+        </form>
+        <p class="status" id="login-status" role="status" aria-live="polite"></p>
+        <p class="auth-footnote">Доступ до кабінету надає школа після підтвердження облікового запису.</p>
+        <noscript><p class="status is-error">Для входу потрібно увімкнути JavaScript.</p></noscript>
+      </section>
+    </main>
+  </body>
+</html>
