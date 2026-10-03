@@ -1,5 +1,5 @@
 import { supabase } from "./supabase-client.js";
-import { kyivDay, kyivTime, requireData, safeLessonUrl } from "./learning-ui.js?v=2";
+import { kyivDay, kyivTime, requireData, safeLessonUrl } from "./learning-ui.js?v=3";
 
 const scheduleDialog = document.getElementById("teacher-schedule-dialog");
 const scheduleForm = document.getElementById("teacher-schedule-form");
@@ -99,6 +99,7 @@ export function openTeacherOutcome(lesson, opener) {
   outcomeOpener = opener;
   outcomeForm.reset();
   showError(outcomeError, "");
+  field("teacher-outcome-title").textContent = lesson.status === "in_progress" ? "Не проведено" : "Скасувати урок";
   field("teacher-outcome-charge").disabled = !lesson.package_id;
   updateReason();
   outcomeDialog.showModal();
@@ -113,11 +114,25 @@ export async function completeTeacherLesson(lesson, button) {
       target_lesson_id: lesson.id, outcome: "completed",
     }));
     await onChanged();
-    setStatus("Урок позначено проведеним.");
+    setStatus("Урок завершено.");
   } catch {
     setStatus("Не вдалося зберегти результат. Оновіть дані й спробуйте ще раз.", true);
     button.disabled = false;
-    button.textContent = "Урок проведено";
+    button.textContent = "Завершити урок";
+  }
+}
+
+export async function startTeacherLesson(lesson, button) {
+  button.disabled = true;
+  button.textContent = "Зберігаємо…";
+  try {
+    requireData(await supabase.rpc("teacher_start_lesson", { target_lesson_id: lesson.id }));
+    await onChanged();
+    setStatus("Урок розпочато.");
+  } catch {
+    setStatus("Не вдалося почати урок. Оновіть дані й спробуйте ще раз.", true);
+    button.disabled = false;
+    button.textContent = "Почати урок";
   }
 }
 

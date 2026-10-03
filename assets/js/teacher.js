@@ -1,15 +1,15 @@
 import { supabase } from "./supabase-client.js";
-import { detail, empty, kyivDateTime, kyivDay, lessonPlace, lessonStatuses,
-  outcomeReasons, requireData } from "./learning-ui.js?v=2";
+import { detail, empty, kyivDateTime, kyivDay, kyivTime, lessonPlace, lessonStatuses,
+  outcomeReasons, requireData } from "./learning-ui.js?v=3";
 import { completeTeacherLesson, initTeacherActions, openTeacherOutcome,
-  openTeacherSchedule } from "./teacher-actions.js?v=1";
+  openTeacherSchedule, startTeacherLesson } from "./teacher-actions.js?v=2";
 
 const todayTarget = document.getElementById("teacher-today");
 const studentsTarget = document.getElementById("teacher-students");
 const upcomingTarget = document.getElementById("teacher-upcoming");
 const status = document.getElementById("cabinet-status");
 const refresh = document.getElementById("teacher-refresh");
-const lessonColumns = "id,student_id,package_id,scheduled_at,duration_minutes,status,consumes_lesson,lesson_format,lesson_url,location_text,meet_url,outcome_reason,outcome_note,resolved_at";
+const lessonColumns = "id,student_id,package_id,scheduled_at,duration_minutes,status,started_at,consumes_lesson,lesson_format,lesson_url,location_text,meet_url,outcome_reason,outcome_note,resolved_at";
 let teacherId;
 
 function reportStatus(message, isError = false) {
@@ -34,16 +34,24 @@ function lessonCard(lesson, student) {
     detail("Статус", lessonStatuses[lesson.status] || lesson.status), lessonPlace(lesson));
   if (lesson.outcome_reason) item.append(detail("Причина", outcomeReasons[lesson.outcome_reason] || "Інше"));
   if (lesson.outcome_note) item.append(detail("Внутрішній коментар", lesson.outcome_note));
+  if (lesson.status === "in_progress") item.append(detail("Почато", lesson.started_at
+    ? kyivTime.format(new Date(lesson.started_at)) : "час не вказано"));
   if (lesson.status === "cancelled") item.append(detail("Списано з пакета",
     lesson.consumes_lesson && lesson.resolved_at ? "Так" : "Ні"));
   if (lesson.status === "scheduled") {
     const actions = document.createElement("div");
     actions.className = "learning-actions";
-    const ended = Date.now() >= new Date(lesson.scheduled_at).getTime() + lesson.duration_minutes * 60000;
-    if (ended) actions.append(
-      action("Урок проведено", (button) => completeTeacherLesson(lesson, button), "button"),
+    actions.append(
+      action("Почати урок", (button) => startTeacherLesson(lesson, button), "button"),
+      action("Перенести", (button) => openTeacherSchedule(student, lesson, button)),
+      action("Скасувати урок", (button) => openTeacherOutcome(lesson, button)));
+    item.append(actions);
+  } else if (lesson.status === "in_progress") {
+    const actions = document.createElement("div");
+    actions.className = "learning-actions";
+    actions.append(
+      action("Завершити урок", (button) => completeTeacherLesson(lesson, button), "button"),
       action("Не проведено", (button) => openTeacherOutcome(lesson, button)));
-    actions.append(action("Перенести", (button) => openTeacherSchedule(student, lesson, button)));
     item.append(actions);
   }
   return item;
@@ -59,7 +67,7 @@ async function loadTeacher() {
     const ids = assignments.map((item) => item.student_id);
     const now = new Date();
     const today = kyivDay(now);
-    const [dayResult, overdueResult, futureResult] = await Promise.all([
+    const [dayResult, overdueResult, futureResult, activeResult] = await Promise.all([
       supabase.from("lessons").select(lessonColumns).eq("teacher_id", teacherId)
         .gte("scheduled_at", new Date(now.getTime() - 36 * 3600000).toISOString())
         .lt("scheduled_at", new Date(now.getTime() + 60 * 3600000).toISOString())
@@ -70,11 +78,15 @@ async function loadTeacher() {
       supabase.from("lessons").select(lessonColumns).eq("teacher_id", teacherId)
         .eq("status", "scheduled").gte("scheduled_at", now.toISOString())
         .order("scheduled_at").limit(100),
+      supabase.from("lessons").select(lessonColumns).eq("teacher_id", teacherId)
+        .eq("status", "in_progress").order("started_at", { ascending: false }).limit(100),
     ]);
     const dayLessons = requireData(dayResult).filter((lesson) => kyivDay(new Date(lesson.scheduled_at)) === today);
     const past = requireData(overdueResult).filter((lesson) => kyivDay(new Date(lesson.scheduled_at)) !== today);
     const future = requireData(futureResult);
-    const otherLessons = [...past.reverse(), ...future.filter((lesson) => kyivDay(new Date(lesson.scheduled_at)) !== today)];
+    const active = requireData(activeResult);
+    const otherLessons = [...active.filter((lesson) => kyivDay(new Date(lesson.scheduled_at)) !== today),
+      ...past.reverse(), ...future.filter((lesson) => kyivDay(new Date(lesson.scheduled_at)) !== today)];
     const students = new Map();
     if (ids.length) {
       const profiles = requireData(await supabase.from("profiles")
@@ -106,13 +118,16 @@ async function loadTeacher() {
         const heading = document.createElement("h4");
         heading.textContent = student.name;
         item.append(heading);
-        const next = future.find((lesson) => lesson.student_id === id);
-        item.append(detail("Наступний урок", next ? kyivDateTime.format(new Date(next.scheduled_at)) : "не заплановано"));
-        const active = balances.filter((balance) => balance.student_id === id && balance.status === "active"
+        const next = active.find((lesson) => lesson.student_id === id)
+          || future.find((lesson) => lesson.student_id === id);
+        item.append(detail("Наступний урок", next
+          ? next.status === "in_progress" ? "урок триває" : kyivDateTime.format(new Date(next.scheduled_at))
+          : "не заплановано"));
+        const activePackages = balances.filter((balance) => balance.student_id === id && balance.status === "active"
           && (!balance.valid_from || balance.valid_from <= today)
           && (!balance.valid_until || balance.valid_until >= today));
-        item.append(detail("Залишок занять", active.length
-          ? active.reduce((sum, balance) => sum + Number(balance.lessons_remaining), 0)
+        item.append(detail("Залишок занять", activePackages.length
+          ? activePackages.reduce((sum, balance) => sum + Number(balance.lessons_remaining), 0)
           : "активного пакета немає"));
         const button = action("Запланувати урок", (element) => openTeacherSchedule(student, null, element), "button");
         button.disabled = !student.active;

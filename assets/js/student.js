@@ -1,5 +1,5 @@
 import { supabase } from "./supabase-client.js";
-import { detail, empty, kyivDateTime, kyivDay, lessonPlace, lessonStatuses, outcomeReasons, requireData } from "./learning-ui.js?v=2";
+import { detail, empty, kyivDateTime, kyivDay, lessonPlace, lessonStatuses, outcomeReasons, requireData } from "./learning-ui.js?v=3";
 
 const targets = {
   next: document.getElementById("student-next"),
@@ -27,7 +27,7 @@ function renderPackage(packages) {
     if (active.length > 1) box.append(detail("Пакет", item.valid_from ? `від ${item.valid_from}` : "без дати початку"));
     const stats = document.createElement("div");
     stats.className = "placeholder-stats";
-    for (const [label, value] of [["Придбано", item.lessons_purchased], ["Проведено", item.lessons_used], ["Залишилось", item.lessons_remaining]]) {
+    for (const [label, value] of [["Придбано", item.lessons_purchased], ["Списано", item.lessons_used], ["Залишилось", item.lessons_remaining]]) {
       const part = document.createElement("div");
       const caption = document.createElement("span");
       const number = document.createElement("strong");
@@ -48,10 +48,13 @@ async function loadStudent() {
   status.classList.remove("is-error");
   for (const element of Object.values(targets)) element.textContent = "Завантажуємо…";
   try {
-    const [nextResult, historyResult, assignmentResult, packagesResult] = await Promise.all([
+    const [nextResult, activeResult, historyResult, assignmentResult, packagesResult] = await Promise.all([
       supabase.from("lessons").select("id,scheduled_at,duration_minutes,teacher_id,lesson_format,lesson_url,location_text,meet_url")
         .eq("student_id", studentId).eq("status", "scheduled")
         .gte("scheduled_at", new Date().toISOString()).order("scheduled_at").limit(1),
+      supabase.from("lessons").select("id,scheduled_at,started_at,duration_minutes,teacher_id,lesson_format,lesson_url,location_text,meet_url,status")
+        .eq("student_id", studentId).eq("status", "in_progress")
+        .order("started_at", { ascending: false }).limit(1),
       supabase.from("lessons").select("id,scheduled_at,duration_minutes,teacher_id,homework,status,outcome_reason")
         .eq("student_id", studentId).in("status", ["completed", "cancelled", "rescheduled", "no_show"])
         .order("scheduled_at", { ascending: false }).limit(10),
@@ -60,7 +63,7 @@ async function loadStudent() {
       supabase.from("package_balances").select("package_id,lessons_purchased,lessons_used,lessons_remaining,status,valid_from,valid_until")
         .eq("student_id", studentId),
     ]);
-    const next = requireData(nextResult)[0];
+    const next = requireData(activeResult)[0] || requireData(nextResult)[0];
     const history = requireData(historyResult);
     const assignments = requireData(assignmentResult);
     const packages = requireData(packagesResult);
@@ -79,7 +82,7 @@ async function loadStudent() {
       box.append(detail("Коли", kyivDateTime.format(new Date(next.scheduled_at))),
         detail("Викладач", names.get(next.teacher_id) || "Викладач НОНА"),
         detail("Тривалість", `${next.duration_minutes} хв`),
-        detail("Статус", "Заплановано"), lessonPlace(next));
+        detail("Статус", lessonStatuses[next.status] || "Заплановано"), lessonPlace(next));
       targets.next.replaceChildren(box);
     } else targets.next.replaceChildren(empty("Наступний урок ще не заплановано"));
     renderPackage(packages);

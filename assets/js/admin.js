@@ -1,5 +1,5 @@
 import { supabase } from "./supabase-client.js";
-import { initAdminLearning, openAdminLearning } from "./admin-learning.js?v=2";
+import { initAdminLearning, openAdminLearning } from "./admin-learning.js?v=3";
 
 const roles = { student: "Учень", teacher: "Викладач", admin: "Адміністратор" };
 const statuses = { pending: "Очікує", active: "Активний", suspended: "Призупинено" };

@@ -1,5 +1,5 @@
 import { supabase } from "./supabase-client.js";
-import { detail, empty, kyivDateTime, lessonStatuses, outcomeReasons, requireData, safeMeetUrl } from "./learning-ui.js?v=2";
+import { detail, empty, kyivDateTime, lessonStatuses, outcomeReasons, requireData, safeMeetUrl } from "./learning-ui.js?v=3";
 
 const dialog = document.getElementById("admin-learning-dialog");
 const overview = document.getElementById("learning-overview");
@@ -39,23 +39,25 @@ async function loadOverview() {
   errorBox.hidden = true;
   overview.textContent = "Завантажуємо дані…";
   try {
-    const [assignmentsResult, balancesResult, nextResult, teachersResult, historyResult] = await Promise.all([
+    const [assignmentsResult, balancesResult, nextResult, activeResult, teachersResult, historyResult] = await Promise.all([
       supabase.from("teacher_students").select("teacher_id,active")
         .eq("student_id", student.id).eq("active", true),
       supabase.from("package_balances")
         .select("package_id,lessons_purchased,lessons_used,lessons_remaining,status,valid_from,valid_until")
         .eq("student_id", student.id),
-      supabase.from("lessons").select("scheduled_at,duration_minutes,teacher_id")
+      supabase.from("lessons").select("scheduled_at,duration_minutes,teacher_id,status")
         .eq("student_id", student.id).eq("status", "scheduled")
         .gte("scheduled_at", new Date().toISOString()).order("scheduled_at").limit(1),
+      supabase.from("lessons").select("scheduled_at,duration_minutes,teacher_id,status")
+        .eq("student_id", student.id).eq("status", "in_progress").limit(1),
       supabase.from("profiles").select("id,full_name").eq("role", "teacher").eq("status", "active"),
-      supabase.from("lessons").select("scheduled_at,status,outcome_reason,outcome_note,consumes_lesson,resolved_at")
+      supabase.from("lessons").select("scheduled_at,started_at,completed_at,completion_source,status,outcome_reason,outcome_note,consumes_lesson,resolved_at")
         .eq("student_id", student.id).in("status", ["completed", "cancelled", "rescheduled", "no_show"])
         .order("scheduled_at", { ascending: false }).limit(10),
     ]);
     const assignments = requireData(assignmentsResult);
     const balances = requireData(balancesResult);
-    const next = requireData(nextResult)[0];
+    const next = requireData(activeResult)[0] || requireData(nextResult)[0];
     const teachers = requireData(teachersResult);
     const history = requireData(historyResult);
     const names = new Map(teachers.map((teacher) => [teacher.id, teacher.full_name || "Викладач НОНА"]));
@@ -68,11 +70,11 @@ async function loadOverview() {
     if (active.length) {
       for (const item of active) {
         const label = active.length > 1 ? `Пакет від ${item.valid_from || "без дати"}` : "Активний пакет";
-        box.append(detail(label, `${item.lessons_purchased} придбано · ${item.lessons_used} проведено · ${item.lessons_remaining} залишилось`));
+        box.append(detail(label, `${item.lessons_purchased} придбано · ${item.lessons_used} списано · ${item.lessons_remaining} залишилось`));
       }
     } else box.append(empty("Активного пакета поки немає"));
     box.append(detail("Наступний урок", next
-      ? `${kyivDateTime.format(new Date(next.scheduled_at))} · ${names.get(next.teacher_id) || "Викладач НОНА"} · ${next.duration_minutes} хв`
+      ? `${next.status === "in_progress" ? "Триває · " : ""}${kyivDateTime.format(new Date(next.scheduled_at))} · ${names.get(next.teacher_id) || "Викладач НОНА"} · ${next.duration_minutes} хв`
       : "ще не заплановано"));
     const historyHeading = document.createElement("h3");
     historyHeading.textContent = "Результати уроків";
@@ -81,8 +83,13 @@ async function loadOverview() {
       for (const lesson of history) {
         const item = document.createElement("div");
         item.className = "learning-item";
-        item.append(detail("Коли", kyivDateTime.format(new Date(lesson.scheduled_at))),
+        item.append(detail("Заплановано", kyivDateTime.format(new Date(lesson.scheduled_at))),
           detail("Результат", lessonStatuses[lesson.status] || lesson.status));
+        if (lesson.started_at) item.append(detail("Почато", kyivDateTime.format(new Date(lesson.started_at))));
+        if (lesson.completed_at) item.append(detail("Завершено", kyivDateTime.format(new Date(lesson.completed_at))));
+        if (lesson.status === "completed") item.append(detail("Спосіб завершення",
+          lesson.completion_source === "automatic" ? "Проведено автоматично"
+            : lesson.completion_source === "teacher" ? "Завершив викладач" : "Невідомо"));
         if (lesson.outcome_reason) item.append(detail("Причина", outcomeReasons[lesson.outcome_reason] || "Інше"));
         if (lesson.outcome_note) item.append(detail("Внутрішній коментар", lesson.outcome_note));
         const charged = lesson.consumes_lesson &&

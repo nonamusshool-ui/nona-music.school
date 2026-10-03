@@ -35,7 +35,7 @@ export function safeLessonUrl(value) {
 }
 
 export const lessonStatuses = {
-  scheduled: "Заплановано", completed: "Проведено", cancelled: "Не проведено",
+  scheduled: "Заплановано", in_progress: "Урок триває", completed: "Проведено", cancelled: "Не проведено",
   rescheduled: "Перенесено", no_show: "Не проведено",
 };
 
