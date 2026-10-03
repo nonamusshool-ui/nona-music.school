@@ -7,8 +7,8 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Кабінет викладача | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="../assets/css/cabinet.css?v=3" />
-    <script type="module" src="../assets/js/dashboard.js?v=3"></script>
+    <link rel="stylesheet" href="../assets/css/cabinet.css?v=4" />
+    <script type="module" src="../assets/js/dashboard.js?v=4"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
@@ -23,11 +23,37 @@
           <section class="dashboard-card" aria-labelledby="today-title"><div class="card-title-row"><div><p class="eyebrow">РОЗКЛАД</p><h3 id="today-title">Сьогодні</h3></div><span class="icon-tile" aria-hidden="true">♫</span></div><div id="teacher-today" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
           <section class="dashboard-card" aria-labelledby="students-title"><div class="card-title-row"><div><p class="eyebrow">УЧНІ</p><h3 id="students-title">Мої учні</h3></div><span class="icon-tile" aria-hidden="true">♪</span></div><div id="teacher-students" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
         </div>
+        <section class="dashboard-card teacher-extra-lessons" aria-labelledby="teacher-upcoming-title"><div class="card-title-row"><div><p class="eyebrow">УРОКИ</p><h2 id="teacher-upcoming-title">Найближчі та незавершені</h2></div><span class="icon-tile" aria-hidden="true">♬</span></div><div id="teacher-upcoming" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
         <div class="cabinet-refresh"><button class="button button-light" id="teacher-refresh" type="button">Оновити дані</button></div>
         <p class="status" id="cabinet-status" role="status" aria-live="polite"></p>
         <footer class="cabinet-footer">НОНА Music School · <a href="../">На головну</a></footer>
       </main>
     </div>
+    <dialog class="admin-dialog learning-dialog" id="teacher-schedule-dialog" aria-labelledby="teacher-schedule-title">
+      <form id="teacher-schedule-form">
+        <div class="admin-dialog-heading"><div><p class="eyebrow">РОЗКЛАД</p><h2 id="teacher-schedule-title">Запланувати урок</h2></div><button class="admin-dialog-close" id="teacher-schedule-close" type="button" aria-label="Закрити">×</button></div>
+        <p>Учень: <strong id="teacher-schedule-student"></strong></p>
+        <div class="learning-fields"><div class="admin-field"><label for="teacher-lesson-date">Дата (Київ)</label><input id="teacher-lesson-date" type="date" required /></div><div class="admin-field"><label for="teacher-lesson-time">Час (Київ)</label><input id="teacher-lesson-time" type="time" required /></div></div>
+        <div class="admin-field"><label for="teacher-lesson-duration">Тривалість, хвилин</label><input id="teacher-lesson-duration" type="number" min="15" max="180" value="60" required /></div>
+        <div class="admin-field"><label for="teacher-lesson-format">Формат</label><select id="teacher-lesson-format" required><option value="online">Онлайн</option><option value="offline">Офлайн</option></select></div>
+        <div class="admin-field" id="teacher-url-field"><label for="teacher-lesson-url">Посилання на заняття (HTTPS)</label><input id="teacher-lesson-url" type="url" inputmode="url" placeholder="https://meet.google.com/…" /></div>
+        <div class="admin-field" id="teacher-location-field" hidden><label for="teacher-lesson-location">Місце заняття</label><input id="teacher-lesson-location" type="text" maxlength="500" placeholder="Адреса або назва місця" /></div>
+        <div class="admin-field"><label for="teacher-lesson-package">Пакет</label><select id="teacher-lesson-package"><option value="">Без пакета</option></select></div>
+        <label class="learning-check"><input id="teacher-lesson-consumes" type="checkbox" checked /> Списується з пакета після проведення</label>
+        <p class="status is-error" id="teacher-schedule-error" role="alert" hidden></p>
+        <div class="admin-dialog-actions"><button class="button button-light" id="teacher-schedule-cancel" type="button">Скасувати</button><button class="button" id="teacher-schedule-save" type="submit">Запланувати урок</button></div>
+      </form>
+    </dialog>
+    <dialog class="admin-dialog" id="teacher-outcome-dialog" aria-labelledby="teacher-outcome-title">
+      <form id="teacher-outcome-form">
+        <div class="admin-dialog-heading"><div><p class="eyebrow">РЕЗУЛЬТАТ УРОКУ</p><h2 id="teacher-outcome-title">Не проведено</h2></div><button class="admin-dialog-close" id="teacher-outcome-close" type="button" aria-label="Закрити">×</button></div>
+        <div class="admin-field"><label for="teacher-outcome-reason">Причина</label><select id="teacher-outcome-reason" required><option value="">Оберіть причину</option><option value="student_no_show">Учень не з’явився</option><option value="teacher_unavailable">Викладач не зміг провести</option><option value="student_cancelled">Учень скасував</option><option value="technical_issue">Технічні проблеми</option><option value="cancelled_in_advance">Скасовано заздалегідь</option><option value="other">Інше</option></select></div>
+        <div class="admin-field"><label for="teacher-outcome-note">Коментар <span id="teacher-note-optional">(необов’язково)</span></label><textarea id="teacher-outcome-note" rows="3" maxlength="2000"></textarea></div>
+        <label class="learning-check"><input id="teacher-outcome-charge" type="checkbox" /> Списати заняття з пакета</label>
+        <p class="status is-error" id="teacher-outcome-error" role="alert" hidden></p>
+        <div class="admin-dialog-actions"><button class="button button-light" id="teacher-outcome-cancel" type="button">Скасувати</button><button class="button" id="teacher-outcome-save" type="submit">Підтвердити результат</button></div>
+      </form>
+    </dialog>
     <noscript><p class="shell status is-error">Для входу до кабінету потрібно увімкнути JavaScript.</p></noscript>
   </body>
 </html>

@@ -100,8 +100,9 @@ h3 { margin: 0 0 8px; font-size: 1.06rem; }
 .dashboard-card { min-width: 0; padding: 24px 22px; border: 1px solid var(--line); border-radius: 22px; background: #fff; box-shadow: 0 8px 24px #103d2c08; }
 .dashboard-card .eyebrow { color: var(--green); }
 .dashboard-card p { margin: 0; color: var(--muted); }
-.card-title-row { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px; }
-.icon-tile { display: grid; flex: none; place-items: center; width: 42px; height: 42px; border-radius: 14px; background: var(--lime); color: var(--green); font-size: 1.35rem; }
+.card-title-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 12px; }
+.card-title-row > div { min-width: 0; }
+.icon-tile { display: grid; justify-self: end; place-items: center; width: 42px; height: 42px; border-radius: 14px; background: var(--lime); color: var(--green); font-size: 1.35rem; }
 .empty-state { margin-top: 22px; padding: 18px; border: 1px dashed #b8c9b8; border-radius: 14px; background: var(--paper); }
 .empty-state strong { display: block; margin-bottom: 4px; color: var(--ink); }
 .placeholder-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 20px; }
@@ -126,7 +127,8 @@ body.admin-dialog-open { overflow: hidden; }
 .admin-toolbar { display: grid; gap: 12px; margin-bottom: 10px; }
 .admin-field { display: grid; gap: 6px; min-width: 0; }
 .admin-field label { color: var(--dark); font-size: .9rem; font-weight: 700; }
-.admin-field input, .admin-field select { width: 100%; min-width: 0; min-height: 48px; padding: 10px 13px; border: 1px solid #aec2b5; border-radius: 12px; background: #fff; color: var(--ink); }
+.admin-field input, .admin-field select, .admin-field textarea { width: 100%; min-width: 0; min-height: 48px; padding: 10px 13px; border: 1px solid #aec2b5; border-radius: 12px; background: #fff; color: var(--ink); }
+.admin-field textarea { resize: vertical; }
 .admin-table-wrap { min-width: 0; margin-top: 14px; }
 .admin-users-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .admin-users-table th, .admin-users-table td { padding: 13px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; overflow-wrap: anywhere; }
@@ -179,6 +181,9 @@ body.admin-dialog-open { overflow: hidden; }
 .learning-fields { display: grid; gap: 12px; }
 .learning-check { display: flex; align-items: flex-start; gap: 10px; color: var(--dark); font-weight: 700; }
 .learning-check input { width: 20px; height: 20px; margin: 2px 0 0; flex: none; accent-color: var(--green); }
+.teacher-extra-lessons { margin-top: 20px; }
+.learning-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.learning-actions .button { min-height: 44px; padding: 9px 14px; font-size: .87rem; }
 
 @media (min-width: 720px) {
   .shell { width: min(1160px, calc(100% - 56px)); }

@@ -1,5 +1,5 @@
 import { supabase } from "./supabase-client.js";
-import { detail, empty, kyivDateTime, kyivDay, meetLink, requireData } from "./learning-ui.js";
+import { detail, empty, kyivDateTime, kyivDay, lessonPlace, lessonStatuses, outcomeReasons, requireData } from "./learning-ui.js?v=2";
 
 const targets = {
   next: document.getElementById("student-next"),
@@ -49,11 +49,11 @@ async function loadStudent() {
   for (const element of Object.values(targets)) element.textContent = "Завантажуємо…";
   try {
     const [nextResult, historyResult, assignmentResult, packagesResult] = await Promise.all([
-      supabase.from("lessons").select("id,scheduled_at,duration_minutes,teacher_id,meet_url")
+      supabase.from("lessons").select("id,scheduled_at,duration_minutes,teacher_id,lesson_format,lesson_url,location_text,meet_url")
         .eq("student_id", studentId).eq("status", "scheduled")
         .gte("scheduled_at", new Date().toISOString()).order("scheduled_at").limit(1),
-      supabase.from("lessons").select("id,scheduled_at,duration_minutes,teacher_id,homework")
-        .eq("student_id", studentId).eq("status", "completed")
+      supabase.from("lessons").select("id,scheduled_at,duration_minutes,teacher_id,homework,status,outcome_reason")
+        .eq("student_id", studentId).in("status", ["completed", "cancelled", "rescheduled", "no_show"])
         .order("scheduled_at", { ascending: false }).limit(10),
       supabase.from("teacher_students").select("teacher_id")
         .eq("student_id", studentId).eq("active", true),
@@ -78,9 +78,8 @@ async function loadStudent() {
       box.className = "learning-item";
       box.append(detail("Коли", kyivDateTime.format(new Date(next.scheduled_at))),
         detail("Викладач", names.get(next.teacher_id) || "Викладач НОНА"),
-        detail("Тривалість", `${next.duration_minutes} хв`));
-      const link = meetLink(next.meet_url);
-      if (link) box.append(link);
+        detail("Тривалість", `${next.duration_minutes} хв`),
+        detail("Статус", "Заплановано"), lessonPlace(next));
       targets.next.replaceChildren(box);
     } else targets.next.replaceChildren(empty("Наступний урок ще не заплановано"));
     renderPackage(packages);
@@ -95,8 +94,10 @@ async function loadStudent() {
         item.className = "learning-item";
         item.append(detail("Коли", kyivDateTime.format(new Date(lesson.scheduled_at))),
           detail("Тривалість", `${lesson.duration_minutes} хв`),
-          detail("Викладач", names.get(lesson.teacher_id) || "Викладач НОНА"));
-        if (lesson.homework?.trim()) item.append(detail("Домашнє завдання", lesson.homework));
+          detail("Викладач", names.get(lesson.teacher_id) || "Викладач НОНА"),
+          detail("Результат", lessonStatuses[lesson.status] || "Не проведено"));
+        if (lesson.outcome_reason) item.append(detail("Причина", outcomeReasons[lesson.outcome_reason] || "Інше"));
+        if (lesson.status === "completed" && lesson.homework?.trim()) item.append(detail("Домашнє завдання", lesson.homework));
         list.append(item);
       }
       targets.history.replaceChildren(list);
