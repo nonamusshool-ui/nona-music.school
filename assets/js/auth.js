@@ -9,7 +9,7 @@ export function siteUrl(path) {
 }
 
 export function roleUrl(role) {
-  return rolePaths[role] ? siteUrl(rolePaths[role]) : null;
+  return Object.prototype.hasOwnProperty.call(rolePaths, role) ? siteUrl(rolePaths[role]) : null;
 }
 
 export async function getAccess() {
@@ -26,14 +26,16 @@ export async function getAccess() {
     // Only a database profile can grant a cabinet role. Never infer it from metadata or URL.
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
-      .select("role")
+      .select("role, status")
       .eq("id", user.id)
       .maybeSingle();
 
     if (profileError) {
       return { status: missingProfileTableCodes.has(profileError.code) ? "unassigned" : "error" };
     }
-    if (!roleUrl(profile?.role)) return { status: "unassigned" };
+    if (!profile) return { status: "unassigned" };
+    if (profile.status === "suspended") return { status: "suspended" };
+    if (profile.status !== "active" || !roleUrl(profile.role)) return { status: "unassigned" };
     return { status: "authorized", user, role: profile.role };
   } catch {
     return { status: "error" };

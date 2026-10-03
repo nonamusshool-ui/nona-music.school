@@ -3,6 +3,7 @@ import { attachLogout, getAccess, roleUrl, siteUrl } from "./auth.js";
 
 const loading = document.getElementById("callback-loading");
 const pending = document.getElementById("callback-pending");
+const suspended = document.getElementById("callback-suspended");
 const problem = document.getElementById("callback-problem");
 const retryButton = document.getElementById("callback-retry");
 
@@ -13,6 +14,7 @@ const clearCredentialsFromUrl = () => {
 const showPanel = (panel) => {
   loading.hidden = true;
   pending.hidden = panel !== pending;
+  suspended.hidden = panel !== suspended;
   problem.hidden = panel !== problem;
 };
 
@@ -23,6 +25,7 @@ for (const button of document.querySelectorAll("[data-sign-out]")) {
 async function finishSignIn() {
   loading.hidden = false;
   pending.hidden = true;
+  suspended.hidden = true;
   problem.hidden = true;
 
   const params = new URLSearchParams(window.location.search);
@@ -63,8 +66,12 @@ async function finishSignIn() {
       window.location.replace(roleUrl(access.role));
     } else if (access.status === "signed_out") {
       window.location.replace(siteUrl("login/"));
+    } else if (access.status === "unassigned") {
+      showPanel(pending);
+    } else if (access.status === "suspended") {
+      showPanel(suspended);
     } else {
-      showPanel(access.status === "unassigned" ? pending : problem);
+      showPanel(problem);
     }
   } catch {
     clearCredentialsFromUrl();

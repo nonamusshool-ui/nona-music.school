@@ -15,7 +15,7 @@ async function enterCabinet() {
     window.location.replace(siteUrl("login/"));
     return;
   }
-  if (access.status === "unassigned") {
+  if (access.status === "unassigned" || access.status === "suspended") {
     window.location.replace(siteUrl("auth/callback/"));
     return;
   }

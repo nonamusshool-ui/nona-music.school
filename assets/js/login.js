@@ -47,4 +47,4 @@ emailForm.addEventListener("submit", async (event) => {
 
 const access = await getAccess();
 if (access.status === "authorized") window.location.replace(roleUrl(access.role));
-if (access.status === "unassigned") window.location.replace(siteUrl("auth/callback/"));
+if (access.status === "unassigned" || access.status === "suspended") window.location.replace(siteUrl("auth/callback/"));
