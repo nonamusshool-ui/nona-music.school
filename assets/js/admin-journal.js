@@ -48,8 +48,8 @@ function setOptions(select, values, allLabel) {
 
 function renderSummary(summary) {
   const labels = [
-    ["total", "Усього уроків"], ["completed", "Проведено"],
-    ["cancelled", "Не проведено / скасовано"], ["rescheduled", "Перенесено"],
+    ["total", "Записів у журналі"], ["completed", "Проведено"],
+    ["cancelled", "Не проведено / скасовано"], ["rescheduled", "Перенесень"],
     ["scheduled", "Заплановано"], ["in_progress", "Триває"],
     ["charged", "Списано занять з пакетів"],
   ];
@@ -75,9 +75,18 @@ function cell(label, value) {
   return td;
 }
 
+function chargeText(lesson) {
+  return lesson.charged ? "Списано 1 заняття"
+    : lesson.status === "scheduled" || lesson.status === "in_progress"
+      ? lesson.package_id && lesson.consumes_lesson ? "Буде списано після проведення" : "Не буде списуватись"
+      : "Не списано";
+}
+
 function packageText(lesson) {
-  if (!lesson.package_id) return "Без пакета · не списано";
-  return `${lesson.lessons_purchased ? `Пакет ${lesson.lessons_purchased} занять` : "Пакет"} · ${lesson.charged ? "Списано 1 заняття" : "Не списано"}`;
+  const packageName = lesson.package_id
+    ? lesson.lessons_purchased ? `Пакет ${lesson.lessons_purchased} занять` : "Пакет"
+    : "Без пакета";
+  return `${packageName} · ${chargeText(lesson)}`;
 }
 
 function renderRows() {
@@ -119,7 +128,7 @@ function renderRows() {
     elements.teacher.value || elements.student.value || elements.status.value || elements.search.value.trim()
       ? "За вибраними фільтрами уроків немає." : "У цьому місяці уроків ще немає.";
   elements.count.hidden = rows.length === 0;
-  elements.count.textContent = `Показано ${rows.length} із ${total} уроків`;
+  elements.count.textContent = `Показано ${rows.length} із ${total} записів`;
   elements.more.hidden = rows.length >= total;
 }
 
@@ -133,7 +142,7 @@ function openDetails(lesson, button) {
     ["Місце", lesson.location_text],
     ["Статус", lessonStatuses[lesson.status] || "Невідомий статус"],
     ["Пакет", lesson.package_id ? `Пакет ${lesson.lessons_purchased || "—"} занять` : "Без пакета"],
-    ["Списання", lesson.charged ? "Списано 1 заняття" : "Не списано"],
+    ["Списання", chargeText(lesson)],
     ["Причина", outcomeReasons[lesson.outcome_reason] || (lesson.outcome_reason ? "Інша причина" : "—")],
     ["Коментар викладача", lesson.outcome_note],
     ["scheduled_at (UTC)", lesson.scheduled_at ? new Date(lesson.scheduled_at).toISOString() : null],
@@ -144,6 +153,12 @@ function openDetails(lesson, button) {
   ];
   const content = document.createDocumentFragment();
   for (const [label, value] of fields) content.append(detail(label, value));
+  let destination;
+  if (lesson.status === "rescheduled") {
+    content.append(detail("Було (Київ)", kyivDateTime.format(new Date(lesson.scheduled_at))));
+    destination = detail("Перенесено на (Київ)", "Завантажуємо…");
+    content.append(destination);
+  }
   const url = safeLessonUrl(lesson.lesson_url || lesson.meet_url);
   if (url) {
     const line = document.createElement("p");
@@ -159,6 +174,18 @@ function openDetails(lesson, button) {
   elements.dialog.showModal();
   document.body.classList.add("admin-dialog-open");
   elements.close.focus();
+  if (destination) {
+    supabase.from("lessons").select("scheduled_at").eq("rescheduled_from", lesson.lesson_id).maybeSingle()
+      .then(({ data, error }) => {
+        if (!elements.dialog.open || opener !== button) return;
+        destination.replaceWith(detail("Перенесено на (Київ)", error
+          ? "Не вдалося завантажити новий час" : data?.scheduled_at
+            ? kyivDateTime.format(new Date(data.scheduled_at)) : "Пов’язаний урок не знайдено"));
+      }).catch(() => {
+        if (elements.dialog.open && opener === button)
+          destination.replaceWith(detail("Перенесено на (Київ)", "Не вдалося завантажити новий час"));
+      });
+  }
 }
 
 async function loadJournal(append = false) {

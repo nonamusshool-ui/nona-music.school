@@ -184,6 +184,7 @@ body.admin-dialog-open { overflow: hidden; }
 .teacher-extra-lessons { margin-top: 20px; }
 .learning-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .learning-actions .button { min-height: 44px; padding: 9px 14px; font-size: .87rem; }
+.learning-warning { margin: 0; padding: 11px 13px; border: 1px solid #e2c26a; border-radius: 12px; background: #fff6d9; color: #654806; font-size: .88rem; }
 
 /* Read-only admin lesson journal */
 .admin-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }

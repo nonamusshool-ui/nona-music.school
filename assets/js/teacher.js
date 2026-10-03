@@ -2,7 +2,7 @@ import { supabase } from "./supabase-client.js";
 import { detail, empty, kyivDateTime, kyivDay, kyivTime, lessonPlace, lessonStatuses,
   outcomeReasons, requireData } from "./learning-ui.js?v=3";
 import { completeTeacherLesson, initTeacherActions, openTeacherOutcome,
-  openTeacherSchedule, startTeacherLesson } from "./teacher-actions.js?v=2";
+  openTeacherSchedule, startTeacherLesson } from "./teacher-actions.js?v=3";
 
 const todayTarget = document.getElementById("teacher-today");
 const studentsTarget = document.getElementById("teacher-students");
