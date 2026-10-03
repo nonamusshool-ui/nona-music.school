@@ -1,5 +1,6 @@
 import { supabase } from "./supabase-client.js";
 import { initAdminLearning, openAdminLearning } from "./admin-learning.js?v=3";
+import { initAdminJournal } from "./admin-journal.js?v=1";
 
 const roles = { student: "Учень", teacher: "Викладач", admin: "Адміністратор" };
 const statuses = { pending: "Очікує", active: "Активний", suspended: "Призупинено" };
@@ -238,6 +239,7 @@ export function initAdmin(userId) {
     });
     page.form.addEventListener("submit", saveAccess);
     initAdminLearning();
+    initAdminJournal();
   }
   loadMetrics();
   loadUsers();

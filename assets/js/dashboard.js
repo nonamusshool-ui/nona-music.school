@@ -36,7 +36,7 @@ async function enterCabinet() {
   content.hidden = false;
   try {
     if (expectedRole === "admin") {
-      const { initAdmin } = await import("./admin.js?v=5");
+      const { initAdmin } = await import("./admin.js?v=6");
       initAdmin(access.user.id);
     } else if (expectedRole === "student") {
       const { initStudent } = await import("./student.js?v=3");

@@ -7,8 +7,8 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Адміністрування | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="../assets/css/cabinet.css?v=4" />
-    <script type="module" src="../assets/js/dashboard.js?v=5"></script>
+    <link rel="stylesheet" href="../assets/css/cabinet.css?v=5" />
+    <script type="module" src="../assets/js/dashboard.js?v=6"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
@@ -41,7 +41,11 @@
           <p>Огляд учнів, викладачів, уроків і навчальних пакетів.</p>
         </section>
 
-        <section aria-labelledby="overview-title">
+        <nav class="admin-nav" aria-label="Розділи кабінету">
+          <a href="#overview">Огляд</a><a href="#users">Користувачі</a><a href="#journal">Журнал занять</a>
+        </nav>
+
+        <section id="overview" aria-labelledby="overview-title">
           <div class="section-heading"><h2 id="overview-title">Огляд школи</h2><p>Показники за даними школи. День уроків рахується за часом Києва.</p></div>
           <div class="overview-grid" aria-live="polite">
             <div class="overview-card"><span>Учні</span><strong data-metric="students"><span class="admin-skeleton" aria-hidden="true"></span></strong></div>
@@ -56,7 +60,7 @@
           </div>
         </section>
 
-        <section aria-labelledby="users-title">
+        <section id="users" aria-labelledby="users-title">
           <div class="section-heading"><h2 id="users-title">Користувачі</h2><p>Переглядайте заявки на доступ і керуйте ролями облікових записів.</p></div>
           <div class="admin-toolbar">
             <div class="admin-field">
@@ -91,6 +95,31 @@
           </div>
         </section>
 
+        <section id="journal" aria-labelledby="journal-title">
+          <div class="section-heading"><h2 id="journal-title">Журнал занять</h2><p>Уроки за місяць за київським часом. Дані автоматично надходять із розкладу.</p></div>
+          <div class="journal-month" aria-label="Вибір місяця">
+            <button class="button button-light" id="journal-prev" type="button" aria-label="Попередній місяць">←</button>
+            <strong id="journal-month-label" aria-live="polite"></strong>
+            <button class="button button-light" id="journal-next" type="button" aria-label="Наступний місяць">→</button>
+          </div>
+          <div class="journal-filters">
+            <div class="admin-field"><label for="journal-teacher">Викладач</label><select id="journal-teacher"><option value="">Усі викладачі</option></select></div>
+            <div class="admin-field"><label for="journal-student">Учень</label><select id="journal-student"><option value="">Усі учні</option></select></div>
+            <div class="admin-field"><label for="journal-status">Статус</label><select id="journal-status"><option value="">Усі статуси</option><option value="scheduled">Заплановано</option><option value="in_progress">Триває</option><option value="completed">Проведено</option><option value="cancelled">Скасовано</option><option value="rescheduled">Перенесено</option></select></div>
+            <div class="admin-field"><label for="journal-search">Пошук за ім’ям</label><input id="journal-search" type="search" maxlength="100" autocomplete="off" placeholder="Учень або викладач" /></div>
+          </div>
+          <p class="journal-summary-scope" id="journal-summary-scope">Підсумок місяця</p>
+          <div class="journal-summary" id="journal-summary" aria-label="Підсумок журналу"></div>
+          <p class="status" id="journal-loading" role="status" aria-live="polite">Завантажуємо журнал…</p>
+          <div class="admin-error" id="journal-error" hidden role="alert"><p>Не вдалося завантажити журнал.</p><button class="button button-light" id="journal-retry" type="button">Спробувати ще раз</button></div>
+          <p class="empty-state" id="journal-empty" hidden></p>
+          <p class="status" id="journal-count" hidden></p>
+          <div class="admin-table-wrap" id="journal-table-wrap" hidden>
+            <table class="journal-table"><thead><tr><th scope="col">Дата · час</th><th scope="col">Учень</th><th scope="col">Викладач</th><th scope="col">Тривалість</th><th scope="col">Статус</th><th scope="col">Пакет / списання</th><th scope="col">Причина</th><th scope="col">Дія</th></tr></thead><tbody id="journal-body"></tbody></table>
+          </div>
+          <button class="button button-light journal-more" id="journal-more" type="button" hidden>Завантажити ще</button>
+        </section>
+
         <p class="status" id="cabinet-status" role="status" aria-live="polite"></p>
         <footer class="cabinet-footer">НОНА Music School · <a href="../">На головну</a></footer>
       </main>
@@ -119,6 +148,10 @@
       <details class="learning-action"><summary>Призначити викладача</summary><form id="assign-teacher-form"><div class="admin-field"><label for="learning-teacher">Викладач</label><select id="learning-teacher" required></select></div><button class="button" type="submit">Призначити викладача</button></form></details>
       <details class="learning-action"><summary>Додати пакет</summary><form id="create-package-form"><div class="admin-field"><label for="learning-count">Кількість занять</label><input id="learning-count" type="number" min="1" max="1000" required /></div><div class="learning-fields"><div class="admin-field"><label for="learning-start">Діє з (необов’язково)</label><input id="learning-start" type="date" /></div><div class="admin-field"><label for="learning-end">Діє до (необов’язково)</label><input id="learning-end" type="date" /></div></div><button class="button" type="submit">Додати пакет</button></form></details>
       <details class="learning-action"><summary>Екстрено запланувати урок</summary><form id="schedule-lesson-form"><p>Зазвичай розкладом керує викладач.</p><div class="admin-field"><label for="schedule-teacher">Викладач</label><select id="schedule-teacher" required></select></div><div class="learning-fields"><div class="admin-field"><label for="schedule-date">Дата (Київ)</label><input id="schedule-date" type="date" required /></div><div class="admin-field"><label for="schedule-time">Час (Київ)</label><input id="schedule-time" type="time" required /></div></div><div class="admin-field"><label for="schedule-duration">Тривалість, хвилин</label><input id="schedule-duration" type="number" min="15" max="180" value="60" required /></div><div class="admin-field"><label for="schedule-package">Пакет</label><select id="schedule-package"><option value="">Без пакета</option></select></div><div class="admin-field"><label for="schedule-meet">Google Meet URL (необов’язково)</label><input id="schedule-meet" type="url" inputmode="url" placeholder="https://meet.google.com/…" /></div><label class="learning-check"><input id="schedule-consumes" type="checkbox" checked /> Списати заняття з пакета після проведення</label><button class="button" type="submit">Запланувати урок</button></form></details>
+    </dialog>
+    <dialog class="admin-dialog learning-dialog" id="journal-details-dialog" aria-labelledby="journal-details-title">
+      <div class="admin-dialog-heading"><div><p class="eyebrow">ЖУРНАЛ ЗАНЯТЬ</p><h2 id="journal-details-title">Деталі уроку</h2></div><button class="admin-dialog-close" id="journal-details-close" type="button" aria-label="Закрити">×</button></div>
+      <div id="journal-details" class="journal-details"></div>
     </dialog>
     <noscript><p class="shell status is-error">Для входу до кабінету потрібно увімкнути JavaScript.</p></noscript>
   </body>
