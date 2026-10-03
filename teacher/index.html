@@ -7,8 +7,8 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Кабінет викладача | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="../assets/css/cabinet.css" />
-    <script type="module" src="../assets/js/dashboard.js"></script>
+    <link rel="stylesheet" href="../assets/css/cabinet.css?v=3" />
+    <script type="module" src="../assets/js/dashboard.js?v=3"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
@@ -17,12 +17,13 @@
     <div id="private-content" hidden>
       <header class="cabinet-header"><div class="shell cabinet-header-inner"><a class="brand" href="../" aria-label="НОНА Music School — на головну"><span class="brand-mark">Н<span>О</span>НА.</span><span class="brand-caption">MUSIC SCHOOL</span></a><div class="cabinet-header-actions"><div class="account-id"><span class="avatar" data-user-initial aria-hidden="true"></span><span class="account-name" data-user-name></span></div><button class="button button-quiet" id="sign-out" type="button">Вийти</button></div></div></header>
       <main class="shell cabinet-main" id="main">
-        <section class="welcome-card" aria-labelledby="welcome-title"><p class="eyebrow">КАБІНЕТ ВИКЛАДАЧА</p><h1 id="welcome-title">Вітаємо, <span data-user-name></span>!</h1><p>Розклад, учні та спілкування з ними з’являтимуться тут після підключення даних школи.</p></section>
-        <div class="section-heading"><h2>Робочий день</h2><p>Дані з’являться після налаштування розкладу й доступу.</p></div>
+        <section class="welcome-card" aria-labelledby="welcome-title"><p class="eyebrow">КАБІНЕТ ВИКЛАДАЧА</p><h1 id="welcome-title">Вітаємо, <span data-user-name></span>!</h1><p>Ваші уроки та учні.</p></section>
+        <div class="section-heading"><h2>Робочий день</h2><p>Час занять вказано за Києвом.</p></div>
         <div class="dashboard-grid">
-          <section class="dashboard-card" aria-labelledby="today-title"><div class="card-title-row"><div><p class="eyebrow">РОЗКЛАД</p><h3 id="today-title">Сьогодні</h3></div><span class="icon-tile" aria-hidden="true">♫</span></div><div class="empty-state"><strong>На сьогодні уроків не відображено</strong><p>Після підключення розкладу тут буде список занять на день.</p></div><div class="future-actions"><button class="button button-light" type="button" disabled title="Буде доступно після підключення уроків">Урок проведено</button></div></section>
-          <section class="dashboard-card" aria-labelledby="students-title"><div class="card-title-row"><div><p class="eyebrow">УЧНІ</p><h3 id="students-title">Мої учні</h3></div><span class="icon-tile" aria-hidden="true">♪</span></div><div class="empty-state"><strong>Учнів ще не додано</strong><p>У картках учнів пізніше будуть наступний урок, залишок занять і нові повідомлення.</p></div><div class="future-actions"><button class="button button-light" type="button" disabled title="Буде доступно після призначення учнів">Відкрити учня</button><button class="button button-light" type="button" disabled title="Чат ще не підключено">Написати</button></div></section>
+          <section class="dashboard-card" aria-labelledby="today-title"><div class="card-title-row"><div><p class="eyebrow">РОЗКЛАД</p><h3 id="today-title">Сьогодні</h3></div><span class="icon-tile" aria-hidden="true">♫</span></div><div id="teacher-today" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
+          <section class="dashboard-card" aria-labelledby="students-title"><div class="card-title-row"><div><p class="eyebrow">УЧНІ</p><h3 id="students-title">Мої учні</h3></div><span class="icon-tile" aria-hidden="true">♪</span></div><div id="teacher-students" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
         </div>
+        <div class="cabinet-refresh"><button class="button button-light" id="teacher-refresh" type="button">Оновити дані</button></div>
         <p class="status" id="cabinet-status" role="status" aria-live="polite"></p>
         <footer class="cabinet-footer">НОНА Music School · <a href="../">На головну</a></footer>
       </main>

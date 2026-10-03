@@ -7,8 +7,8 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Кабінет учня | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="../assets/css/cabinet.css" />
-    <script type="module" src="../assets/js/dashboard.js"></script>
+    <link rel="stylesheet" href="../assets/css/cabinet.css?v=3" />
+    <script type="module" src="../assets/js/dashboard.js?v=3"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
@@ -22,15 +22,15 @@
         </div>
       </header>
       <main class="shell cabinet-main" id="main">
-        <section class="welcome-card" aria-labelledby="welcome-title"><p class="eyebrow">КАБІНЕТ УЧНЯ</p><h1 id="welcome-title">Привіт, <span data-user-name></span> 👋</h1><p>Тут з’являтимуться ваші уроки, пакет і повідомлення від викладача.</p></section>
+        <section class="welcome-card" aria-labelledby="welcome-title"><p class="eyebrow">КАБІНЕТ УЧНЯ</p><h1 id="welcome-title">Привіт, <span data-user-name></span> 👋</h1><p>Ваші уроки, викладач і пакет занять в одному місці.</p></section>
         <div class="section-heading"><h2>Моє навчання</h2><p>Уся важлива інформація в одному місці.</p></div>
         <div class="dashboard-grid">
-          <section class="dashboard-card" aria-labelledby="next-lesson-title"><div class="card-title-row"><div><p class="eyebrow">РОЗКЛАД</p><h3 id="next-lesson-title">Наступний урок</h3></div><span class="icon-tile" aria-hidden="true">♫</span></div><div class="empty-state"><strong>Наступний урок ще не заплановано</strong><p>Дата, час, викладач і посилання на Google Meet з’являться тут після підтвердження заняття.</p></div></section>
-          <section class="dashboard-card" aria-labelledby="package-title"><div class="card-title-row"><div><p class="eyebrow">ЗАНЯТТЯ</p><h3 id="package-title">Мій пакет</h3></div><span class="icon-tile" aria-hidden="true">◌</span></div><div class="placeholder-stats" aria-label="Дані пакета ще не додано"><div><span>Придбано</span><strong>—</strong></div><div><span>Проведено</span><strong>—</strong></div><div><span>Залишилось</span><strong>—</strong></div></div><div class="empty-state"><strong>Активного пакета поки немає</strong><p>Інформація з’явиться після призначення пакета школою.</p></div></section>
-          <section class="dashboard-card" aria-labelledby="teacher-title"><div class="card-title-row"><div><p class="eyebrow">НАВЧАННЯ</p><h3 id="teacher-title">Мій викладач</h3></div><span class="icon-tile" aria-hidden="true">♪</span></div><div class="empty-state"><strong>Викладача ще не призначено</strong><p>Інформація з’явиться тут, коли школа узгодить заняття.</p></div></section>
-          <section class="dashboard-card" aria-labelledby="messages-title"><div class="card-title-row"><div><p class="eyebrow">ЗВ’ЯЗОК</p><h3 id="messages-title">Повідомлення</h3></div><span class="quiet-pill">Незабаром</span></div><div class="empty-state"><strong>Повідомлень поки немає</strong><p>Тут з’явиться листування з викладачем і позначка нових повідомлень.</p></div></section>
-          <section class="dashboard-card dashboard-card-wide" aria-labelledby="history-title"><p class="eyebrow">ВАШ ШЛЯХ</p><h3 id="history-title">Історія уроків</h3><div class="empty-state"><strong>Історія з’явиться після першого заняття.</strong><p>Проведені уроки можна буде переглянути тут.</p></div></section>
+          <section class="dashboard-card" aria-labelledby="next-lesson-title"><div class="card-title-row"><div><p class="eyebrow">РОЗКЛАД</p><h3 id="next-lesson-title">Наступний урок</h3></div><span class="icon-tile" aria-hidden="true">♫</span></div><div id="student-next" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
+          <section class="dashboard-card" aria-labelledby="package-title"><div class="card-title-row"><div><p class="eyebrow">ЗАНЯТТЯ</p><h3 id="package-title">Мій пакет</h3></div><span class="icon-tile" aria-hidden="true">◌</span></div><div id="student-package" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
+          <section class="dashboard-card" aria-labelledby="teacher-title"><div class="card-title-row"><div><p class="eyebrow">НАВЧАННЯ</p><h3 id="teacher-title">Мій викладач</h3></div><span class="icon-tile" aria-hidden="true">♪</span></div><div id="student-teacher" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
+          <section class="dashboard-card dashboard-card-wide" aria-labelledby="history-title"><p class="eyebrow">ВАШ ШЛЯХ</p><h3 id="history-title">Історія уроків</h3><div id="student-history" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
         </div>
+        <div class="cabinet-refresh"><button class="button button-light" id="student-refresh" type="button">Оновити дані</button></div>
         <p class="status" id="cabinet-status" role="status" aria-live="polite"></p>
         <footer class="cabinet-footer">НОНА Music School · <a href="../">На головну</a></footer>
       </main>

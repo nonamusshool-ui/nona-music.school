@@ -1,4 +1,5 @@
 import { supabase } from "./supabase-client.js";
+import { initAdminLearning, openAdminLearning } from "./admin-learning.js";
 
 const roles = { student: "Учень", teacher: "Викладач", admin: "Адміністратор" };
 const statuses = { pending: "Очікує", active: "Активний", suspended: "Призупинено" };
@@ -81,7 +82,17 @@ function renderUsers() {
       button.className = "button button-light admin-manage";
       button.textContent = "Керувати";
       button.addEventListener("click", () => openManage(user, button));
-      row.append(cell("Дія", button));
+      if (user.role === "student" && user.status === "active") {
+        const actions = document.createElement("div");
+        actions.className = "admin-row-actions";
+        const learning = document.createElement("button");
+        learning.type = "button";
+        learning.className = "button admin-manage";
+        learning.textContent = "Навчання";
+        learning.addEventListener("click", () => openAdminLearning(user, learning));
+        actions.append(button, learning);
+        row.append(cell("Дія", actions));
+      } else row.append(cell("Дія", button));
     }
     rows.append(row);
   }
@@ -226,6 +237,7 @@ export function initAdmin(userId) {
       opener = null;
     });
     page.form.addEventListener("submit", saveAccess);
+    initAdminLearning();
   }
   loadMetrics();
   loadUsers();

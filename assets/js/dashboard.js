@@ -34,15 +34,21 @@ async function enterCabinet() {
   for (const element of document.querySelectorAll("[data-user-initial]")) element.textContent = Array.from(name)[0]?.toLocaleUpperCase("uk") || "Н";
   loading.hidden = true;
   content.hidden = false;
-  if (expectedRole === "admin") {
-    try {
-      const { initAdmin } = await import("./admin.js");
+  try {
+    if (expectedRole === "admin") {
+      const { initAdmin } = await import("./admin.js?v=3");
       initAdmin(access.user.id);
-    } catch {
-      content.hidden = true;
-      problem.querySelector("h1").textContent = "Не вдалося завантажити кабінет";
-      problem.hidden = false;
+    } else if (expectedRole === "student") {
+      const { initStudent } = await import("./student.js?v=1");
+      initStudent(access.user.id);
+    } else if (expectedRole === "teacher") {
+      const { initTeacher } = await import("./teacher.js?v=1");
+      initTeacher(access.user.id);
     }
+  } catch {
+    content.hidden = true;
+    problem.querySelector("h1").textContent = "Не вдалося завантажити кабінет";
+    problem.hidden = false;
   }
 }
 
