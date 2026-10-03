@@ -7,30 +7,110 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Адміністрування | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="../assets/css/cabinet.css" />
-    <script type="module" src="../assets/js/dashboard.js"></script>
+    <link rel="stylesheet" href="../assets/css/cabinet.css?v=2" />
+    <script type="module" src="../assets/js/dashboard.js?v=2"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
-    <div class="cabinet-check" id="cabinet-loading" role="status" aria-live="polite"><div class="cabinet-check-inner"><h1>Перевіряємо доступ…</h1><p>Завантажуємо ваш кабінет.</p></div></div>
-    <div class="cabinet-check" id="cabinet-problem" hidden><div class="cabinet-check-inner"><h1>Не вдалося перевірити доступ</h1><p>Перевірте з’єднання й спробуйте ще раз.</p><button class="button" id="cabinet-retry" type="button">Спробувати ще раз</button></div></div>
+    <div class="cabinet-check" id="cabinet-loading" role="status" aria-live="polite">
+      <div class="cabinet-check-inner"><h1>Перевіряємо доступ…</h1><p>Завантажуємо ваш кабінет.</p></div>
+    </div>
+    <div class="cabinet-check" id="cabinet-problem" hidden>
+      <div class="cabinet-check-inner">
+        <h1>Не вдалося перевірити доступ</h1>
+        <p>Перевірте з’єднання й спробуйте ще раз.</p>
+        <button class="button" id="cabinet-retry" type="button">Спробувати ще раз</button>
+      </div>
+    </div>
     <div id="private-content" hidden>
-      <header class="cabinet-header"><div class="shell cabinet-header-inner"><a class="brand" href="../" aria-label="НОНА Music School — на головну"><span class="brand-mark">Н<span>О</span>НА.</span><span class="brand-caption">MUSIC SCHOOL</span></a><div class="cabinet-header-actions"><div class="account-id"><span class="avatar" data-user-initial aria-hidden="true"></span><span class="account-name" data-user-name></span></div><button class="button button-quiet" id="sign-out" type="button">Вийти</button></div></div></header>
-      <main class="shell cabinet-main" id="main">
-        <section class="welcome-card" aria-labelledby="welcome-title"><p class="eyebrow">АДМІНІСТРУВАННЯ</p><h1 id="welcome-title">Кабінет адміністратора</h1><p>Вітаємо, <span data-user-name></span>. Тут буде огляд роботи школи після підключення захищених даних.</p></section>
-        <div class="section-heading"><h2>Огляд школи</h2><p>Показники з’являться після підключення таблиць та політик доступу.</p></div>
-        <div class="overview-grid" aria-label="Майбутні показники школи"><div class="overview-card"><span>Учні</span><strong>—</strong></div><div class="overview-card"><span>Викладачі</span><strong>—</strong></div><div class="overview-card"><span>Сьогодні уроків</span><strong>—</strong></div><div class="overview-card"><span>Активні пакети</span><strong>—</strong></div></div>
-        <div class="section-heading"><h2>Керування</h2><p>Дії стануть доступними, коли будуть готові backend і RLS.</p></div>
-        <div class="dashboard-grid">
-          <section class="dashboard-card" aria-labelledby="admin-students-title"><p class="eyebrow">ЛЮДИ</p><h3 id="admin-students-title">Учні</h3><div class="empty-state"><strong>Список поки недоступний</strong><p>Тут з’являться учні школи.</p></div><div class="future-actions"><button class="button button-light" type="button" disabled title="Потрібен захищений backend">Додати учня</button></div></section>
-          <section class="dashboard-card" aria-labelledby="admin-teachers-title"><p class="eyebrow">КОМАНДА</p><h3 id="admin-teachers-title">Викладачі</h3><div class="empty-state"><strong>Список поки недоступний</strong><p>Тут з’являться викладачі школи.</p></div><div class="future-actions"><button class="button button-light" type="button" disabled title="Потрібен захищений backend">Додати викладача</button></div></section>
-          <section class="dashboard-card" aria-labelledby="admin-lessons-title"><p class="eyebrow">РОЗКЛАД</p><h3 id="admin-lessons-title">Уроки</h3><div class="empty-state"><strong>Уроків поки не відображено</strong><p>Тут буде розклад занять.</p></div><div class="future-actions"><button class="button button-light" type="button" disabled title="Потрібен захищений backend">Запланувати урок</button></div></section>
-          <section class="dashboard-card" aria-labelledby="admin-packages-title"><p class="eyebrow">НАВЧАННЯ</p><h3 id="admin-packages-title">Пакети</h3><div class="empty-state"><strong>Пакети поки не відображено</strong><p>Тут буде облік активних пакетів.</p></div><div class="future-actions"><button class="button button-light" type="button" disabled title="Потрібен захищений backend">Додати пакет</button></div></section>
+      <header class="cabinet-header">
+        <div class="shell cabinet-header-inner">
+          <a class="brand" href="../" aria-label="НОНА Music School — на головну">
+            <span class="brand-mark">Н<span>О</span>НА.</span><span class="brand-caption">MUSIC SCHOOL</span>
+          </a>
+          <div class="cabinet-header-actions">
+            <div class="account-id"><span class="avatar" data-user-initial aria-hidden="true"></span><span class="account-name" data-user-name></span></div>
+            <button class="button button-quiet" id="sign-out" type="button">Вийти</button>
+          </div>
         </div>
+      </header>
+      <main class="shell cabinet-main" id="main">
+        <section class="welcome-card" aria-labelledby="welcome-title">
+          <p class="eyebrow">АДМІНІСТРУВАННЯ</p>
+          <h1 id="welcome-title">Кабінет адміністратора</h1>
+          <p>Огляд учнів, викладачів, уроків і навчальних пакетів.</p>
+        </section>
+
+        <section aria-labelledby="overview-title">
+          <div class="section-heading"><h2 id="overview-title">Огляд школи</h2><p>Показники за даними школи. День уроків рахується за часом Києва.</p></div>
+          <div class="overview-grid" aria-live="polite">
+            <div class="overview-card"><span>Учні</span><strong data-metric="students"><span class="admin-skeleton" aria-hidden="true"></span></strong></div>
+            <div class="overview-card"><span>Викладачі</span><strong data-metric="teachers"><span class="admin-skeleton" aria-hidden="true"></span></strong></div>
+            <div class="overview-card"><span>Сьогодні уроків</span><strong data-metric="lessons_today"><span class="admin-skeleton" aria-hidden="true"></span></strong></div>
+            <div class="overview-card"><span>Активні пакети</span><strong data-metric="active_packages"><span class="admin-skeleton" aria-hidden="true"></span></strong></div>
+          </div>
+          <p class="status" id="admin-metrics-loading" role="status">Завантажуємо показники…</p>
+          <div class="admin-error" id="admin-metrics-error" hidden role="alert">
+            <p>Не вдалося завантажити показники.</p>
+            <button class="button button-light" id="admin-metrics-retry" type="button">Спробувати ще раз</button>
+          </div>
+        </section>
+
+        <section aria-labelledby="users-title">
+          <div class="section-heading"><h2 id="users-title">Користувачі</h2><p>Переглядайте заявки на доступ і керуйте ролями облікових записів.</p></div>
+          <div class="admin-toolbar">
+            <div class="admin-field">
+              <label for="admin-filter">Показати</label>
+              <select id="admin-filter">
+                <option value="all">Усі</option>
+                <option value="pending">Очікують</option>
+                <option value="student">Учні</option>
+                <option value="teacher">Викладачі</option>
+                <option value="admin">Адміністратори</option>
+                <option value="suspended">Заблоковані</option>
+              </select>
+            </div>
+            <div class="admin-field admin-search">
+              <label for="admin-search">Пошук за ім’ям або email</label>
+              <input id="admin-search" type="search" autocomplete="off" placeholder="Введіть ім’я або email" />
+            </div>
+          </div>
+          <p class="status" id="admin-feedback" role="status" aria-live="polite"></p>
+          <p class="status" id="admin-users-loading" role="status">Завантажуємо користувачів…</p>
+          <div class="admin-error" id="admin-users-error" hidden role="alert">
+            <p>Не вдалося завантажити список користувачів.</p>
+            <button class="button button-light" id="admin-users-retry" type="button">Спробувати ще раз</button>
+          </div>
+          <p class="status" id="admin-results-count" hidden></p>
+          <p class="empty-state" id="admin-users-empty" hidden>За цими умовами користувачів не знайдено.</p>
+          <div class="admin-table-wrap" id="admin-table-wrap" hidden>
+            <table class="admin-users-table">
+              <thead><tr><th scope="col">Ім’я</th><th scope="col">Email</th><th scope="col">Телефон</th><th scope="col">Роль</th><th scope="col">Статус</th><th scope="col">Створено</th><th scope="col">Дія</th></tr></thead>
+              <tbody id="admin-users-body"></tbody>
+            </table>
+          </div>
+        </section>
+
         <p class="status" id="cabinet-status" role="status" aria-live="polite"></p>
         <footer class="cabinet-footer">НОНА Music School · <a href="../">На головну</a></footer>
       </main>
     </div>
+
+    <dialog class="admin-dialog" id="admin-access-dialog" aria-labelledby="admin-dialog-title" aria-describedby="admin-dialog-description">
+      <form id="admin-access-form">
+        <div class="admin-dialog-heading">
+          <div><p class="eyebrow">ДОСТУП ДО КАБІНЕТУ</p><h2 id="admin-dialog-title">Керувати користувачем</h2></div>
+          <button class="admin-dialog-close" id="admin-dialog-close" type="button" aria-label="Закрити">×</button>
+        </div>
+        <p id="admin-dialog-description">Зміни ролі та статусу набудуть чинності після збереження.</p>
+        <div class="admin-dialog-person"><strong id="admin-dialog-name"></strong><span id="admin-dialog-email"></span></div>
+        <p class="admin-current-access" id="admin-current-access"></p>
+        <div class="admin-field"><label for="admin-role">Роль</label><select id="admin-role" name="role"><option value="">Не призначено</option><option value="student">Учень</option><option value="teacher">Викладач</option><option value="admin">Адміністратор</option></select></div>
+        <div class="admin-field"><label for="admin-status">Статус</label><select id="admin-status" name="status"><option value="pending">Очікує</option><option value="active">Активний</option><option value="suspended">Призупинено</option></select></div>
+        <p class="status is-error" id="admin-dialog-error" role="alert" hidden></p>
+        <div class="admin-dialog-actions"><button class="button button-light" id="admin-dialog-cancel" type="button">Скасувати</button><button class="button" id="admin-dialog-save" type="submit">Зберегти зміни</button></div>
+      </form>
+    </dialog>
     <noscript><p class="shell status is-error">Для входу до кабінету потрібно увімкнути JavaScript.</p></noscript>
   </body>
 </html>

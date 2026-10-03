@@ -34,6 +34,16 @@ async function enterCabinet() {
   for (const element of document.querySelectorAll("[data-user-initial]")) element.textContent = Array.from(name)[0]?.toLocaleUpperCase("uk") || "Н";
   loading.hidden = true;
   content.hidden = false;
+  if (expectedRole === "admin") {
+    try {
+      const { initAdmin } = await import("./admin.js");
+      initAdmin(access.user.id);
+    } catch {
+      content.hidden = true;
+      problem.querySelector("h1").textContent = "Не вдалося завантажити кабінет";
+      problem.hidden = false;
+    }
+  }
 }
 
 document.getElementById("cabinet-retry").addEventListener("click", enterCabinet);
