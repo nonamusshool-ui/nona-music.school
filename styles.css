@@ -632,6 +632,7 @@ h2 > span {
   border-top: 1px solid var(--line);
   padding-block: 35px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 30px;
@@ -649,6 +650,8 @@ h2 > span {
   color: var(--muted);
   font-size: 0.75rem;
 }
+.footer-legal { display: flex; flex: 0 0 100%; justify-content: flex-end; gap: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+.footer-legal a { color: var(--muted); font-size: .75rem; font-weight: 400; text-decoration: underline; text-underline-offset: 4px; }
 @media (max-width: 1180px) {
   .contact-card {
     grid-template-columns: 1fr;
@@ -872,6 +875,7 @@ h2 > span {
   .footer small {
     grid-column: 1/-1;
   }
+  .footer-legal { grid-column: 1/-1; justify-content: flex-start; flex-wrap: wrap; }
   .hero-actions {
     gap: 20px;
   }
@@ -882,6 +886,9 @@ h2 > span {
   .price {
     font-size: 3rem;
   }
+}
+@media (max-width: 400px) {
+  .footer-legal { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html {

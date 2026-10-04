@@ -1,0 +1,31 @@
+.legal-header-inner { min-height: 76px; }
+.legal-home-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--green); font-weight: 700; text-underline-offset: 5px; }
+.legal-main { max-width: 900px; padding-block: clamp(42px, 7vw, 86px) 78px; }
+.legal-intro { padding-bottom: 30px; border-bottom: 1px solid var(--line); }
+.legal-intro .eyebrow { margin-bottom: 16px; }
+.legal-intro h1 { max-width: 760px; overflow-wrap: anywhere; }
+.legal-intro .lead { max-width: 760px; color: var(--muted); }
+.legal-updated { margin: 28px 0 0; font-size: .9rem; font-weight: 700; color: var(--green); }
+.legal-content { display: grid; gap: 22px; margin-top: 30px; }
+.legal-content section { padding: 28px 30px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+.legal-content h2 { margin-bottom: 15px; font-size: clamp(1.4rem, 2.5vw, 1.9rem); letter-spacing: -.6px; }
+.legal-content p { margin-bottom: 0; color: var(--muted); }
+.legal-content p + p { margin-top: 12px; }
+.legal-content ul { margin: 15px 0 0; padding-left: 22px; color: var(--muted); }
+.legal-content li + li { margin-top: 9px; }
+.legal-content a { color: var(--green); font-weight: 700; text-underline-offset: 4px; overflow-wrap: anywhere; }
+.legal-contact { display: inline-block; min-height: 44px; padding-block: 9px; }
+.legal-return { display: inline-flex; align-items: center; min-height: 48px; margin-top: 30px; padding: 10px 20px; border-radius: 100px; background: var(--green); color: #fff; font-weight: 700; text-decoration: none; }
+.legal-return:hover { background: var(--dark); }
+@media (max-width: 720px) {
+  .legal-main { padding-block: 44px 60px; }
+  .legal-content { gap: 14px; margin-top: 22px; }
+  .legal-content section { padding: 22px 20px; border-radius: 18px; }
+  .legal-footer { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 400px) {
+  .legal-header-inner { gap: 10px; }
+  .legal-home-link { font-size: .85rem; }
+  .legal-footer { grid-template-columns: 1fr; gap: 16px; }
+  .legal-footer small, .legal-footer .footer-legal { grid-column: auto; }
+}
