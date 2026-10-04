@@ -3,7 +3,7 @@ import { detail, empty, kyivDateTime, kyivDay, kyivTime, lessonPlace, lessonStat
   outcomeReasons, requireData } from "./learning-ui.js?v=3";
 import { completeTeacherLesson, initTeacherActions, openTeacherOutcome,
   openTeacherSchedule, startTeacherLesson } from "./teacher-actions.js?v=4";
-import { initChat } from "./chat.js?v=1";
+import { initChat } from "./chat.js?v=2";
 
 const todayTarget = document.getElementById("teacher-today");
 const studentsTarget = document.getElementById("teacher-students");

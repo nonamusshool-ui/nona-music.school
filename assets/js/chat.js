@@ -96,6 +96,7 @@ function renderContacts() {
     const summary = summaries.get(contact.id);
     const button = document.createElement("button");
     button.type = "button";
+    button.dataset.peerId = contact.id;
     button.className = "chat-contact";
     button.classList.toggle("is-selected", active?.peer.id === contact.id);
     const name = document.createElement("strong");
@@ -330,11 +331,14 @@ export function initChat(currentRole, currentUserId) {
     unsubscribe();
     if (active) drafts.set(active.id, el("draft").value);
     const opener = active?.opener;
+    const peerId = active?.peer.id;
     active = null;
     el("panel").hidden = true;
     el("layout").classList.remove("is-conversation");
     renderContacts();
-    if (opener?.isConnected) opener.focus();
+    const currentButton = [...el("contacts").querySelectorAll("button")]
+      .find((button) => button.dataset.peerId === peerId);
+    (opener?.isConnected ? opener : currentButton)?.focus();
   });
   el("new").addEventListener("click", () => {
     el("log").scrollTop = el("log").scrollHeight;
@@ -355,6 +359,12 @@ export function initChat(currentRole, currentUserId) {
     if (!document.hidden) { void refreshSummaries().catch(() => {}); if (nearBottom()) void markRead(active?.id); }
   });
   window.addEventListener("pagehide", unsubscribe);
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted && active) {
+      subscribe(active.id, openToken);
+      void refreshSummaries().catch(() => {});
+    }
+  });
   supabase.auth.onAuthStateChange((event) => {
     if (event === "SIGNED_OUT") { unsubscribe(); drafts.clear(); messages = []; active = null; }
   });

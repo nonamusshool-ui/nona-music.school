@@ -1,6 +1,6 @@
 import { supabase } from "./supabase-client.js";
 import { detail, empty, kyivDateTime, kyivDay, lessonPlace, lessonStatuses, outcomeReasons, requireData } from "./learning-ui.js?v=3";
-import { initChat } from "./chat.js?v=1";
+import { initChat } from "./chat.js?v=2";
 
 const targets = {
   next: document.getElementById("student-next"),
