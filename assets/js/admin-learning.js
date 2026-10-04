@@ -51,7 +51,8 @@ async function loadOverview() {
         .gte("scheduled_at", new Date().toISOString()).order("scheduled_at").limit(1),
       supabase.from("lessons").select("scheduled_at,duration_minutes,teacher_id,status")
         .eq("student_id", student.id).eq("status", "in_progress").limit(1),
-      supabase.from("profiles").select("id,full_name").eq("role", "teacher").eq("status", "active"),
+      supabase.from("profiles").select("id,full_name").eq("status", "active")
+        .or("role.eq.teacher,and(role.eq.admin,can_teach.eq.true)"),
       supabase.from("lessons").select("scheduled_at,started_at,completed_at,completion_source,status,outcome_reason,outcome_note,consumes_lesson,resolved_at")
         .eq("student_id", student.id).in("status", ["completed", "cancelled", "rescheduled", "no_show"])
         .order("scheduled_at", { ascending: false }).limit(10),

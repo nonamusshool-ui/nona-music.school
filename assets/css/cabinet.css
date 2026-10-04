@@ -101,6 +101,19 @@ h3 { margin: 0 0 8px; font-size: 1.06rem; }
 .dashboard-card .eyebrow { color: var(--green); }
 .dashboard-card p { margin: 0; color: var(--muted); }
 .card-title-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 12px; }
+.workspace-switch { display: flex; width: fit-content; max-width: 100%; gap: 4px; padding: 4px; margin-bottom: 18px; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+.workspace-switch[hidden], .workspace-section-body[hidden] { display: none; }
+.workspace-switch a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 14px; border-radius: 12px; color: var(--green); font-weight: 700; text-align: center; text-decoration: none; }
+.workspace-switch a[aria-current="page"] { background: var(--green); color: #fff; }
+.workspace-switch a:focus-visible, .section-toggle:focus-visible { outline: 3px solid #dd9818; outline-offset: 2px; }
+.workspace-collapsible > .section-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; }
+.workspace-collapsible > .section-heading h2 { grid-column: 1; grid-row: 1; margin: 0; }
+.workspace-collapsible > .section-heading p { grid-column: 1 / -1; grid-row: 2; }
+.workspace-collapsible > .section-heading .section-toggle { grid-column: 2; grid-row: 1; }
+.workspace-collapsible > .card-title-row { grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; }
+.section-toggle { min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); color: var(--green); font: inherit; font-size: .875rem; font-weight: 700; cursor: pointer; }
+.section-toggle:hover { background: var(--lime); }
+@media (max-width: 540px) { .workspace-collapsible > .card-title-row .icon-tile { display: none; } .workspace-collapsible > .card-title-row { grid-template-columns: minmax(0, 1fr) auto; } .workspace-collapsible > .card-title-row h2 { font-size: 1.15rem; } .workspace-switch { width: 100%; } .workspace-switch a { flex: 1; min-width: 0; padding-inline: 8px; font-size: .875rem; } }
 .card-title-row > div { min-width: 0; }
 .icon-tile { display: grid; justify-self: end; place-items: center; width: 42px; height: 42px; border-radius: 14px; background: var(--lime); color: var(--green); font-size: 1.35rem; }
 .empty-state { margin-top: 22px; padding: 18px; border: 1px dashed #b8c9b8; border-radius: 14px; background: var(--paper); }

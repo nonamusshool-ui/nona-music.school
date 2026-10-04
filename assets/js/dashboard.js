@@ -1,4 +1,5 @@
-import { attachLogout, getAccess, roleUrl, siteUrl, userDisplayName } from "./auth.js";
+import { attachLogout, getAccess, landingUrl, siteUrl, userDisplayName } from "./auth.js?v=2";
+import { setupWorkspace } from "./workspaces.js?v=1";
 
 const expectedRole = document.documentElement.dataset.requiredRole;
 const loading = document.getElementById("cabinet-loading");
@@ -19,8 +20,10 @@ async function enterCabinet() {
     window.location.replace(siteUrl("auth/callback/"));
     return;
   }
-  if (access.status === "authorized" && access.role !== expectedRole) {
-    window.location.replace(roleUrl(access.role));
+  const allowed = access.status === "authorized" && (access.role === expectedRole
+    || (expectedRole === "teacher" && access.role === "admin" && access.canTeach));
+  if (access.status === "authorized" && !allowed) {
+    window.location.replace(landingUrl(access));
     return;
   }
   if (access.status !== "authorized") {
@@ -35,14 +38,15 @@ async function enterCabinet() {
   loading.hidden = true;
   content.hidden = false;
   try {
+    if (expectedRole === "admin" || expectedRole === "teacher") setupWorkspace(expectedRole, access);
     if (expectedRole === "admin") {
-      const { initAdmin } = await import("./admin.js?v=9");
-      initAdmin(access.user.id);
+      const { initAdmin } = await import("./admin.js?v=10");
+      initAdmin(access.user.id, access.adminLevel);
     } else if (expectedRole === "student") {
       const { initStudent } = await import("./student.js?v=7");
       initStudent(access.user.id);
     } else if (expectedRole === "teacher") {
-      const { initTeacher } = await import("./teacher.js?v=9");
+      const { initTeacher } = await import("./teacher.js?v=10");
       initTeacher(access.user.id);
     }
   } catch {

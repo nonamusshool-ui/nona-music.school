@@ -7,8 +7,8 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Адміністрування | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="../assets/css/cabinet.css?v=9" />
-    <script type="module" src="../assets/js/dashboard.js?v=12"></script>
+    <link rel="stylesheet" href="../assets/css/cabinet.css?v=10" />
+    <script type="module" src="../assets/js/dashboard.js?v=13"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
@@ -35,6 +35,7 @@
         </div>
       </header>
       <main class="shell cabinet-main" id="main">
+        <nav class="workspace-switch" aria-label="Робочий простір" data-workspace-switch hidden><a href="/admin/" aria-current="page">Адміністрування</a><a href="/teacher/">Викладач</a></nav>
         <section class="welcome-card" aria-labelledby="welcome-title">
           <p class="eyebrow">АДМІНІСТРУВАННЯ</p>
           <h1 id="welcome-title">Кабінет адміністратора</h1>
@@ -164,8 +165,9 @@
         <p class="admin-current-access" id="admin-current-access"></p>
         <div class="admin-field"><label for="admin-role">Роль</label><select id="admin-role" name="role"><option value="">Не призначено</option><option value="student">Учень</option><option value="teacher">Викладач</option><option value="admin">Адміністратор</option></select></div>
         <div class="admin-field"><label for="admin-status">Статус</label><select id="admin-status" name="status"><option value="pending">Очікує</option><option value="active">Активний</option><option value="suspended">Призупинено</option></select></div>
+        <div id="admin-capabilities" hidden><div class="admin-field"><label for="admin-level">Рівень адміністрування</label><select id="admin-level"><option value="standard">Адміністратор</option><option value="senior">Старший адміністратор</option></select></div><label class="learning-check"><input id="admin-can-teach" type="checkbox" /> Також викладає</label></div>
         <p class="status is-error" id="admin-dialog-error" role="alert" hidden></p>
-        <div class="admin-dialog-actions"><button class="button button-light" id="admin-dialog-cancel" type="button">Скасувати</button><button class="button" id="admin-dialog-save" type="submit">Зберегти зміни</button></div>
+        <div class="admin-dialog-actions"><button class="button button-light" id="admin-fire" type="button" hidden>Звільнити адміністратора</button><button class="button button-light" id="admin-dialog-cancel" type="button">Скасувати</button><button class="button" id="admin-dialog-save" type="submit">Зберегти зміни</button></div>
       </form>
     </dialog>
     <dialog class="admin-dialog learning-dialog" id="admin-learning-dialog" aria-labelledby="learning-title">

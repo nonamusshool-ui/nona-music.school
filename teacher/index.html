@@ -7,8 +7,8 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Кабінет викладача | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="../assets/css/cabinet.css?v=9" />
-    <script type="module" src="../assets/js/dashboard.js?v=12"></script>
+    <link rel="stylesheet" href="../assets/css/cabinet.css?v=10" />
+    <script type="module" src="../assets/js/dashboard.js?v=13"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
@@ -17,13 +17,14 @@
     <div id="private-content" hidden>
       <header class="cabinet-header"><div class="shell cabinet-header-inner"><a class="brand" href="../" aria-label="НОНА Music School — на головну"><span class="brand-mark">Н<span>О</span>НА.</span><span class="brand-caption">MUSIC SCHOOL</span></a><div class="cabinet-header-actions"><div class="account-id"><span class="avatar" data-user-initial aria-hidden="true"></span><span class="account-name" data-user-name></span></div><button class="button button-quiet" id="sign-out" type="button">Вийти</button></div></div></header>
       <main class="shell cabinet-main" id="main">
+        <nav class="workspace-switch" aria-label="Робочий простір" data-workspace-switch hidden><a href="/admin/">Адміністрування</a><a href="/teacher/" aria-current="page">Викладач</a></nav>
         <section class="welcome-card" aria-labelledby="welcome-title"><p class="eyebrow">КАБІНЕТ ВИКЛАДАЧА</p><h1 id="welcome-title">Вітаємо, <span data-user-name></span>!</h1><p>Ваші уроки та учні.</p></section>
         <div class="section-heading"><h2>Робочий день</h2><p>Час занять вказано за Києвом.</p></div>
         <div class="dashboard-grid">
-          <section class="dashboard-card" aria-labelledby="today-title"><div class="card-title-row"><div><p class="eyebrow">РОЗКЛАД</p><h3 id="today-title">Сьогодні</h3></div><span class="icon-tile" aria-hidden="true">♫</span></div><div id="teacher-today" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
-          <section class="dashboard-card" aria-labelledby="students-title"><div class="card-title-row"><div><p class="eyebrow">УЧНІ</p><h3 id="students-title">Мої учні</h3></div><span class="icon-tile" aria-hidden="true">♪</span></div><div id="teacher-students" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
+          <section class="dashboard-card" id="today" aria-labelledby="today-title"><div class="card-title-row"><div><p class="eyebrow">РОЗКЛАД</p><h3 id="today-title">Сьогодні</h3></div><span class="icon-tile" aria-hidden="true">♫</span></div><div id="teacher-today" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
+          <section class="dashboard-card" id="students" aria-labelledby="students-title"><div class="card-title-row"><div><p class="eyebrow">УЧНІ</p><h3 id="students-title">Мої учні</h3></div><span class="icon-tile" aria-hidden="true">♪</span></div><div id="teacher-students" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
         </div>
-        <section class="dashboard-card teacher-extra-lessons" aria-labelledby="teacher-upcoming-title"><div class="card-title-row"><div><p class="eyebrow">УРОКИ</p><h2 id="teacher-upcoming-title">Найближчі та незавершені</h2></div><span class="icon-tile" aria-hidden="true">♬</span></div><div id="teacher-upcoming" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
+        <section class="dashboard-card teacher-extra-lessons" id="upcoming" aria-labelledby="teacher-upcoming-title"><div class="card-title-row"><div><p class="eyebrow">УРОКИ</p><h2 id="teacher-upcoming-title">Найближчі та незавершені</h2></div><span class="icon-tile" aria-hidden="true">♬</span></div><div id="teacher-upcoming" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
         <section class="dashboard-card schedule-section" id="schedule" aria-labelledby="schedule-title">
           <div class="card-title-row"><div><p class="eyebrow">ТИЖДЕНЬ</p><h2 id="schedule-title">Мій розклад</h2></div><span class="icon-tile" aria-hidden="true">♫</span></div>
           <div class="schedule-toolbar"><button class="button button-light" id="schedule-prev" type="button" aria-label="Попередній тиждень">←</button><strong id="schedule-range" aria-live="polite"></strong><button class="button button-light" id="schedule-today" type="button">Сьогодні</button><button class="button button-light" id="schedule-next" type="button" aria-label="Наступний тиждень">→</button><button class="button button-light" id="schedule-refresh" type="button">Оновити</button></div>

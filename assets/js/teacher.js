@@ -13,6 +13,14 @@ const refresh = document.getElementById("teacher-refresh");
 const lessonColumns = "id,student_id,package_id,scheduled_at,duration_minutes,status,started_at,consumes_lesson,lesson_format,lesson_url,location_text,meet_url,outcome_reason,outcome_note,resolved_at";
 let teacherId;
 let teacherInitialized = false;
+let scheduleInitialized = false;
+
+function openTeacherSection(id) {
+  if (id === "schedule" && !scheduleInitialized) {
+    scheduleInitialized = true;
+    initSchedule("teacher", teacherId);
+  }
+}
 
 function reportStatus(message, isError = false) {
   status.textContent = message;
@@ -154,12 +162,15 @@ export function initTeacher(id) {
   teacherId = id;
   if (teacherInitialized) {
     loadTeacher();
-    initSchedule("teacher", id);
+    if (!document.getElementById("schedule-content")?.hidden) openTeacherSection("schedule");
     return;
   }
   teacherInitialized = true;
   initTeacherActions(() => Promise.all([loadTeacher(), refreshSchedule()]), reportStatus);
   refresh.addEventListener("click", () => { loadTeacher(); refreshSchedule(); });
-  initSchedule("teacher", id);
+  document.addEventListener("workspace:open", (event) => {
+    if (event.detail.role === "teacher") openTeacherSection(event.detail.id);
+  });
+  if (!document.getElementById("schedule-content")?.hidden) openTeacherSection("schedule");
   loadTeacher();
 }

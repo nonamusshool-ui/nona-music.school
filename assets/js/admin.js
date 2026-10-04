@@ -1,10 +1,15 @@
 import { supabase } from "./supabase-client.js";
-import { initAdminLearning, openAdminLearning } from "./admin-learning.js?v=4";
+import { initAdminLearning, openAdminLearning } from "./admin-learning.js?v=5";
 import { initAdminJournal } from "./admin-journal.js?v=2";
 import { initChat } from "./chat.js?v=3";
 import { initSchedule } from "./schedule.js?v=1";
 
 const roles = { student: "Учень", teacher: "Викладач", admin: "Адміністратор" };
+function roleLabel(user) {
+  if (user.role !== "admin") return roles[user.role] || "Не призначено";
+  if (user.admin_level === "senior") return "Старший адміністратор-викладач";
+  return user.can_teach ? "Адміністратор-викладач" : "Адміністратор";
+}
 const statuses = { pending: "Очікує", active: "Активний", suspended: "Призупинено" };
 const metricNames = ["students", "teachers", "lessons_today", "active_packages"];
 const dateFormat = new Intl.DateTimeFormat("uk-UA", { dateStyle: "medium", timeZone: "Europe/Kyiv" });
@@ -27,6 +32,10 @@ const page = {
   currentAccess: document.getElementById("admin-current-access"),
   role: document.getElementById("admin-role"),
   status: document.getElementById("admin-status"),
+  capabilities: document.getElementById("admin-capabilities"),
+  level: document.getElementById("admin-level"),
+  canTeach: document.getElementById("admin-can-teach"),
+  fire: document.getElementById("admin-fire"),
   dialogError: document.getElementById("admin-dialog-error"),
   save: document.getElementById("admin-dialog-save"),
 };
@@ -36,6 +45,8 @@ let users = [];
 let selectedUser = null;
 let opener = null;
 let initialized = false;
+let ownAdminLevel = null;
+const loadedSections = new Set();
 
 function showDialogError(message) {
   page.dialogError.textContent = message;
@@ -69,7 +80,7 @@ function renderUsers() {
       cell("Ім’я", user.full_name || "Ім’я не вказано"),
       cell("Email", user.email || "Не вказано"),
       cell("Телефон", user.phone || "Не вказано"),
-      cell("Роль", roles[user.role] || "Не призначено")
+      cell("Роль", roleLabel(user))
     );
     const badge = document.createElement("span");
     badge.className = `admin-state admin-state-${user.status}`;
@@ -79,6 +90,8 @@ function renderUsers() {
 
     if (user.id === ownUserId) {
       row.append(cell("Дія", "Власний обліковий запис"));
+    } else if (user.role === "admin" && ownAdminLevel !== "senior") {
+      row.append(cell("Дія", "Керування цим обліковим записом доступне лише старшому адміністратору."));
     } else {
       const button = document.createElement("button");
       button.type = "button";
@@ -142,7 +155,7 @@ async function loadUsers() {
     const all = [];
     const pageSize = 500;
     for (let offset = 0; ; offset += pageSize) {
-      const { data, error } = await supabase.rpc("admin_list_users").range(offset, offset + pageSize - 1);
+      const { data, error } = await supabase.rpc("admin_list_users_v2").range(offset, offset + pageSize - 1);
       if (error || !Array.isArray(data)) throw error || new Error("Missing users");
       all.push(...data);
       if (data.length < pageSize) break;
@@ -157,18 +170,30 @@ async function loadUsers() {
 }
 
 function openManage(user, button) {
-  if (user.id === ownUserId) return;
+  if (user.id === ownUserId || (user.role === "admin" && ownAdminLevel !== "senior")) return;
   selectedUser = user;
   opener = button;
   page.dialogName.textContent = user.full_name || "Ім’я не вказано";
   page.dialogEmail.textContent = user.email || "Email не вказано";
-  page.currentAccess.textContent = `Зараз: ${roles[user.role] || "роль не призначено"} · ${statuses[user.status] || user.status}`;
+  page.currentAccess.textContent = `Зараз: ${roleLabel(user)} · ${statuses[user.status] || user.status}`;
   page.role.value = user.role || "";
   page.status.value = user.status;
+  page.level.value = user.admin_level || "standard";
+  page.canTeach.checked = Boolean(user.can_teach);
+  page.role.querySelector('option[value="admin"]').disabled = ownAdminLevel !== "senior";
+  page.fire.hidden = !(ownAdminLevel === "senior" && user.role === "admin"
+    && user.admin_level === "standard" && user.status !== "suspended");
+  updateCapabilityFields();
   page.dialogError.hidden = true;
   page.dialog.showModal();
   document.body.classList.add("admin-dialog-open");
   page.role.focus();
+}
+
+function updateCapabilityFields() {
+  page.capabilities.hidden = page.role.value !== "admin";
+  if (page.role.value === "admin" && page.level.value === "senior") page.canTeach.checked = true;
+  page.canTeach.disabled = page.role.value === "admin" && page.level.value === "senior";
 }
 
 async function saveAccess(event) {
@@ -176,28 +201,39 @@ async function saveAccess(event) {
   if (!selectedUser || selectedUser.id === ownUserId) return;
   const role = page.role.value || null;
   const status = page.status.value;
+  const adminLevel = role === "admin" ? page.level.value : null;
+  const canTeach = role === "admin" ? (adminLevel === "senior" || page.canTeach.checked) : false;
   if (status === "active" && !role) {
     showDialogError("Для активного кабінету оберіть роль.");
     return;
   }
-  if (role === selectedUser.role && status === selectedUser.status) {
+  if (role === selectedUser.role && status === selectedUser.status
+    && adminLevel === selectedUser.admin_level && canTeach === selectedUser.can_teach) {
     page.dialog.close();
     return;
   }
   if (status === "suspended" && selectedUser.status !== "suspended"
-    && !window.confirm("Призупинити доступ цього користувача до кабінету?")) return;
+    && !window.confirm(selectedUser.role === "admin"
+      ? "Призупинити доступ адміністратора? Дані та історія залишаться збереженими."
+      : "Призупинити доступ цього користувача до кабінету?")) {
+    page.status.value = selectedUser.status;
+    return;
+  }
 
   page.save.disabled = true;
+  page.fire.disabled = true;
   page.save.textContent = "Зберігаємо…";
   document.getElementById("admin-dialog-close").disabled = true;
   document.getElementById("admin-dialog-cancel").disabled = true;
   page.dialogError.hidden = true;
   try {
-    const { data, error } = await supabase.rpc("admin_update_user_access", {
+    const { data, error } = await supabase.rpc("admin_update_user_access_v2", {
       target_user_id: selectedUser.id,
       new_role: role,
       new_status: status,
-    }).single();
+      new_admin_level: adminLevel,
+      new_can_teach: canTeach,
+    });
     if (error || !data) throw error || new Error("Missing updated user");
     users = users.map((user) => user.id === data.id ? data : user);
     renderUsers();
@@ -206,21 +242,25 @@ async function saveAccess(event) {
     page.feedback.textContent = "Доступ користувача оновлено.";
     await loadMetrics();
   } catch (error) {
-    showDialogError(error?.code === "42501"
+    showDialogError(error?.code === "P0001"
+      ? "Не можна вимкнути останнього старшого адміністратора."
+      : error?.code === "42501"
       ? "Немає прав для цієї дії. Перевірте свій доступ."
       : error?.code === "23514"
         ? "Роль не можна змінити, поки з акаунтом пов’язані учні, уроки або пакети. Статус можна змінити окремо."
       : "Не вдалося зберегти зміни. Спробуйте ще раз.");
   } finally {
     page.save.disabled = false;
+    page.fire.disabled = false;
     page.save.textContent = "Зберегти зміни";
     document.getElementById("admin-dialog-close").disabled = false;
     document.getElementById("admin-dialog-cancel").disabled = false;
   }
 }
 
-export function initAdmin(userId) {
+export function initAdmin(userId, adminLevel) {
   ownUserId = userId;
+  ownAdminLevel = adminLevel;
   if (!initialized) {
     initialized = true;
     page.filter.addEventListener("change", renderUsers);
@@ -240,11 +280,29 @@ export function initAdmin(userId) {
       opener = null;
     });
     page.form.addEventListener("submit", saveAccess);
+    page.role.addEventListener("change", updateCapabilityFields);
+    page.level.addEventListener("change", updateCapabilityFields);
+    page.fire.addEventListener("click", () => {
+      if (!selectedUser || selectedUser.role !== "admin" || selectedUser.admin_level !== "standard") return;
+      page.status.value = "suspended";
+      page.form.requestSubmit();
+    });
     initAdminLearning();
-    initAdminJournal();
+    document.addEventListener("workspace:open", (event) => {
+      if (event.detail.role === "admin") openSection(event.detail.id);
+    });
   }
-  initChat("admin", userId);
-  initSchedule("admin", userId);
-  loadMetrics();
-  loadUsers();
+  for (const id of ["overview", "users", "schedule", "chat", "journal"]) {
+    if (!document.getElementById(`${id}-content`)?.hidden) openSection(id);
+  }
+}
+
+function openSection(id) {
+  if (loadedSections.has(id)) return;
+  loadedSections.add(id);
+  if (id === "overview") loadMetrics();
+  else if (id === "users") loadUsers();
+  else if (id === "schedule") initSchedule("admin", ownUserId);
+  else if (id === "chat") initChat("admin", ownUserId);
+  else if (id === "journal") initAdminJournal();
 }

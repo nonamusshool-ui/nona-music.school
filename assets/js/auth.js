@@ -12,6 +12,13 @@ export function roleUrl(role) {
   return Object.prototype.hasOwnProperty.call(rolePaths, role) ? siteUrl(rolePaths[role]) : null;
 }
 
+export function landingUrl(access) {
+  if (access.role === "admin" && access.canTeach) {
+    try { if (sessionStorage.getItem("nona:last-workspace") === "teacher") return siteUrl("teacher/"); } catch { /* Storage is optional. */ }
+  }
+  return roleUrl(access.role);
+}
+
 export async function getAccess() {
   try {
     // A stored session only indicates that sign-in may have happened. getUser verifies it.
@@ -26,7 +33,7 @@ export async function getAccess() {
     // Only a database profile can grant a cabinet role. Never infer it from metadata or URL.
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
-      .select("role, status")
+      .select("role, status, can_teach, admin_level")
       .eq("id", user.id)
       .maybeSingle();
 
@@ -36,7 +43,9 @@ export async function getAccess() {
     if (!profile) return { status: "unassigned" };
     if (profile.status === "suspended") return { status: "suspended" };
     if (profile.status !== "active" || !roleUrl(profile.role)) return { status: "unassigned" };
-    return { status: "authorized", user, role: profile.role };
+    return { status: "authorized", user, role: profile.role,
+      canTeach: profile.role === "teacher" || (profile.role === "admin" && profile.can_teach === true),
+      adminLevel: profile.role === "admin" ? profile.admin_level : null };
   } catch {
     return { status: "error" };
   }

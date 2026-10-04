@@ -1,5 +1,5 @@
 import { supabase } from "./supabase-client.js";
-import { attachLogout, getAccess, roleUrl, siteUrl } from "./auth.js";
+import { attachLogout, getAccess, landingUrl, siteUrl } from "./auth.js?v=2";
 
 const loading = document.getElementById("callback-loading");
 const pending = document.getElementById("callback-pending");
@@ -63,7 +63,7 @@ async function finishSignIn() {
 
     const access = await getAccess();
     if (access.status === "authorized") {
-      window.location.replace(roleUrl(access.role));
+      window.location.replace(landingUrl(access));
     } else if (access.status === "signed_out") {
       window.location.replace(siteUrl("login/"));
     } else if (access.status === "unassigned") {

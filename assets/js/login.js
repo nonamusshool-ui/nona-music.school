@@ -1,5 +1,5 @@
 import { callbackUrl, supabase } from "./supabase-client.js";
-import { getAccess, roleUrl, siteUrl } from "./auth.js";
+import { getAccess, landingUrl, siteUrl } from "./auth.js?v=2";
 
 const googleButton = document.getElementById("google-sign-in");
 const emailForm = document.getElementById("email-sign-in");
@@ -46,5 +46,5 @@ emailForm.addEventListener("submit", async (event) => {
 });
 
 const access = await getAccess();
-if (access.status === "authorized") window.location.replace(roleUrl(access.role));
+if (access.status === "authorized") window.location.replace(landingUrl(access));
 if (access.status === "unassigned" || access.status === "suspended") window.location.replace(siteUrl("auth/callback/"));
