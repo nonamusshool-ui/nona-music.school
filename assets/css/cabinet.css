@@ -221,6 +221,41 @@ body.admin-dialog-open { overflow: hidden; }
 .journal-details p { margin: 0; padding: 9px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 .journal-details a { color: var(--green); }
 
+/* Private student–teacher chat */
+.chat-section { margin-top: 20px; }
+.chat-section h2 { margin-bottom: 0; }
+.chat-status { margin: 14px 0; color: var(--muted); }
+.chat-layout { display: grid; gap: 14px; min-width: 0; margin-top: 18px; }
+.chat-layout--single .chat-contacts { display: none; }
+.chat-contacts { display: grid; align-content: start; gap: 8px; max-height: 430px; overflow: auto; }
+.chat-contact { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; width: 100%; min-width: 0; min-height: 72px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); color: var(--ink); text-align: left; cursor: pointer; }
+.chat-contact.is-selected { border-color: var(--green); background: var(--lime); }
+.chat-contact strong, .chat-contact span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chat-contact span { grid-column: 1; color: var(--muted); font-size: .83rem; }
+.chat-contact small { grid-column: 2; grid-row: 1; color: var(--muted); }
+.chat-unread { display: inline-grid; place-items: center; min-width: 25px; height: 25px; padding: 0 7px; border-radius: 999px; background: var(--yellow); color: var(--dark); font-size: .75rem; font-weight: 800; }
+.chat-contact .chat-unread { position: absolute; right: 10px; bottom: 8px; }
+.chat-panel { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); }
+.chat-panel-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 10px; }
+.chat-panel-head h3 { margin: 0; font-size: 1.1rem; overflow-wrap: anywhere; }
+.chat-back, .chat-older, .chat-new { min-height: 44px; padding: 8px 13px; font-size: .83rem; }
+.chat-older { margin-bottom: 10px; }
+.chat-new { display: block; margin: 8px auto 0; }
+.chat-log { min-width: 0; height: min(47dvh, 430px); min-height: 240px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; overflow-y: auto; overscroll-behavior: contain; }
+.chat-day { margin: 13px 0; color: var(--muted); text-align: center; font-size: .8rem; }
+.chat-bubble { width: fit-content; max-width: min(85%, 520px); margin: 8px 0; padding: 9px 12px; border-radius: 15px; background: var(--lime); color: var(--dark); overflow-wrap: anywhere; }
+.chat-bubble--own { margin-left: auto; border-bottom-right-radius: 4px; background: #f8e7a5; }
+.chat-bubble--other { border-bottom-left-radius: 4px; }
+.chat-bubble p { margin: 0; color: inherit; white-space: pre-wrap; }
+.chat-bubble time { display: block; margin-top: 3px; color: var(--muted); text-align: right; font-size: .7rem; }
+.chat-empty { color: var(--muted); text-align: center; }
+.chat-compose { display: grid; gap: 8px; margin-top: 12px; }
+.chat-compose label { color: var(--dark); font-weight: 700; }
+.chat-compose textarea { width: 100%; min-width: 0; min-height: 70px; max-height: 150px; padding: 11px 13px; border: 1px solid #aec2b5; border-radius: 12px; background: #fff; color: var(--ink); resize: vertical; font: inherit; font-size: max(16px, 1rem); }
+.chat-compose .button { justify-self: end; min-height: 48px; }
+.chat-error { margin: 10px 0; color: #8e3025; }
+.chat-section :is(button, textarea):focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+
 @media (min-width: 720px) {
   .shell { width: min(1160px, calc(100% - 56px)); }
   .auth-page { padding-top: 30px; }
@@ -239,6 +274,13 @@ body.admin-dialog-open { overflow: hidden; }
   .learning-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .journal-filters { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .journal-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .chat-layout.is-conversation:not(.chat-layout--single) { grid-template-columns: minmax(200px, 260px) minmax(0, 1fr); }
+}
+@media (max-width: 719px) {
+  .chat-layout.is-conversation:not(.chat-layout--single) .chat-contacts { display: none; }
+  .chat-layout:not(.is-conversation) .chat-panel { display: none; }
+  .chat-panel { padding: 10px; }
+  .chat-log { padding: 10px; }
 }
 @media (max-width: 959px) {
   .admin-users-table, .admin-users-table tbody, .admin-users-table tr, .admin-users-table td { display: block; width: 100%; }

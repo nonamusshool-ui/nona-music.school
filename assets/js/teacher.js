@@ -3,6 +3,7 @@ import { detail, empty, kyivDateTime, kyivDay, kyivTime, lessonPlace, lessonStat
   outcomeReasons, requireData } from "./learning-ui.js?v=3";
 import { completeTeacherLesson, initTeacherActions, openTeacherOutcome,
   openTeacherSchedule, startTeacherLesson } from "./teacher-actions.js?v=4";
+import { initChat } from "./chat.js?v=1";
 
 const todayTarget = document.getElementById("teacher-today");
 const studentsTarget = document.getElementById("teacher-students");
@@ -153,10 +154,12 @@ export function initTeacher(id) {
   teacherId = id;
   if (teacherInitialized) {
     loadTeacher();
+    initChat("teacher", id);
     return;
   }
   teacherInitialized = true;
   initTeacherActions(loadTeacher, reportStatus);
   refresh.addEventListener("click", loadTeacher);
+  initChat("teacher", id);
   loadTeacher();
 }
