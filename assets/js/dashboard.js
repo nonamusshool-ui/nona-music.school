@@ -42,7 +42,7 @@ async function enterCabinet() {
       const { initStudent } = await import("./student.js?v=3");
       initStudent(access.user.id);
     } else if (expectedRole === "teacher") {
-      const { initTeacher } = await import("./teacher.js?v=4");
+      const { initTeacher } = await import("./teacher.js?v=5");
       initTeacher(access.user.id);
     }
   } catch {

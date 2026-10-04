@@ -20,6 +20,7 @@ let packagesReady = false;
 let packageBalances = [];
 let onChanged;
 let setStatus;
+let actionsInitialized = false;
 
 const kyivClock = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Europe/Kyiv", year: "numeric", month: "2-digit", day: "2-digit",
@@ -137,6 +138,7 @@ function scheduleErrorMessage(error) {
   if (error?.code === "42501") return "Немає доступу до цього учня або уроку.";
   const message = error?.message || "";
   if (/valid future Kyiv time|Date and time required/i.test(message)) return "Оберіть майбутній час.";
+  if (/Reschedule must change lesson details/i.test(message)) return "Змініть дату, час або інші параметри уроку перед перенесенням.";
   if (/already has a lesson at this time/i.test(message)) return "У цей час у викладача або учня вже є інший урок.";
   if (/active student package valid on lesson day/i.test(message)) return "Цей пакет недоступний для вибраної дати.";
   if (/Package has no unreserved lessons/i.test(message)) return "У пакеті немає доступних занять.";
@@ -148,7 +150,7 @@ function scheduleErrorMessage(error) {
 }
 
 export async function openTeacherSchedule(student, lesson, opener) {
-  if (scheduleDialog.open) return;
+  if (scheduleBusy || scheduleDialog.open) return;
   const token = ++scheduleOpenToken;
   selectedStudent = student;
   selectedLesson = lesson || null;
@@ -235,6 +237,8 @@ export async function startTeacherLesson(lesson, button) {
 export function initTeacherActions(changed, reportStatus) {
   onChanged = changed;
   setStatus = reportStatus;
+  if (actionsInitialized) return;
+  actionsInitialized = true;
   field("teacher-lesson-format").addEventListener("change", updateFormat);
   field("teacher-lesson-date").addEventListener("change", showPackageWarning);
   field("teacher-lesson-package").addEventListener("change", () => {
@@ -254,6 +258,7 @@ export function initTeacherActions(changed, reportStatus) {
       if (event.target === dialog && !isBusy()) dialog.close();
     });
     dialog.addEventListener("close", () => {
+      if (dialog.open) return;
       document.body.classList.remove("admin-dialog-open");
       if (dialog === scheduleDialog) {
         ++scheduleOpenToken;
@@ -273,7 +278,7 @@ export function initTeacherActions(changed, reportStatus) {
 
   scheduleForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (scheduleBusy || !selectedStudent || !packagesReady || !scheduleForm.reportValidity()) return;
+    if (scheduleBusy || !scheduleDialog.open || !selectedStudent || !packagesReady || !scheduleForm.reportValidity()) return;
     const url = field("teacher-lesson-url").value.trim();
     const location = field("teacher-lesson-location").value.trim();
     const online = field("teacher-lesson-format").value === "online";

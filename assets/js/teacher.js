@@ -2,7 +2,7 @@ import { supabase } from "./supabase-client.js";
 import { detail, empty, kyivDateTime, kyivDay, kyivTime, lessonPlace, lessonStatuses,
   outcomeReasons, requireData } from "./learning-ui.js?v=3";
 import { completeTeacherLesson, initTeacherActions, openTeacherOutcome,
-  openTeacherSchedule, startTeacherLesson } from "./teacher-actions.js?v=3";
+  openTeacherSchedule, startTeacherLesson } from "./teacher-actions.js?v=4";
 
 const todayTarget = document.getElementById("teacher-today");
 const studentsTarget = document.getElementById("teacher-students");
@@ -11,6 +11,7 @@ const status = document.getElementById("cabinet-status");
 const refresh = document.getElementById("teacher-refresh");
 const lessonColumns = "id,student_id,package_id,scheduled_at,duration_minutes,status,started_at,consumes_lesson,lesson_format,lesson_url,location_text,meet_url,outcome_reason,outcome_note,resolved_at";
 let teacherId;
+let teacherInitialized = false;
 
 function reportStatus(message, isError = false) {
   status.textContent = message;
@@ -150,6 +151,11 @@ async function loadTeacher() {
 
 export function initTeacher(id) {
   teacherId = id;
+  if (teacherInitialized) {
+    loadTeacher();
+    return;
+  }
+  teacherInitialized = true;
   initTeacherActions(loadTeacher, reportStatus);
   refresh.addEventListener("click", loadTeacher);
   loadTeacher();
