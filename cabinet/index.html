@@ -7,8 +7,8 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Кабінет учня | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="../assets/css/cabinet.css?v=8" />
-    <script type="module" src="../assets/js/dashboard.js?v=11"></script>
+    <link rel="stylesheet" href="../assets/css/cabinet.css?v=9" />
+    <script type="module" src="../assets/js/dashboard.js?v=12"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
@@ -30,6 +30,12 @@
           <section class="dashboard-card" aria-labelledby="teacher-title"><div class="card-title-row"><div><p class="eyebrow">НАВЧАННЯ</p><h3 id="teacher-title">Мій викладач</h3></div><span class="icon-tile" aria-hidden="true">♪</span></div><div id="student-teacher" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
           <section class="dashboard-card dashboard-card-wide" aria-labelledby="history-title"><p class="eyebrow">ВАШ ШЛЯХ</p><h3 id="history-title">Історія уроків</h3><div id="student-history" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
         </div>
+        <section class="dashboard-card schedule-section" id="schedule" aria-labelledby="schedule-title">
+          <div class="card-title-row"><div><p class="eyebrow">ТИЖДЕНЬ</p><h2 id="schedule-title">Мій розклад</h2></div><span class="icon-tile" aria-hidden="true">♫</span></div>
+          <div class="schedule-toolbar"><button class="button button-light" id="schedule-prev" type="button" aria-label="Попередній тиждень">←</button><strong id="schedule-range" aria-live="polite"></strong><button class="button button-light" id="schedule-today" type="button">Сьогодні</button><button class="button button-light" id="schedule-next" type="button" aria-label="Наступний тиждень">→</button><button class="button button-light" id="schedule-refresh" type="button">Оновити</button></div>
+          <p class="status" id="schedule-status" role="status" aria-live="polite">Завантажуємо розклад…</p><button class="button button-light" id="schedule-retry" type="button" hidden>Спробувати ще раз</button>
+          <p class="empty-state" id="schedule-empty" hidden></p><div class="schedule-grid" id="schedule-grid" hidden></div>
+        </section>
         <section class="dashboard-card chat-section" id="chat" aria-labelledby="chat-title">
           <div class="card-title-row"><div><p class="eyebrow">СПІЛКУВАННЯ</p><h2 id="chat-title">Чат з адміністрацією <span class="chat-unread" id="chat-total-unread" hidden></span></h2></div><span class="icon-tile" aria-hidden="true">✉</span></div>
           <p class="chat-status" id="chat-status" role="status" aria-live="polite">Завантажуємо чат…</p>
@@ -52,6 +58,7 @@
         <footer class="cabinet-footer">НОНА Music School · <a href="../">На головну</a></footer>
       </main>
     </div>
+    <dialog class="admin-dialog schedule-dialog" id="schedule-details-dialog" aria-labelledby="schedule-details-title"><div class="admin-dialog-heading"><div><p class="eyebrow">РОЗКЛАД</p><h2 id="schedule-details-title">Деталі уроку</h2></div><button class="admin-dialog-close" id="schedule-details-close" type="button" aria-label="Закрити">×</button></div><div class="schedule-details" id="schedule-details"></div></dialog>
     <noscript><p class="shell status is-error">Для входу до кабінету потрібно увімкнути JavaScript.</p></noscript>
   </body>
 </html>

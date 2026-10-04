@@ -36,13 +36,13 @@ async function enterCabinet() {
   content.hidden = false;
   try {
     if (expectedRole === "admin") {
-      const { initAdmin } = await import("./admin.js?v=8");
+      const { initAdmin } = await import("./admin.js?v=9");
       initAdmin(access.user.id);
     } else if (expectedRole === "student") {
-      const { initStudent } = await import("./student.js?v=6");
+      const { initStudent } = await import("./student.js?v=7");
       initStudent(access.user.id);
     } else if (expectedRole === "teacher") {
-      const { initTeacher } = await import("./teacher.js?v=8");
+      const { initTeacher } = await import("./teacher.js?v=9");
       initTeacher(access.user.id);
     }
   } catch {

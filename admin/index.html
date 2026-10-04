@@ -7,8 +7,8 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Адміністрування | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="../assets/css/cabinet.css?v=8" />
-    <script type="module" src="../assets/js/dashboard.js?v=11"></script>
+    <link rel="stylesheet" href="../assets/css/cabinet.css?v=9" />
+    <script type="module" src="../assets/js/dashboard.js?v=12"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
@@ -42,7 +42,7 @@
         </section>
 
         <nav class="admin-nav" aria-label="Розділи кабінету">
-          <a href="#overview">Огляд</a><a href="#users">Користувачі</a><a href="#chat">Повідомлення</a><a href="#journal">Журнал занять</a>
+          <a href="#overview">Огляд</a><a href="#users">Користувачі</a><a href="#schedule">Розклад</a><a href="#chat">Повідомлення</a><a href="#journal">Журнал занять</a>
         </nav>
 
         <section id="overview" aria-labelledby="overview-title">
@@ -95,6 +95,14 @@
           </div>
         </section>
 
+        <section class="dashboard-card schedule-section" id="schedule" aria-labelledby="schedule-title">
+          <div class="card-title-row"><div><p class="eyebrow">ТИЖДЕНЬ</p><h2 id="schedule-title">Розклад</h2></div><span class="icon-tile" aria-hidden="true">♫</span></div>
+          <div class="schedule-toolbar"><button class="button button-light" id="schedule-prev" type="button" aria-label="Попередній тиждень">←</button><strong id="schedule-range" aria-live="polite"></strong><button class="button button-light" id="schedule-today" type="button">Сьогодні</button><button class="button button-light" id="schedule-next" type="button" aria-label="Наступний тиждень">→</button><button class="button button-light" id="schedule-refresh" type="button">Оновити</button></div>
+          <div class="admin-field schedule-filter" id="schedule-admin-filter" hidden><label for="schedule-teacher-filter">Викладач</label><select id="schedule-teacher-filter"><option value="">Усі викладачі</option></select></div>
+          <p class="status" id="schedule-status" role="status" aria-live="polite">Завантажуємо розклад…</p><button class="button button-light" id="schedule-retry" type="button" hidden>Спробувати ще раз</button>
+          <p class="empty-state" id="schedule-empty" hidden></p><div class="schedule-grid" id="schedule-grid" hidden></div>
+        </section>
+
         <section class="dashboard-card chat-section" id="chat" aria-labelledby="chat-title">
           <div class="card-title-row"><div><p class="eyebrow">СПІЛКУВАННЯ</p><h2 id="chat-title">Повідомлення <span class="chat-unread" id="chat-total-unread" hidden></span></h2></div><span class="icon-tile" aria-hidden="true">✉</span></div>
           <p class="chat-status" id="chat-status" role="status" aria-live="polite">Завантажуємо чат…</p>
@@ -144,6 +152,7 @@
       </main>
     </div>
 
+    <dialog class="admin-dialog schedule-dialog" id="schedule-details-dialog" aria-labelledby="schedule-details-title"><div class="admin-dialog-heading"><div><p class="eyebrow">РОЗКЛАД</p><h2 id="schedule-details-title">Деталі уроку</h2></div><button class="admin-dialog-close" id="schedule-details-close" type="button" aria-label="Закрити">×</button></div><div class="schedule-details" id="schedule-details"></div></dialog>
     <dialog class="admin-dialog" id="admin-access-dialog" aria-labelledby="admin-dialog-title" aria-describedby="admin-dialog-description">
       <form id="admin-access-form">
         <div class="admin-dialog-heading">

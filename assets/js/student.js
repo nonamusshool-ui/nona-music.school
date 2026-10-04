@@ -1,6 +1,7 @@
 import { supabase } from "./supabase-client.js";
 import { detail, empty, kyivDateTime, kyivDay, lessonPlace, lessonStatuses, outcomeReasons, requireData } from "./learning-ui.js?v=3";
 import { initChat } from "./chat.js?v=3";
+import { initSchedule, refreshSchedule } from "./schedule.js?v=1";
 
 const targets = {
   next: document.getElementById("student-next"),
@@ -122,10 +123,12 @@ export function initStudent(id) {
   if (studentInitialized) {
     loadStudent();
     initChat("student", id);
+    initSchedule("student", id);
     return;
   }
   studentInitialized = true;
-  refresh.addEventListener("click", loadStudent);
+  refresh.addEventListener("click", () => { loadStudent(); refreshSchedule(); });
   initChat("student", id);
+  initSchedule("student", id);
   loadStudent();
 }

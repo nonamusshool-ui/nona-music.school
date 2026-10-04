@@ -190,7 +190,7 @@ body.admin-dialog-open { overflow: hidden; }
 .admin-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }
 .admin-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 15px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--green); font-weight: 700; text-decoration: none; }
 .admin-nav a:hover { background: var(--lime); }
-#overview, #users, #chat, #journal { scroll-margin-top: 24px; }
+#overview, #users, #schedule, #chat, #journal { scroll-margin-top: 24px; }
 .journal-month { display: flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 390px; margin: 0 0 16px; }
 .journal-month .button { flex: none; width: 48px; min-height: 48px; padding: 6px; font-size: 1.3rem; }
 .journal-month strong { min-width: 0; text-align: center; text-transform: capitalize; }
@@ -220,6 +220,37 @@ body.admin-dialog-open { overflow: hidden; }
 .journal-details { display: grid; gap: 8px; margin-top: 16px; }
 .journal-details p { margin: 0; padding: 9px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 .journal-details a { color: var(--green); }
+
+/* Operational weekly schedule */
+.schedule-section { margin-top: 20px; }
+.schedule-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+.schedule-toolbar strong { flex: 1 1 170px; min-width: 0; text-align: center; }
+.schedule-toolbar .button { min-width: 44px; min-height: 44px; padding: 8px 11px; }
+.schedule-filter { max-width: 320px; margin-bottom: 16px; }
+.schedule-grid { display: grid; gap: 10px; min-width: 0; }
+.schedule-day { display: grid; align-content: start; gap: 8px; min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); }
+.schedule-day.is-today { border-color: var(--green); background: #f0f5dc; }
+.schedule-day h3 { margin: 0 0 3px; color: var(--green); text-transform: capitalize; }
+.schedule-day-short, .schedule-day-date { display: none; }
+.schedule-day-empty { color: var(--muted); font-size: .82rem; }
+.schedule-lesson { display: grid; gap: 3px; width: 100%; min-width: 0; min-height: 68px; padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); text-align: left; overflow-wrap: anywhere; }
+.schedule-lesson:hover { border-color: var(--green); }
+.schedule-lesson strong { color: var(--green); font-size: 1rem; }
+.schedule-person { font-weight: 700; }
+.schedule-meta { color: var(--muted); font-size: .82rem; }
+.schedule-lesson .journal-badge { justify-self: start; margin-top: 3px; }
+.schedule-details { display: grid; gap: 8px; margin-top: 14px; }
+.schedule-details p { margin: 0; padding: 7px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.schedule-details .button { justify-self: start; margin-top: 6px; }
+@media (min-width: 1024px) {
+  .schedule-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+  .schedule-day { padding: 9px; }
+  .schedule-day h3 { display: grid; gap: 2px; font-size: .78rem; }
+  .schedule-day-short { display: block; text-transform: uppercase; letter-spacing: .08em; }
+  .schedule-day-date { display: block; }
+  .schedule-day-long { display: none; }
+  .schedule-lesson { padding: 8px; }
+}
 
 /* Private student–admin chat */
 .chat-section { margin-top: 20px; }

@@ -1,5 +1,6 @@
 import { supabase } from "./supabase-client.js";
 import { detail, empty, kyivDateTime, lessonStatuses, outcomeReasons, requireData, safeMeetUrl } from "./learning-ui.js?v=3";
+import { refreshSchedule } from "./schedule.js?v=1";
 
 const dialog = document.getElementById("admin-learning-dialog");
 const overview = document.getElementById("learning-overview");
@@ -113,7 +114,7 @@ async function loadOverview() {
   }
 }
 
-async function runAction(form, action, success) {
+async function runAction(form, action, success, afterSuccess) {
   if (!student || busy || !form.reportValidity()) return;
   busy = true;
   const button = form.querySelector('[type="submit"]');
@@ -126,6 +127,7 @@ async function runAction(form, action, success) {
     setFeedback(success);
     form.reset();
     await loadOverview();
+    if (afterSuccess) await afterSuccess();
   } catch (error) {
     setFeedback(error?.code === "42501"
       ? "Немає прав для цієї дії. Оновіть сторінку й перевірте доступ."
@@ -198,6 +200,6 @@ export function initAdminLearning() {
       target_package_id: packageId,
       meeting_url: meeting || null,
       takes_package_lesson: consumes,
-    }), "Урок заплановано.");
+    }), "Урок заплановано.", refreshSchedule);
   });
 }
