@@ -1,0 +1,31 @@
+.privacy-header-inner { min-height: 76px; }
+.privacy-home-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--green); font-weight: 700; text-underline-offset: 5px; }
+.privacy-main { max-width: 900px; padding-block: clamp(42px, 7vw, 86px) 78px; }
+.privacy-intro { padding-bottom: 30px; border-bottom: 1px solid var(--line); }
+.privacy-intro .eyebrow { margin-bottom: 16px; }
+.privacy-intro h1 { max-width: 760px; overflow-wrap: anywhere; }
+.privacy-intro .lead { max-width: 760px; color: var(--muted); }
+.privacy-updated { margin: 28px 0 0; font-size: .9rem; font-weight: 700; color: var(--green); }
+.privacy-content { display: grid; gap: 22px; margin-top: 30px; }
+.privacy-content section { padding: 28px 30px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+.privacy-content h2 { margin-bottom: 15px; font-size: clamp(1.4rem, 2.5vw, 1.9rem); letter-spacing: -.6px; }
+.privacy-content p { margin-bottom: 0; color: var(--muted); }
+.privacy-content p + p { margin-top: 12px; }
+.privacy-content ul { margin: 15px 0 0; padding-left: 22px; color: var(--muted); }
+.privacy-content li + li { margin-top: 9px; }
+.privacy-content a { color: var(--green); font-weight: 700; text-underline-offset: 4px; overflow-wrap: anywhere; }
+.privacy-contact { display: inline-block; min-height: 44px; padding-block: 9px; }
+.privacy-return { display: inline-flex; align-items: center; min-height: 48px; margin-top: 30px; padding: 10px 20px; border-radius: 100px; background: var(--green); color: #fff; font-weight: 700; text-decoration: none; }
+.privacy-return:hover { background: var(--dark); }
+@media (max-width: 720px) {
+  .privacy-main { padding-block: 44px 60px; }
+  .privacy-content { gap: 14px; margin-top: 22px; }
+  .privacy-content section { padding: 22px 20px; border-radius: 18px; }
+  .privacy-footer { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 400px) {
+  .privacy-header-inner { gap: 10px; }
+  .privacy-home-link { font-size: .85rem; }
+  .privacy-footer { grid-template-columns: 1fr; gap: 16px; }
+  .privacy-footer small { grid-column: auto; }
+}
