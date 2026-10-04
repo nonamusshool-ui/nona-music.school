@@ -1,6 +1,7 @@
 import { supabase } from "./supabase-client.js";
 import { initAdminLearning, openAdminLearning } from "./admin-learning.js?v=3";
 import { initAdminJournal } from "./admin-journal.js?v=2";
+import { initChat } from "./chat.js?v=3";
 
 const roles = { student: "Учень", teacher: "Викладач", admin: "Адміністратор" };
 const statuses = { pending: "Очікує", active: "Активний", suspended: "Призупинено" };
@@ -241,6 +242,7 @@ export function initAdmin(userId) {
     initAdminLearning();
     initAdminJournal();
   }
+  initChat("admin", userId);
   loadMetrics();
   loadUsers();
 }

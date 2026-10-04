@@ -190,7 +190,7 @@ body.admin-dialog-open { overflow: hidden; }
 .admin-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }
 .admin-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 15px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--green); font-weight: 700; text-decoration: none; }
 .admin-nav a:hover { background: var(--lime); }
-#overview, #users, #journal { scroll-margin-top: 24px; }
+#overview, #users, #chat, #journal { scroll-margin-top: 24px; }
 .journal-month { display: flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 390px; margin: 0 0 16px; }
 .journal-month .button { flex: none; width: 48px; min-height: 48px; padding: 6px; font-size: 1.3rem; }
 .journal-month strong { min-width: 0; text-align: center; text-transform: capitalize; }
@@ -221,7 +221,7 @@ body.admin-dialog-open { overflow: hidden; }
 .journal-details p { margin: 0; padding: 9px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 .journal-details a { color: var(--green); }
 
-/* Private student–teacher chat */
+/* Private student–admin chat */
 .chat-section { margin-top: 20px; }
 .chat-section h2 { margin-bottom: 0; }
 .chat-status { margin: 14px 0; color: var(--muted); }

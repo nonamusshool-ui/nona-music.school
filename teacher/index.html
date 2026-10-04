@@ -7,8 +7,8 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Кабінет викладача | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="../assets/css/cabinet.css?v=7" />
-    <script type="module" src="../assets/js/dashboard.js?v=10"></script>
+    <link rel="stylesheet" href="../assets/css/cabinet.css?v=8" />
+    <script type="module" src="../assets/js/dashboard.js?v=11"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
@@ -24,23 +24,6 @@
           <section class="dashboard-card" aria-labelledby="students-title"><div class="card-title-row"><div><p class="eyebrow">УЧНІ</p><h3 id="students-title">Мої учні</h3></div><span class="icon-tile" aria-hidden="true">♪</span></div><div id="teacher-students" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
         </div>
         <section class="dashboard-card teacher-extra-lessons" aria-labelledby="teacher-upcoming-title"><div class="card-title-row"><div><p class="eyebrow">УРОКИ</p><h2 id="teacher-upcoming-title">Найближчі та незавершені</h2></div><span class="icon-tile" aria-hidden="true">♬</span></div><div id="teacher-upcoming" class="cabinet-data" aria-live="polite">Завантажуємо…</div></section>
-        <section class="dashboard-card chat-section" id="chat" aria-labelledby="chat-title">
-          <div class="card-title-row"><div><p class="eyebrow">СПІЛКУВАННЯ</p><h2 id="chat-title">Повідомлення <span class="chat-unread" id="chat-total-unread" hidden></span></h2></div><span class="icon-tile" aria-hidden="true">✉</span></div>
-          <p class="chat-status" id="chat-status" role="status" aria-live="polite">Завантажуємо чат…</p>
-          <button class="button button-light" id="chat-retry" type="button" hidden>Спробувати ще раз</button>
-          <div class="chat-layout" id="chat-layout" hidden>
-            <div class="chat-contacts" id="chat-contacts" aria-label="Учні"></div>
-            <div class="chat-panel" id="chat-panel" hidden>
-              <div class="chat-panel-head"><button class="button button-light chat-back" id="chat-back" type="button" hidden>← До учнів</button><h3 id="chat-peer"></h3></div>
-              <button class="button button-light chat-older" id="chat-older" type="button" hidden>Завантажити попередні</button>
-              <div class="chat-log" id="chat-log" role="log" aria-label="Повідомлення" aria-live="off"></div>
-              <button class="button button-light chat-new" id="chat-new" type="button" hidden>Нове повідомлення</button>
-              <form class="chat-compose" id="chat-form"><label for="chat-draft">Повідомлення</label><textarea id="chat-draft" rows="2" maxlength="4000" placeholder="Напишіть повідомлення…" required></textarea><button class="button" id="chat-send" type="submit">Надіслати</button></form>
-              <p class="chat-error" id="chat-error" role="alert" hidden></p>
-              <button class="button button-light" id="chat-retry-messages" type="button" hidden>Повторити завантаження</button>
-            </div>
-          </div>
-        </section>
         <div class="cabinet-refresh"><button class="button button-light" id="teacher-refresh" type="button">Оновити дані</button></div>
         <p class="status" id="cabinet-status" role="status" aria-live="polite"></p>
         <footer class="cabinet-footer">НОНА Music School · <a href="../">На головну</a></footer>

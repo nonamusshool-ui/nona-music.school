@@ -132,28 +132,31 @@ async function loadContacts() {
   const token = ++contactsToken;
   status("Завантажуємо чат…");
   el("layout").hidden = true;
+  if (el("claim")) el("claim").hidden = true;
   try {
-    const ownColumn = role === "student" ? "student_id" : "teacher_id";
-    const otherColumn = role === "student" ? "teacher_id" : "student_id";
-    const links = requireData(await supabase.from("teacher_students").select(otherColumn)
-      .eq(ownColumn, userId).eq("active", true));
-    const ids = [...new Set(links.map((link) => link[otherColumn]))];
+    if (role === "admin" && !requireData(await supabase.rpc("my_chat_contact_status"))) {
+      if (token !== contactsToken) return;
+      ++openToken;
+      unsubscribe();
+      active = null;
+      contacts = [];
+      el("panel").hidden = true;
+      el("claim").hidden = false;
+      status("Цей акаунт не є контактною адміністрацією. Увімкнення спрямує нові звернення учнів до вас.");
+      return;
+    }
+    const people = requireData(await supabase.rpc("my_chat_contacts"));
     if (token !== contactsToken) return;
-    if (!ids.length) {
+    contacts = people.map((person) => ({ id: person.peer_id, name: person.peer_name }));
+    if (!contacts.length) {
       ++openToken;
       unsubscribe();
       active = null;
       el("panel").hidden = true;
       el("layout").classList.remove("is-conversation");
-      contacts = [];
-      status(role === "student" ? "Викладача ще не призначено." : "Призначених учнів поки немає.");
+      status(role === "student" ? "Чат з адміністрацією поки недоступний." : "Активних учнів поки немає.");
       return;
     }
-    const people = requireData(await supabase.from("profiles").select("id,full_name,status").in("id", ids));
-    if (token !== contactsToken) return;
-    contacts = people.filter((person) => person.status === "active")
-      .map((person) => ({ id: person.id, name: person.full_name || (role === "student" ? "Викладач НОНА" : "Учень НОНА") }));
-    if (!contacts.length) { status("Чат недоступний."); return; }
     if (active && !contacts.some((person) => person.id === active.peer.id)) {
       ++openToken;
       unsubscribe();
@@ -274,7 +277,8 @@ async function openConversation(peer, opener) {
   el("back").hidden = role === "student" && contacts.length === 1;
   error("");
   try {
-    const result = requireData(await supabase.rpc("open_assigned_conversation", { target_user_id: peer.id }));
+    const result = requireData(await supabase.rpc("open_admin_conversation",
+      { target_student_id: role === "admin" ? peer.id : null }));
     if (token !== openToken) return;
     active = { id: result.conversation_id, peer, opener };
     el("draft").value = drafts.get(active.id) || "";
@@ -316,11 +320,20 @@ async function send(event) {
 }
 
 export function initChat(currentRole, currentUserId) {
+  if (currentRole !== "student" && currentRole !== "admin") return;
   role = currentRole;
   userId = currentUserId;
   if (initialized) { void loadContacts(); return; }
   initialized = true;
   el("retry").addEventListener("click", loadContacts);
+  if (el("claim")) el("claim").addEventListener("click", async () => {
+    el("claim").disabled = true;
+    try {
+      requireData(await supabase.rpc("admin_claim_chat_contact"));
+      await loadContacts();
+    } catch { status("Не вдалося змінити контактну адміністрацію.", true); }
+    finally { el("claim").disabled = false; }
+  });
   el("retry-messages").addEventListener("click", () => {
     if (active) void loadLatest(active.id, openToken);
     else void loadContacts();
