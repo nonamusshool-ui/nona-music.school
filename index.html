@@ -183,6 +183,9 @@ nav a:hover {
   min-height: 44px;
   padding: 10px 23px;
 }
+.header-login { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; min-height: 44px; padding: 9px 15px; border: 1px solid var(--line); border-radius: 100px; background: #fff; color: var(--green); font-size: .85rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.header-login:hover { background: var(--lime); }
+.mobile-menu > nav .menu-login { margin-top: 8px; border-top: 1px solid var(--line); border-radius: 0; color: var(--green); font-weight: 700; }
 .mobile-menu {
   display: none;
 }
@@ -796,6 +799,7 @@ h2 > span {
     gap: 12px 24px;
   }
   .desktop-navigation { display: none; }
+  .header-login { display: none; }
   .mobile-menu { display: block; margin-left: auto; }
   .mobile-menu > summary { cursor: pointer; list-style: none; min-height: 44px; touch-action: manipulation; }
   .mobile-menu > summary::-webkit-details-marker { display: none; }
@@ -1111,6 +1115,7 @@ h2 > span {
           <a href="#learning">Навчання</a><a href="#how">Як почати</a>
           <a href="#prices">Вартість</a><a href="#questions">Запитання</a>
         </nav>
+        <a class="header-login" href="/login/">Увійти в кабінет</a>
         <details class="mobile-menu">
           <summary class="menu-toggle" aria-controls="navigation">
             Меню <span class="menu-icon" aria-hidden="true">☰</span>
@@ -1119,6 +1124,7 @@ h2 > span {
             <a href="#learning">Навчання</a><a href="#how">Як почати</a>
             <a href="#prices">Вартість</a><a href="#questions">Запитання</a>
             <a href="/guitar/#application">Записатися на урок</a>
+            <a class="menu-login" href="/login/">Увійти в кабінет</a>
           </nav>
         </details>
         <a class="button button-small header-cta" href="/guitar/#application">Записатися</a>
@@ -1447,7 +1453,7 @@ h2 > span {
         rel="noopener noreferrer"
         >НОНА у Facebook ↗</a
       ><small>© 2026 НОНА Music School</small>
-      <nav class="footer-legal" aria-label="Правова інформація"><a href="/privacy/">Політика конфіденційності</a><a href="/terms/">Умови користування</a></nav>
+      <nav class="footer-legal" aria-label="Додаткові посилання"><a href="/privacy/">Політика конфіденційності</a><a href="/terms/">Умови користування</a><a href="/login/">Особистий кабінет</a></nav>
     </footer>
   </body>
 </html>

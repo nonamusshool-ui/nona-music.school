@@ -172,6 +172,7 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
 
 @media (max-width: 1100px) {
   .guitar-page .desktop-navigation { display: none; }
+  .guitar-page .header-login { display: none; }
   .guitar-page .mobile-menu { display: block; margin-left: auto; }
   .guitar-page .mobile-menu > summary { display: flex; gap: 12px; align-items: center; cursor: pointer; list-style: none; min-height: 44px; padding: 9px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: .875rem; }
   .guitar-page .mobile-menu > summary::-webkit-details-marker { display: none; }

@@ -138,6 +138,9 @@ nav a:hover {
   min-height: 44px;
   padding: 10px 23px;
 }
+.header-login { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; min-height: 44px; padding: 9px 15px; border: 1px solid var(--line); border-radius: 100px; background: #fff; color: var(--green); font-size: .85rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.header-login:hover { background: var(--lime); }
+.mobile-menu > nav .menu-login { margin-top: 8px; border-top: 1px solid var(--line); border-radius: 0; color: var(--green); font-weight: 700; }
 .mobile-menu {
   display: none;
 }
@@ -751,6 +754,7 @@ h2 > span {
     gap: 12px 24px;
   }
   .desktop-navigation { display: none; }
+  .header-login { display: none; }
   .mobile-menu { display: block; margin-left: auto; }
   .mobile-menu > summary { cursor: pointer; list-style: none; min-height: 44px; touch-action: manipulation; }
   .mobile-menu > summary::-webkit-details-marker { display: none; }
