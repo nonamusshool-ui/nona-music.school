@@ -1,0 +1,13 @@
+.beginners-page .breadcrumbs { flex-wrap: wrap; gap: 8px; margin-top: 20px; color: var(--muted); font-size: .82rem; }
+.beginners-page .breadcrumbs [aria-current="page"] { color: var(--green); text-decoration: none; }
+.beginners-page .hero { padding-block: 44px 56px; }
+.beginners-page .section, .beginners-page .guitar-ready { padding-block: 48px; }
+.beginners-page .audience-card { min-height: 0; }
+.beginners-page .audience-card p { margin: 0; }
+.beginners-page .teacher-trust { columns: 1; max-width: 720px; margin-top: 24px; }
+.beginners-page .beginners-prices-link { display: inline-block; margin-top: 24px; }
+.beginners-page .beginners-back-link { display: inline-block; margin-top: 16px; }
+@media (max-width: 720px) {
+  .beginners-page .hero { padding-block: 28px 36px; }
+  .beginners-page .section, .beginners-page .guitar-ready { padding-block: 32px; }
+}
