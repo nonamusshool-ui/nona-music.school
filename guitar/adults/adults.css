@@ -1,0 +1,16 @@
+.adults-page .breadcrumbs { flex-wrap: wrap; gap: 8px; margin-top: 20px; color: var(--muted); font-size: .82rem; }
+.adults-page .breadcrumbs [aria-current="page"] { color: var(--green); text-decoration: none; }
+.adults-page .hero { padding-block: 44px 56px; }
+.adults-page .section, .adults-page .guitar-ready, .adults-page .guitar-program { padding-block: 48px; }
+.adults-page .audience-card { min-height: 0; }
+.adults-page .audience-card p { margin: 0; }
+.adults-page .teacher-trust { columns: 1; max-width: 720px; margin-top: 24px; }
+.adults-page .adults-prices-link { display: inline-block; margin-top: 24px; }
+.adults-page .adults-back-link { display: inline-block; margin-top: 16px; }
+.adults-page .review-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-inline: 0; padding: 0; }
+.adults-page .review-card { grid-column: auto; }
+@media (max-width: 720px) {
+  .adults-page .hero { padding-block: 28px 36px; }
+  .adults-page .section, .adults-page .guitar-ready, .adults-page .guitar-program { padding-block: 32px; }
+  .adults-page .review-grid { grid-template-columns: 1fr; }
+}
