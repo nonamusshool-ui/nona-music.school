@@ -7,6 +7,7 @@
 .hero-facts li { background: var(--lime); color: var(--green); border-radius: 100px; padding: 7px 13px; font-size: .8rem; font-weight: 700; }
 .hero-facts .free-lesson-fact { background: var(--yellow); }
 .mobile-hero-fact, .early-trust { display: none; }
+.teacher-trust-section { padding-top: 24px; padding-bottom: 24px; }
 .guitar-section-head { max-width: 720px; margin-bottom: 34px; }
 .guitar-section-head h2 { margin-bottom: 14px; }
 .guitar-section-head > p:last-child { color: var(--muted); font-size: 1.05rem; margin-bottom: 0; }
