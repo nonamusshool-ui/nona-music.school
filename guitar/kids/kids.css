@@ -1,0 +1,13 @@
+.kids-page .breadcrumbs { flex-wrap: wrap; gap: 8px; margin-top: 20px; color: var(--muted); font-size: .82rem; }
+.kids-page .breadcrumbs [aria-current="page"] { color: var(--green); text-decoration: none; }
+.kids-page .hero { padding-block: 44px 56px; }
+.kids-page .section, .kids-page .guitar-ready { padding-block: 48px; }
+.kids-page .audience-card { min-height: 0; }
+.kids-page .audience-card p { margin: 0; }
+.kids-page .teacher-trust { columns: 1; max-width: 720px; margin-top: 24px; }
+.kids-page .kids-prices-link { display: inline-block; margin-top: 24px; }
+.kids-page .kids-back-link { display: inline-block; margin-top: 16px; }
+@media (max-width: 720px) {
+  .kids-page .hero { padding-block: 28px 36px; }
+  .kids-page .section, .kids-page .guitar-ready { padding-block: 32px; }
+}
