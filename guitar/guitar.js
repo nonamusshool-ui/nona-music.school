@@ -242,3 +242,16 @@ document.querySelectorAll("[data-phone-click-location]").forEach((link) => {
     }
   });
 })();
+
+(() => {
+  const openTeachersFromHash = () => {
+    if (window.location.hash !== "#teachers") return;
+    const teachers = document.getElementById("teachers");
+    if (teachers?.tagName !== "DETAILS") return;
+    teachers.open = true;
+    teachers.scrollIntoView();
+  };
+
+  openTeachersFromHash();
+  window.addEventListener("hashchange", openTeachersFromHash);
+})();
