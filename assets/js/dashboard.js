@@ -40,13 +40,13 @@ async function enterCabinet() {
   try {
     if (expectedRole === "admin" || expectedRole === "teacher") setupWorkspace(expectedRole, access);
     if (expectedRole === "admin") {
-      const { initAdmin } = await import("./admin.js?v=10");
+      const { initAdmin } = await import("./admin.js?v=11");
       initAdmin(access.user.id, access.adminLevel);
     } else if (expectedRole === "student") {
       const { initStudent } = await import("./student.js?v=7");
       initStudent(access.user.id);
     } else if (expectedRole === "teacher") {
-      const { initTeacher } = await import("./teacher.js?v=10");
+      const { initTeacher } = await import("./teacher.js?v=11");
       initTeacher(access.user.id);
     }
   } catch {

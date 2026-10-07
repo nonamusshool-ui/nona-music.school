@@ -78,17 +78,17 @@ async function loadTeacher() {
     const now = new Date();
     const today = kyivDay(now);
     const [dayResult, overdueResult, futureResult, activeResult] = await Promise.all([
-      supabase.from("lessons").select(lessonColumns).eq("teacher_id", teacherId)
+      supabase.rpc("staff_lesson_records").select(lessonColumns).eq("teacher_id", teacherId)
         .gte("scheduled_at", new Date(now.getTime() - 36 * 3600000).toISOString())
         .lt("scheduled_at", new Date(now.getTime() + 60 * 3600000).toISOString())
         .order("scheduled_at").limit(200),
-      supabase.from("lessons").select(lessonColumns).eq("teacher_id", teacherId)
+      supabase.rpc("staff_lesson_records").select(lessonColumns).eq("teacher_id", teacherId)
         .eq("status", "scheduled").lt("scheduled_at", now.toISOString())
         .order("scheduled_at", { ascending: false }).limit(30),
-      supabase.from("lessons").select(lessonColumns).eq("teacher_id", teacherId)
+      supabase.rpc("staff_lesson_records").select(lessonColumns).eq("teacher_id", teacherId)
         .eq("status", "scheduled").gte("scheduled_at", now.toISOString())
         .order("scheduled_at").limit(100),
-      supabase.from("lessons").select(lessonColumns).eq("teacher_id", teacherId)
+      supabase.rpc("staff_lesson_records").select(lessonColumns).eq("teacher_id", teacherId)
         .eq("status", "in_progress").order("started_at", { ascending: false }).limit(100),
     ]);
     const dayLessons = requireData(dayResult).filter((lesson) => kyivDay(new Date(lesson.scheduled_at)) === today);
