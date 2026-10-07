@@ -1,0 +1,17 @@
+.first-guitar-page { padding-bottom: 0; }
+.first-guitar-page .breadcrumbs { flex-wrap: wrap; gap: 8px; margin-top: 20px; color: var(--muted); font-size: .82rem; }
+.first-guitar-page .breadcrumbs [aria-current="page"] { color: var(--green); text-decoration: none; }
+.first-guitar-page .hero { padding-block: 44px 48px; }
+.first-guitar-page .section, .first-guitar-page .guitar-ready { padding-block: 40px; }
+.first-guitar-page .comparison-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.first-guitar-page .comparison-grid .audience-card { min-height: 0; }
+.first-guitar-page .comparison-grid h3 { margin: 0 0 16px; }
+.first-guitar-page .guide-list { margin: 0; padding-left: 20px; }
+.first-guitar-page .guide-list li + li { margin-top: 8px; }
+.first-guitar-page .guide-list li p { margin: 6px 0 0; color: var(--muted); }
+.first-guitar-page .guide-note { margin: 20px 0 0; color: var(--muted); }
+@media (max-width: 720px) {
+  .first-guitar-page .hero { padding-block: 28px 32px; }
+  .first-guitar-page .section, .first-guitar-page .guitar-ready { padding-block: 32px; }
+  .first-guitar-page .comparison-grid { grid-template-columns: 1fr; }
+}
