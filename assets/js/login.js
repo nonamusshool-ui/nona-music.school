@@ -34,7 +34,7 @@ emailForm.addEventListener("submit", async (event) => {
   try {
     const { error } = await supabase.auth.signInWithOtp({
       email: emailForm.elements.email.value.trim(),
-      options: { emailRedirectTo: callbackUrl, shouldCreateUser: false },
+      options: { emailRedirectTo: callbackUrl, shouldCreateUser: true },
     });
     if (error) throw error;
     showStatus("Якщо для цієї адреси є обліковий запис, перевірте пошту.");
