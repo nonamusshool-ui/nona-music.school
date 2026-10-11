@@ -4,8 +4,6 @@
   if (!dialog || !form) return;
 
   const packageInput = form.elements.lesson_package;
-  const packageSelect = document.getElementById("lesson-package-select");
-  const packagePicker = form.querySelector(".package-picker");
   const packageValue = document.getElementById("selected-package");
   const packageSummary = dialog.querySelector(".package-summary");
   const formExtras = form.querySelector(".form-extras");
@@ -18,25 +16,19 @@
   let opener = null;
   let pageScrollY = 0;
   let submitting = false;
-
-  const syncExtraFields = () => { formExtras.open = !smartphone.matches; };
-  syncExtraFields();
-  if (typeof smartphone.addEventListener === "function") {
-    smartphone.addEventListener("change", syncExtraFields);
-  } else {
-    smartphone.addListener(syncExtraFields);
-  }
+  let ctaLocation = "other";
+  let formStarted = false;
 
   const openApplication = (trigger, selectedPackage = unspecified) => {
     if (document.querySelector("dialog[open]")) return;
     opener = trigger;
     const hasPackage = selectedPackage !== unspecified;
-    packageSelect.value = unspecified;
     packageInput.value = selectedPackage;
     packageValue.textContent = hasPackage ? selectedPackage : "";
     packageSummary.hidden = !hasPackage;
-    packagePicker.hidden = hasPackage;
-    if (smartphone.matches) formExtras.open = false;
+    formExtras.open = false;
+    ctaLocation = trigger.closest("[data-cta-location]")?.dataset.ctaLocation ?? "other";
+    formStarted = false;
     success.hidden = true;
     form.hidden = false;
     status.className = "form-status";
@@ -50,7 +42,7 @@
       try {
         window.gtag("event", "trial_form_open", {
           form_name: "guitar_application",
-          cta_location: trigger.closest("[data-cta-location]")?.dataset.ctaLocation ?? "other",
+          cta_location: ctaLocation,
         });
       } catch (error) {
         // Analytics must not interrupt opening the form.
@@ -72,8 +64,23 @@
     });
   });
 
-  packageSelect.addEventListener("change", () => {
-    packageInput.value = packageSelect.value;
+  const trackFormStart = (event) => {
+    if (!event.isTrusted || !dialog.open || formStarted) return;
+    if (!event.target.matches('input[name="student_name"], input[name="student_type"], input[name="phone"]')) return;
+    if (event.type === "keydown" && ["Tab", "Escape", "Shift", "Control", "Alt", "Meta"].includes(event.key)) return;
+    formStarted = true;
+    if (typeof window.gtag !== "function") return;
+    try {
+      window.gtag("event", "trial_form_start", {
+        form_name: "guitar_application",
+        cta_location: ctaLocation,
+      });
+    } catch (error) {
+      // Analytics must not interrupt filling in the form.
+    }
+  };
+  ["pointerdown", "keydown", "input", "change"].forEach((type) => {
+    form.addEventListener(type, trackFormStart);
   });
 
   closeButton.addEventListener("click", () => dialog.close());
@@ -133,7 +140,7 @@
     } finally {
       submitting = false;
       submitButton.disabled = false;
-      submitButton.textContent = "Надіслати заявку";
+      submitButton.textContent = "Записатися на безкоштовний урок";
     }
   });
 })();
