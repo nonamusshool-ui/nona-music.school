@@ -50,9 +50,24 @@
     }
   };
 
+  const trackTrialCtaClick = (event, trigger, selectedPackage) => {
+    if (!event.isTrusted || typeof window.gtag !== "function") return;
+    try {
+      const params = {
+        form_name: "guitar_application",
+        cta_location: trigger.closest("[data-cta-location]")?.dataset.ctaLocation ?? "other",
+      };
+      if (selectedPackage !== undefined) params.lesson_package = selectedPackage;
+      window.gtag("event", "trial_cta_click", params);
+    } catch (error) {
+      // Analytics must not interrupt opening the form.
+    }
+  };
+
   document.querySelectorAll("[data-package]").forEach((link) => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
+      trackTrialCtaClick(event, link, link.dataset.package);
       openApplication(link, link.dataset.package);
     });
   });
@@ -60,6 +75,7 @@
   document.querySelectorAll("[data-open-application]").forEach((trigger) => {
     trigger.addEventListener("click", (event) => {
       event.preventDefault();
+      trackTrialCtaClick(event, trigger);
       openApplication(trigger);
     });
   });

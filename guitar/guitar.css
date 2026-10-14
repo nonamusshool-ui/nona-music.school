@@ -3,6 +3,16 @@
 .guitar-page .hero { padding-block: 92px 104px; }
 .guitar-page .hero h1 { max-width: 620px; }
 .guitar-page .hero-art { transform: rotate(1deg); }
+.hero-offer { max-width: 490px; margin-bottom: 16px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 16px; background: var(--lime); }
+.hero-offer-stages { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px; }
+.hero-offer-stages div > span { display: block; color: var(--muted); font-size: .78rem; }
+.hero-offer strong { display: block; color: var(--green); font-size: 1.25rem; white-space: nowrap; }
+.hero-offer-plus { color: var(--green); font-size: 1.5rem; font-weight: 700; }
+.hero-offer > p { margin: 8px 0 0; color: var(--muted); font-size: .76rem; line-height: 1.4; }
+.trial-hero .hero-actions { align-items: flex-start; gap: 12px 20px; }
+.hero-primary-action { flex: 1 1 320px; max-width: 440px; }
+.hero-primary-action .button { width: 100%; gap: 10px; font-size: .95rem; }
+.hero-friction { margin: 9px 0 0; color: var(--muted); font-size: .8rem; line-height: 1.45; }
 .hero-facts { display: flex; flex-wrap: wrap; gap: 9px; list-style: none; padding: 0; margin: 30px 0 0; }
 .hero-facts li { background: var(--lime); color: var(--green); border-radius: 100px; padding: 7px 13px; font-size: .8rem; font-weight: 700; }
 .hero-facts .free-lesson-fact { background: var(--yellow); }
@@ -205,6 +215,11 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
   .guitar-page.application-modal-open .mobile-action-bar { display: none; }
   .guitar-page .hero { padding-block: 36px 40px; gap: 28px; }
   .guitar-page .hero-art { transform: none; }
+  .trial-hero .hero-actions { flex-direction: column; align-items: stretch; gap: 8px; }
+  .trial-hero .hero-offer { padding-block: 10px; }
+  .trial-hero .eyebrow { margin-bottom: 16px; }
+  .hero-primary-action { flex: none; max-width: none; }
+  .trial-hero .hero-actions > .text-link { align-self: flex-start; color: var(--muted); font-size: .85rem; }
   .hero-facts { margin-top: 20px; }
   .hero-facts .desktop-hero-fact { display: none; }
   .hero-facts .mobile-hero-fact { display: list-item; }
@@ -236,8 +251,8 @@ html.application-modal-open, body.application-modal-open { overflow: hidden; }
   .guitar-faq { columns: 1; }
 }
 @media (max-width: 480px) {
-  .guitar-page .trial-hero { padding-top: 28px; }
-  .guitar-page .trial-hero h1, .guitar-page .trial-hero .lead { margin-bottom: 20px; }
+  .guitar-page .trial-hero { padding-top: 24px; }
+  .guitar-page .trial-hero h1, .guitar-page .trial-hero .lead { margin-bottom: 16px; }
   .audience-grid, .skill-grid, .package-grid, .special-grid, .ready-layout ul { grid-template-columns: 1fr; }
   .audience-card { min-height: 0; }
   .package-card h3, .special-grid strong { font-size: 2.2rem; }
