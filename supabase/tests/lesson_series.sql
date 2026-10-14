@@ -22,7 +22,7 @@ begin
   insert into public.profiles(id,role,status,can_teach,admin_level) values
     (ta,'teacher','active',false,null),(tb,'teacher','active',false,null),
     (sa,'student','active',false,null),(sb,'student','active',false,null),(sc,'student','active',false,null),
-    (admin_id,'admin','active',true,'owner')
+    (admin_id,'admin','active',true,'senior')
     on conflict(id) do update set role=excluded.role,status=excluded.status,
       can_teach=excluded.can_teach,admin_level=excluded.admin_level;
   insert into public.teacher_students(teacher_id,student_id) values (ta,sa),(ta,sb),(tb,sc),(admin_id,sa);
