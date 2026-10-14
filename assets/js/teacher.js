@@ -2,15 +2,15 @@ import { supabase } from "./supabase-client.js";
 import { detail, empty, kyivDateTime, kyivDay, kyivTime, lessonPlace, lessonStatuses,
   outcomeReasons, requireData } from "./learning-ui.js?v=3";
 import { completeTeacherLesson, initTeacherActions, openTeacherOutcome,
-  openTeacherSchedule, startTeacherLesson } from "./teacher-actions.js?v=4";
-import { initSchedule, refreshSchedule } from "./schedule.js?v=1";
+  openTeacherSchedule, startTeacherLesson } from "./teacher-actions.js?v=5";
+import { initSchedule, refreshSchedule } from "./schedule.js?v=2";
 
 const todayTarget = document.getElementById("teacher-today");
 const studentsTarget = document.getElementById("teacher-students");
 const upcomingTarget = document.getElementById("teacher-upcoming");
 const status = document.getElementById("cabinet-status");
 const refresh = document.getElementById("teacher-refresh");
-const lessonColumns = "id,student_id,package_id,scheduled_at,duration_minutes,status,started_at,consumes_lesson,lesson_format,lesson_url,location_text,meet_url,outcome_reason,outcome_note,resolved_at";
+const lessonColumns = "id,student_id,package_id,scheduled_at,duration_minutes,status,started_at,consumes_lesson,lesson_format,lesson_url,location_text,meet_url,outcome_reason,outcome_note,resolved_at,series_id,series_exception";
 let teacherId;
 let teacherInitialized = false;
 let scheduleInitialized = false;
@@ -44,6 +44,7 @@ function lessonCard(lesson, student) {
     detail("Статус", lessonStatuses[lesson.status] || lesson.status), lessonPlace(lesson));
   if (lesson.outcome_reason) item.append(detail("Причина", outcomeReasons[lesson.outcome_reason] || "Інше"));
   if (lesson.outcome_note) item.append(detail("Внутрішній коментар", lesson.outcome_note));
+  if (lesson.series_id) item.append(detail("Серія", lesson.series_exception ? "Щотижневий урок · окрема зміна цього уроку" : "Щотижневий урок"));
   if (lesson.status === "in_progress") item.append(detail("Почато", lesson.started_at
     ? kyivTime.format(new Date(lesson.started_at)) : "час не вказано"));
   if (lesson.status === "cancelled") item.append(detail("Списано з пакета",
@@ -53,7 +54,7 @@ function lessonCard(lesson, student) {
     actions.className = "learning-actions";
     actions.append(
       action("Почати урок", (button) => startTeacherLesson(lesson, button), "button"),
-      action("Перенести", (button) => openTeacherSchedule(student, lesson, button)),
+      action("Редагувати", (button) => openTeacherSchedule(student, lesson, button)),
       action("Скасувати урок", (button) => openTeacherOutcome(lesson, button)));
     item.append(actions);
   } else if (lesson.status === "in_progress") {

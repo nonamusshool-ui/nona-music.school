@@ -1,6 +1,6 @@
 import { supabase } from "./supabase-client.js";
 import { detail, empty, kyivDateTime, lessonStatuses, outcomeReasons, requireData, safeMeetUrl } from "./learning-ui.js?v=3";
-import { refreshSchedule } from "./schedule.js?v=1";
+import { refreshSchedule } from "./schedule.js?v=2";
 
 const dialog = document.getElementById("admin-learning-dialog");
 const overview = document.getElementById("learning-overview");

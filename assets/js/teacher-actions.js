@@ -78,6 +78,25 @@ function updateFormat() {
   field("teacher-lesson-location").required = !online;
 }
 
+function updateRecurrence() {
+  const repeating = !selectedLesson && field("teacher-lesson-weekly").checked;
+  const count = field("teacher-series-count");
+  field("teacher-series-count-field").hidden = !repeating;
+  count.disabled = !repeating;
+  count.required = repeating;
+  const day = field("teacher-lesson-date").value;
+  const time = field("teacher-lesson-time").value;
+  const quantity = Number(count.value);
+  const weeklyDays = ["Щонеділі", "Щопонеділка", "Щовівторка", "Щосереди", "Щочетверга", "Щоп’ятниці", "Щосуботи"];
+  const weekday = /^\d{4}-\d{2}-\d{2}$/.test(day) ? new Date(`${day}T12:00:00Z`).getUTCDay() : NaN;
+  const noun = quantity % 10 === 1 && quantity % 100 !== 11 ? "заняття"
+    : quantity % 10 >= 2 && quantity % 10 <= 4 && !(quantity % 100 >= 12 && quantity % 100 <= 14) ? "заняття" : "занять";
+  field("teacher-series-preview").textContent = repeating && weeklyDays[weekday] && time
+    && Number.isInteger(quantity) && quantity >= 2 && quantity <= 52
+    ? `${weeklyDays[weekday]} о ${time} · ${quantity} ${noun}` : "Оберіть дату, час і від 2 до 52 занять.";
+  showPackageWarning();
+}
+
 function updateReason() {
   const reason = field("teacher-outcome-reason").value;
   field("teacher-outcome-charge").checked = reason === "student_no_show" && !!outcomeLesson?.package_id;
@@ -123,6 +142,17 @@ function packageWarning() {
   const day = field("teacher-lesson-date").value;
   if (day && balance.valid_from && day < balance.valid_from) return `Цей пакет діє лише з ${balance.valid_from}. Оберіть іншу дату або пакет.`;
   if (day && balance.valid_until && day > balance.valid_until) return `Термін цього пакета закінчився ${balance.valid_until}. Оберіть іншу дату або пакет.`;
+  if (!selectedLesson && field("teacher-lesson-weekly").checked) {
+    const count = Number(field("teacher-series-count").value);
+    if (day && Number.isInteger(count) && count >= 2 && count <= 52) {
+      const last = new Date(`${day}T12:00:00Z`);
+      last.setUTCDate(last.getUTCDate() + (count - 1) * 7);
+      if (balance.valid_until && last.toISOString().slice(0, 10) > balance.valid_until)
+        return "Пакет не діє на одну або декілька дат цієї серії.";
+      if (field("teacher-lesson-consumes").checked && Number(balance.lessons_remaining) < count)
+        return `Пакета не вистачає для ${count} запланованих занять.`;
+    }
+  }
   if (field("teacher-lesson-consumes").checked && Number(balance.lessons_remaining) <= 0)
     return "У пакеті немає доступних занять. Оберіть інший пакет.";
   return "";
@@ -137,8 +167,23 @@ function showPackageWarning() {
 function scheduleErrorMessage(error) {
   if (error?.code === "42501") return "Немає доступу до цього учня або уроку.";
   const message = error?.message || "";
+  let details = {};
+  try { details = JSON.parse(error?.details || "{}"); } catch { /* Details are optional. */ }
+  if (message === "Series count must be between 2 and 52") return "У серії може бути від 2 до 52 занять.";
+  if (message === "Series package insufficient") return Number.isInteger(details?.count)
+    ? `Пакета не вистачає для ${details.count} запланованих занять.` : "У пакеті недостатньо незарезервованих занять для серії.";
+  if (message === "Series package invalid on lesson dates") return "Пакет не діє на одну або декілька дат цієї серії.";
+  if (message === "Series slot conflict") {
+    const when = new Date(details?.scheduled_at);
+    if (!Number.isNaN(when.getTime())) {
+      const date = new Intl.DateTimeFormat("uk-UA", { timeZone: "Europe/Kyiv", day: "numeric", month: "long" }).format(when);
+      return `У викладача або учня вже є урок ${date} о ${kyivInputTime(when)}.`;
+    }
+    return "Одна з дат серії конфліктує з уроком викладача або учня.";
+  }
+  if (message === "Regular future scheduled series lesson required") return "Групова зміна доступна лише для майбутнього запланованого уроку без окремих змін.";
   if (/valid future Kyiv time|Date and time required/i.test(message)) return "Оберіть майбутній час.";
-  if (/Reschedule must change lesson details/i.test(message)) return "Змініть дату, час або інші параметри уроку перед перенесенням.";
+  if (/Reschedule must change lesson details/i.test(message)) return "Змініть дату, час або інші параметри уроку перед збереженням.";
   if (/already has a lesson at this time/i.test(message)) return "У цей час у викладача або учня вже є інший урок.";
   if (/active student package valid on lesson day/i.test(message)) return "Цей пакет недоступний для вибраної дати.";
   if (/Package has no unreserved lessons/i.test(message)) return "У пакеті немає доступних занять.";
@@ -160,8 +205,13 @@ export async function openTeacherSchedule(student, lesson, opener) {
   scheduleForm.reset();
   showError(scheduleError, "");
   field("teacher-package-warning").hidden = true;
-  field("teacher-schedule-title").textContent = lesson ? "Перенести урок" : "Запланувати урок";
-  field("teacher-schedule-save").textContent = lesson ? "Перенести урок" : "Запланувати урок";
+  field("teacher-schedule-title").textContent = lesson ? "Редагувати урок" : "Запланувати урок";
+  field("teacher-schedule-save").textContent = lesson ? "Зберегти зміни" : "Запланувати урок";
+  field("teacher-series-controls").hidden = !!lesson;
+  field("teacher-series-scope-field").hidden = !lesson?.series_id;
+  field("teacher-series-scope").value = "single";
+  field("teacher-series-scope").querySelector('[value="following"]').disabled = !!lesson?.series_exception
+    || (!!lesson && new Date(lesson.scheduled_at) <= new Date());
   field("teacher-schedule-save").disabled = true;
   field("teacher-lesson-package").replaceChildren(new Option("Завантажуємо пакети…", ""));
   field("teacher-lesson-package").disabled = true;
@@ -176,6 +226,7 @@ export async function openTeacherSchedule(student, lesson, opener) {
   field("teacher-lesson-location").value = lesson?.location_text || "";
   field("teacher-lesson-consumes").checked = lesson ? !!lesson.consumes_lesson : false;
   updateFormat();
+  updateRecurrence();
   scheduleDialog.showModal();
   document.body.classList.add("admin-dialog-open");
   try {
@@ -240,7 +291,10 @@ export function initTeacherActions(changed, reportStatus) {
   if (actionsInitialized) return;
   actionsInitialized = true;
   field("teacher-lesson-format").addEventListener("change", updateFormat);
-  field("teacher-lesson-date").addEventListener("change", showPackageWarning);
+  field("teacher-lesson-date").addEventListener("change", updateRecurrence);
+  field("teacher-lesson-time").addEventListener("change", updateRecurrence);
+  field("teacher-lesson-weekly").addEventListener("change", updateRecurrence);
+  field("teacher-series-count").addEventListener("input", updateRecurrence);
   field("teacher-lesson-package").addEventListener("change", () => {
     field("teacher-lesson-consumes").checked = !!field("teacher-lesson-package").value;
     showPackageWarning();
@@ -324,12 +378,19 @@ export function initTeacherActions(changed, reportStatus) {
         takes_package_lesson: consumes,
       };
       const wasReschedule = !!selectedLesson;
+      const recurring = !wasReschedule && field("teacher-lesson-weekly").checked;
+      const following = wasReschedule && !!selectedLesson.series_id && field("teacher-series-scope").value === "following";
       if (wasReschedule) params.target_lesson_id = selectedLesson.id;
       else params.target_student_id = selectedStudent.id;
-      requireData(await supabase.rpc(wasReschedule ? "teacher_reschedule_lesson" : "teacher_schedule_lesson", params));
+      if (recurring) params.occurrence_count = Number(field("teacher-series-count").value);
+      const rpc = following ? "teacher_update_lesson_series_from" : wasReschedule ? "teacher_reschedule_lesson"
+        : recurring ? "teacher_schedule_lesson_series" : "teacher_schedule_lesson";
+      const result = requireData(await supabase.rpc(rpc, params));
       scheduleDialog.close();
       await onChanged();
-      setStatus(wasReschedule ? "Урок перенесено." : "Урок заплановано.");
+      setStatus(recurring ? `Серію заплановано: ${result.count} занять.`
+        : following ? `Майбутні уроки серії змінено: ${result.count}.`
+          : wasReschedule ? "Зміни уроку збережено." : "Урок заплановано.");
     } catch (error) {
       showError(scheduleError, scheduleErrorMessage(error));
     } finally {

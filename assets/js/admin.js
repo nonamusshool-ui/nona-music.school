@@ -1,8 +1,8 @@
 import { supabase } from "./supabase-client.js";
-import { initAdminLearning, openAdminLearning } from "./admin-learning.js?v=6";
+import { initAdminLearning, openAdminLearning } from "./admin-learning.js?v=7";
 import { initAdminJournal } from "./admin-journal.js?v=2";
 import { initChat } from "./chat.js?v=3";
-import { initSchedule } from "./schedule.js?v=1";
+import { initSchedule } from "./schedule.js?v=2";
 
 const roles = { student: "Учень", teacher: "Викладач", admin: "Адміністратор" };
 function roleLabel(user) {

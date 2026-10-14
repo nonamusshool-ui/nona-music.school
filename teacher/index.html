@@ -8,7 +8,7 @@
     <title>Кабінет викладача | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
     <link rel="stylesheet" href="../assets/css/cabinet.css?v=10" />
-    <script type="module" src="../assets/js/dashboard.js?v=14"></script>
+    <script type="module" src="../assets/js/dashboard.js?v=15"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
@@ -42,6 +42,11 @@
         <div class="admin-dialog-heading"><div><p class="eyebrow">РОЗКЛАД</p><h2 id="teacher-schedule-title">Запланувати урок</h2></div><button class="admin-dialog-close" id="teacher-schedule-close" type="button" aria-label="Закрити">×</button></div>
         <p>Учень: <strong id="teacher-schedule-student"></strong></p>
         <div class="learning-fields"><div class="admin-field"><label for="teacher-lesson-date">Дата (Київ)</label><input id="teacher-lesson-date" type="date" required /></div><div class="admin-field"><label for="teacher-lesson-time">Час (Київ)</label><input id="teacher-lesson-time" type="time" required /></div></div>
+        <div id="teacher-series-controls">
+          <label class="learning-check"><input id="teacher-lesson-weekly" type="checkbox" /> Повторювати щотижня</label>
+          <div id="teacher-series-count-field" hidden><div class="admin-field"><label for="teacher-series-count">Кількість занять</label><input id="teacher-series-count" type="number" min="2" max="52" value="8" disabled /></div><p class="learning-warning" id="teacher-series-preview" aria-live="polite"></p></div>
+        </div>
+        <div class="admin-field" id="teacher-series-scope-field" hidden><label for="teacher-series-scope">Застосувати зміни до:</label><select id="teacher-series-scope"><option value="single">Тільки цього уроку</option><option value="following">Цього і всіх наступних</option></select><p class="learning-warning">Групова зміна стосується лише майбутніх запланованих уроків без окремих змін.</p></div>
         <div class="admin-field"><label for="teacher-lesson-duration">Тривалість, хвилин</label><input id="teacher-lesson-duration" type="number" min="15" max="180" value="60" required /></div>
         <div class="admin-field"><label for="teacher-lesson-format">Формат</label><select id="teacher-lesson-format" required><option value="online">Онлайн</option><option value="offline">Офлайн</option></select></div>
         <div class="admin-field" id="teacher-url-field"><label for="teacher-lesson-url">Посилання на заняття (HTTPS)</label><input id="teacher-lesson-url" type="url" inputmode="url" placeholder="https://meet.google.com/…" /></div>

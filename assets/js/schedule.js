@@ -9,7 +9,7 @@ const dayDate = new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long"
 const rangeStart = new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long", timeZone: "UTC" });
 const rangeEnd = new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 const fullDate = new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Kyiv" });
-const columns = "id,student_id,teacher_id,scheduled_at,duration_minutes,status,lesson_format,lesson_url,location_text,meet_url,package_id,consumes_lesson,resolved_at";
+const columns = "id,student_id,teacher_id,scheduled_at,duration_minutes,status,lesson_format,lesson_url,location_text,meet_url,package_id,consumes_lesson,resolved_at,series_id,series_exception";
 
 let role, userId, initialized = false, monday = mondayOf(kyivDay());
 let lessons = [], names = new Map(), requestId = 0, detailOpener = null;
@@ -53,6 +53,10 @@ function openDetails(lesson, opener) {
   if (role === "admin" || role === "student") fields.push(detail("Викладач", person(lesson.teacher_id, "Викладач НОНА")));
   fields.push(detail("Статус", statusLabel(lesson.status)),
     detail("Пакет", chargeLabel(lesson)));
+  if (lesson.series_id) {
+    fields.push(detail("Серія", "Щотижневий урок"));
+    if (lesson.series_exception) fields.push(detail("Зміна", "Окрема зміна цього уроку"));
+  }
   if (lesson.lesson_format || lesson.lesson_url || lesson.meet_url || lesson.location_text) {
     fields.push(lessonPlace({ ...lesson, lesson_format: lesson.lesson_format || (lesson.lesson_url || lesson.meet_url ? "online" : "offline") }));
   }
@@ -75,7 +79,7 @@ function lessonCard(lesson) {
   name.textContent = identity(lesson);
   const meta = document.createElement("span");
   meta.className = "schedule-meta";
-  meta.textContent = `${lesson.duration_minutes} хв · ${formatLabel(lesson)}`;
+  meta.textContent = `${lesson.duration_minutes} хв · ${formatLabel(lesson)}${lesson.series_id ? " · Щотижневий" : ""}`;
   const badge = document.createElement("span");
   badge.className = `journal-badge journal-badge--${lesson.status}`;
   badge.textContent = statusLabel(lesson.status);
