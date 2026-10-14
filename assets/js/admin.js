@@ -1,6 +1,6 @@
 import { supabase } from "./supabase-client.js";
 import { initAdminLearning, openAdminLearning } from "./admin-learning.js?v=7";
-import { initAdminJournal } from "./admin-journal.js?v=2";
+import { initAdminJournal } from "./admin-journal.js?v=3";
 import { initChat } from "./chat.js?v=3";
 import { initSchedule } from "./schedule.js?v=2";
 

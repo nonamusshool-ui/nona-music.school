@@ -7,8 +7,8 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Адміністрування | НОНА Music School</title>
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="../assets/css/cabinet.css?v=10" />
-    <script type="module" src="../assets/js/dashboard.js?v=15"></script>
+    <link rel="stylesheet" href="../assets/css/cabinet.css?v=11" />
+    <script type="module" src="../assets/js/dashboard.js?v=16"></script>
   </head>
   <body class="cabinet-page">
     <a class="skip-link" href="#main">Перейти до змісту</a>
@@ -124,7 +124,12 @@
         </section>
 
         <section id="journal" aria-labelledby="journal-title">
-          <div class="section-heading"><h2 id="journal-title">Журнал занять</h2><p>Записи за місяць за київським часом. Історія перенесень зберігається окремими рядками.</p></div>
+          <div class="section-heading"><h2 id="journal-title">Журнал занять</h2><p>Відомість за київським часом. Натисніть клітинку, щоб переглянути уроки.</p></div>
+          <div class="journal-modes" role="tablist" aria-label="Режим журналу">
+            <button class="button button-light" id="journal-tab-month" type="button" role="tab" aria-selected="true" aria-controls="journal-statement-wrap" data-journal-mode="month">Місяць</button>
+            <button class="button button-light" id="journal-tab-year" type="button" role="tab" aria-selected="false" aria-controls="journal-statement-wrap" tabindex="-1" data-journal-mode="year">Рік</button>
+            <button class="button button-light" id="journal-tab-records" type="button" role="tab" aria-selected="false" aria-controls="journal-table-wrap" tabindex="-1" data-journal-mode="records">Записи</button>
+          </div>
           <div class="journal-month" aria-label="Вибір місяця">
             <button class="button button-light" id="journal-prev" type="button" aria-label="Попередній місяць">←</button>
             <strong id="journal-month-label" aria-live="polite"></strong>
@@ -133,16 +138,20 @@
           <div class="journal-filters">
             <div class="admin-field"><label for="journal-teacher">Викладач</label><select id="journal-teacher"><option value="">Усі викладачі</option></select></div>
             <div class="admin-field"><label for="journal-student">Учень</label><select id="journal-student"><option value="">Усі учні</option></select></div>
-            <div class="admin-field"><label for="journal-status">Статус</label><select id="journal-status"><option value="">Усі статуси</option><option value="scheduled">Заплановано</option><option value="in_progress">Триває</option><option value="completed">Проведено</option><option value="cancelled">Скасовано</option><option value="rescheduled">Перенесено</option></select></div>
+            <div class="admin-field" id="journal-status-filter" hidden><label for="journal-status">Статус</label><select id="journal-status" disabled><option value="">Усі статуси</option><option value="scheduled">Заплановано</option><option value="in_progress">Триває</option><option value="completed">Проведено</option><option value="cancelled">Скасовано</option><option value="rescheduled">Перенесено</option></select></div>
             <div class="admin-field"><label for="journal-search">Пошук за ім’ям</label><input id="journal-search" type="search" maxlength="100" autocomplete="off" placeholder="Учень або викладач" /></div>
           </div>
-          <p class="journal-summary-scope" id="journal-summary-scope">Підсумок місяця</p>
-          <div class="journal-summary" id="journal-summary" aria-label="Підсумок журналу"></div>
+          <p class="journal-summary-scope" id="journal-summary-scope" hidden>Підсумок місяця</p>
+          <div class="journal-summary" id="journal-summary" aria-label="Підсумок журналу" hidden></div>
+          <p class="journal-matrix-help" id="journal-matrix-help">✓ Проведено · • Заплановано · × Скасовано / не проведено · ↻ Перенесено · ▶ Триває. Залишилось — поточний баланс активних пакетів.</p>
           <p class="status" id="journal-loading" role="status" aria-live="polite">Завантажуємо журнал…</p>
           <div class="admin-error" id="journal-error" hidden role="alert"><p>Не вдалося завантажити журнал.</p><button class="button button-light" id="journal-retry" type="button">Спробувати ще раз</button></div>
           <p class="empty-state" id="journal-empty" hidden></p>
           <p class="status" id="journal-count" hidden></p>
-          <div class="admin-table-wrap" id="journal-table-wrap" hidden>
+          <div class="journal-sheet-wrap" id="journal-statement-wrap" role="tabpanel" aria-labelledby="journal-tab-month" tabindex="0" hidden>
+            <table class="journal-sheet" id="journal-statement-table"><caption id="journal-statement-caption">Місячна відомість</caption><thead id="journal-statement-head"></thead><tbody id="journal-statement-body"></tbody></table>
+          </div>
+          <div class="admin-table-wrap" id="journal-table-wrap" role="tabpanel" aria-labelledby="journal-tab-records" hidden>
             <table class="journal-table"><thead><tr><th scope="col">Дата · час</th><th scope="col">Учень</th><th scope="col">Викладач</th><th scope="col">Тривалість</th><th scope="col">Статус</th><th scope="col">Пакет / списання</th><th scope="col">Причина</th><th scope="col">Дія</th></tr></thead><tbody id="journal-body"></tbody></table>
           </div>
           <button class="button button-light journal-more" id="journal-more" type="button" hidden>Завантажити ще</button>

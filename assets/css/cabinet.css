@@ -234,6 +234,36 @@ body.admin-dialog-open { overflow: hidden; }
 .journal-details p { margin: 0; padding: 9px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 .journal-details a { color: var(--green); }
 
+/* Admin spreadsheet statements */
+.journal-modes { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.journal-modes [aria-selected="true"] { background: var(--green); color: #fff; }
+.journal-modes [aria-selected="true"]:hover:not(:disabled) { background: var(--dark); color: #fff; }
+.journal-matrix-help { color: var(--muted); font-size: .8rem; margin: 12px 0; }
+.journal-sheet-wrap { max-width: 100%; max-height: 65vh; overflow: auto; border: 1px solid var(--line); border-radius: 8px; isolation: isolate; }
+.journal-sheet { width: max-content; min-width: 100%; border-collapse: separate; border-spacing: 0; font-size: .78rem; background: #fff; }
+.journal-sheet caption { padding: 6px 10px; text-align: left; color: var(--muted); }
+.journal-sheet th, .journal-sheet td { min-width: 42px; height: 42px; padding: 3px 5px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; vertical-align: middle; }
+.journal-sheet thead th { position: sticky; top: 0; z-index: 2; background: #edf3e9; color: var(--dark); }
+.journal-sheet .journal-student-cell { position: sticky; left: 0; z-index: 1; width: 190px; min-width: 190px; max-width: 190px; background: #fff; text-align: left; overflow-wrap: anywhere; }
+.journal-sheet thead .journal-student-cell { z-index: 3; background: #edf3e9; }
+.journal-sheet tbody tr:hover > * { background-color: #f1f6ed; }
+.journal-sheet .journal-total-cell { min-width: 90px; background: #fafbf5; font-variant-numeric: tabular-nums; }
+.journal-sheet small { display: block; font-size: .7rem; color: var(--muted); font-weight: 400; }
+.journal-sheet-button { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 3px; width: 100%; min-width: 32px; min-height: 36px; padding: 2px; border: 0; border-radius: 4px; background: transparent; color: var(--green); cursor: pointer; font: inherit; }
+.journal-sheet-button:hover { outline: 2px solid var(--green); outline-offset: -2px; }
+.journal-student-link { justify-content: flex-start; text-align: left; font-weight: 700; }
+.journal-mark { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; min-height: 26px; padding: 1px 3px; border-radius: 3px; font-weight: 700; }
+.journal-mark--completed { background: #dcefe3; color: #17543c; }
+.journal-mark--scheduled { background: #e0ecff; color: #214b88; }
+.journal-mark--cancelled, .journal-mark--no_show { background: #fbe6e1; color: #8e3025; }
+.journal-mark--rescheduled { background: #fff2c4; color: #654806; }
+.journal-mark--in_progress { background: #eee4ff; color: #593581; }
+.journal-day-list { display: grid; gap: 8px; }
+.journal-day-list .button { text-align: left; justify-content: flex-start; }
+@media (max-width: 600px) {
+  .journal-sheet .journal-student-cell { width: 140px; min-width: 140px; max-width: 140px; }
+}
+
 /* Operational weekly schedule */
 .schedule-section { margin-top: 20px; }
 .schedule-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 18px 0; }

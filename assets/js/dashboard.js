@@ -40,7 +40,7 @@ async function enterCabinet() {
   try {
     if (expectedRole === "admin" || expectedRole === "teacher") setupWorkspace(expectedRole, access);
     if (expectedRole === "admin") {
-      const { initAdmin } = await import("./admin.js?v=12");
+      const { initAdmin } = await import("./admin.js?v=13");
       initAdmin(access.user.id, access.adminLevel);
     } else if (expectedRole === "student") {
       const { initStudent } = await import("./student.js?v=8");

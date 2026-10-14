@@ -5,6 +5,11 @@ const pageSize = 100;
 const monthName = new Intl.DateTimeFormat("uk-UA", { month: "long", year: "numeric", timeZone: "UTC" });
 const monthParts = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", timeZone: "Europe/Kyiv" });
 const elements = {
+  modes: [...document.querySelectorAll("[data-journal-mode]")],
+  statusFilter: document.getElementById("journal-status-filter"),
+  sheetWrap: document.getElementById("journal-statement-wrap"),
+  sheetHead: document.getElementById("journal-statement-head"), sheetBody: document.getElementById("journal-statement-body"),
+  caption: document.getElementById("journal-statement-caption"), help: document.getElementById("journal-matrix-help"),
   month: document.getElementById("journal-month-label"), prev: document.getElementById("journal-prev"), next: document.getElementById("journal-next"),
   teacher: document.getElementById("journal-teacher"), student: document.getElementById("journal-student"),
   status: document.getElementById("journal-status"), search: document.getElementById("journal-search"),
@@ -23,6 +28,8 @@ function currentKyivMonth() {
 }
 
 let month = currentKyivMonth();
+let mode = "month";
+let detailsGeneration = 0;
 let rows = [];
 let total = 0;
 let generation = 0;
@@ -31,19 +38,238 @@ let opener = null;
 
 function shiftMonth(amount) {
   const [year, number] = month.split("-").map(Number);
-  const date = new Date(Date.UTC(year, number - 1 + amount, 1));
+  const date = new Date(Date.UTC(year + (mode === "year" ? amount : 0), number - 1 + (mode === "year" ? 0 : amount), 1));
   month = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}-01`;
-  elements.month.textContent = monthName.format(date);
-  elements.teacher.value = "";
-  elements.student.value = "";
+  updateMode();
+  if (mode === "records") {
+    elements.teacher.value = "";
+    elements.student.value = "";
+  }
   loadJournal();
 }
 
 function setOptions(select, values, allLabel) {
   const selected = select.value;
+  const selectedName = select.selectedOptions[0]?.textContent;
   select.replaceChildren(new Option(allLabel, ""));
   for (const item of values) select.add(new Option(item.name || "Ім’я не вказано", item.id));
-  select.value = values.some(({ id }) => id === selected) ? selected : "";
+  if (mode !== "records" && selected && !values.some(({ id }) => id === selected)) {
+    select.add(new Option(selectedName || "Ім’я не вказано", selected));
+  }
+  select.value = [...select.options].some(({ value }) => value === selected) ? selected : "";
+}
+
+function updateMode() {
+  elements.month.textContent = mode === "year" ? month.slice(0, 4) : monthName.format(new Date(`${month}T12:00:00Z`));
+  elements.prev.setAttribute("aria-label", mode === "year" ? "Попередній рік" : "Попередній місяць");
+  elements.next.setAttribute("aria-label", mode === "year" ? "Наступний рік" : "Наступний місяць");
+  for (const button of elements.modes) {
+    const selected = button.dataset.journalMode === mode;
+    button.setAttribute("aria-selected", String(selected));
+    button.tabIndex = selected ? 0 : -1;
+  }
+  elements.statusFilter.hidden = mode !== "records";
+  elements.status.disabled = mode !== "records";
+  elements.summary.hidden = mode !== "records";
+  elements.summaryScope.hidden = mode !== "records";
+  elements.help.hidden = mode === "records";
+  elements.help.textContent = mode === "year"
+    ? "Клітинки місяців — кількість проведених уроків. Натисніть число, щоб перейти до днів. Залишилось — поточний баланс активних пакетів."
+    : "✓ Проведено · • Заплановано · × Скасовано / не проведено · ↻ Перенесено · ▶ Триває. Залишилось — поточний баланс активних пакетів.";
+  elements.wrap.hidden = true;
+  elements.sheetWrap.hidden = true;
+  elements.more.hidden = true;
+  elements.sheetWrap.setAttribute("aria-labelledby", `journal-tab-${mode === "year" ? "year" : "month"}`);
+}
+
+function switchMode(next) {
+  mode = next;
+  updateMode();
+  loadJournal();
+}
+
+function selectStudent(row) {
+  if (![...elements.student.options].some(({ value }) => value === row.student_id)) {
+    elements.student.add(new Option(row.student_name, row.student_id));
+  }
+  elements.student.value = row.student_id;
+}
+
+function sheetButton(label, action, className = "") {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = `journal-sheet-button ${className}`;
+  button.textContent = label;
+  button.addEventListener("click", () => action(button));
+  return button;
+}
+
+const monthLabels = ["Січ", "Лют", "Бер", "Кві", "Тра", "Чер", "Лип", "Сер", "Вер", "Жов", "Лис", "Гру"];
+const statusMarks = { completed: "✓", scheduled: "•", cancelled: "×", no_show: "×", rescheduled: "↻", in_progress: "▶" };
+
+function dayLabel(lessons) {
+  return lessons.map((lesson) => `${kyivTime.format(new Date(lesson.scheduled_at))}, ${lesson.teacher_name}: ${lessonStatuses[lesson.status] || lesson.status}`).join("; ");
+}
+
+function showDay(lessons, button) {
+  if (lessons.length === 1) {
+    loadStatementDetails(lessons[0], button);
+    return;
+  }
+  ++detailsGeneration;
+  opener = button;
+  const list = document.createElement("div");
+  list.className = "journal-day-list";
+  list.append(detail("Уроки учня", `${lessons[0].student_name} · ${kyivDate.format(new Date(lessons[0].scheduled_at))}`));
+  for (const lesson of lessons) {
+    const choice = document.createElement("button");
+    choice.type = "button";
+    choice.className = "button button-light";
+    choice.textContent = `${kyivTime.format(new Date(lesson.scheduled_at))} · ${lesson.teacher_name} · ${lessonStatuses[lesson.status] || lesson.status}`;
+    choice.addEventListener("click", () => loadStatementDetails(lesson, button));
+    list.append(choice);
+  }
+  elements.details.replaceChildren(list);
+  elements.dialog.showModal();
+  document.body.classList.add("admin-dialog-open");
+  elements.close.focus();
+}
+
+async function loadStatementDetails(lesson, button) {
+  const request = ++detailsGeneration;
+  opener = button;
+  elements.details.replaceChildren(detail("Деталі уроку", "Завантажуємо…"));
+  if (!elements.dialog.open) elements.dialog.showModal();
+  document.body.classList.add("admin-dialog-open");
+  elements.close.focus();
+  try {
+    const { data, error } = await supabase.rpc("staff_lesson_records")
+      .select("id,scheduled_at,duration_minutes,status,package_id,consumes_lesson,lesson_format,lesson_url,meet_url,location_text,outcome_reason,outcome_note,started_at,completed_at,resolved_at,completion_source,series_id,series_occurrence,series_exception")
+      .eq("id", lesson.lesson_id).maybeSingle();
+    if (request !== detailsGeneration || !elements.dialog.open) return;
+    if (error || !data) throw error || new Error("Lesson not found");
+    const charged = Boolean(data.package_id && data.consumes_lesson &&
+      (data.status === "completed" || (data.status === "cancelled" && data.resolved_at)));
+    openDetails({ ...lesson, ...data, charged }, button);
+  } catch {
+    if (request === detailsGeneration && elements.dialog.open) {
+      const retry = sheetButton("Спробувати ще раз", () => loadStatementDetails(lesson, button));
+      elements.details.replaceChildren(detail("Деталі уроку", "Не вдалося завантажити урок."), retry);
+    }
+  }
+}
+
+function renderStatement(data) {
+  const year = mode === "year";
+  const columns = year ? monthLabels : Array.from({ length: data.days_in_month }, (_, i) => String(i + 1));
+  const totals = year
+    ? [["completed", "Проведено"], ["cancelled", "Скасовано"], ["rescheduled", "Перенесено"], ["charged", "Списано"], ["remaining_now", "Залишилось"]]
+    : [["completed", "Проведено"], ["cancelled", "Скасовано"], ["rescheduled", "Перенесено"], ["scheduled", "Заплановано"], ["charged", "Списано"], ["remaining_now", "Залишилось"]];
+  const heading = document.createElement("tr");
+  for (const [index, label] of ["Учень", ...columns, ...totals.map(([, label]) => label)].entries()) {
+    const th = document.createElement("th");
+    th.scope = "col";
+    th.textContent = label;
+    if (!index) th.className = "journal-student-cell";
+    if (index > columns.length) th.className = "journal-total-cell";
+    if (label === "Залишилось") th.title = "Залишилось зараз: баланс активних пакетів";
+    if (label === "Заплановано") th.title = "Лише заплановані уроки. Уроки, які тривають, позначені окремо.";
+    heading.append(th);
+  }
+  elements.sheetHead.replaceChildren(heading);
+  const fragment = document.createDocumentFragment();
+  for (const row of data.rows) {
+    const tr = document.createElement("tr");
+    const student = document.createElement("th");
+    student.scope = "row";
+    student.className = "journal-student-cell";
+    const name = sheetButton(row.student_name, () => { selectStudent(row); elements.status.value = ""; switchMode("records"); }, "journal-student-link");
+    name.title = "Переглянути записи учня за місяць";
+    const teachers = document.createElement("small");
+    teachers.textContent = (row.teachers || []).map(({ name }) => name).join(", ");
+    student.append(name, teachers);
+    tr.append(student);
+    for (let n = 1; n <= columns.length; n++) {
+      const td = document.createElement("td");
+      if (year) {
+        const count = Number(row.months?.[n] || 0);
+        const button = sheetButton(String(count), () => {
+          month = `${month.slice(0, 4)}-${String(n).padStart(2, "0")}-01`;
+          selectStudent(row);
+          switchMode("month");
+        });
+        button.setAttribute("aria-label", `${row.student_name}, ${monthLabels[n - 1]}: проведено ${count}. Відкрити місяць`);
+        td.append(button);
+      } else {
+        const lessons = row.days?.[n] || [];
+        if (lessons.length) {
+          const button = sheetButton("", (button) => showDay(lessons, button));
+          const label = `${row.student_name}, ${n}: ${dayLabel(lessons)}`;
+          button.title = label;
+          button.setAttribute("aria-label", label);
+          for (const lesson of lessons) {
+            const mark = document.createElement("span");
+            mark.className = `journal-mark journal-mark--${lesson.status}`;
+            mark.textContent = statusMarks[lesson.status] || "?";
+            mark.setAttribute("aria-hidden", "true");
+            button.append(mark);
+          }
+          td.append(button);
+        }
+      }
+      tr.append(td);
+    }
+    for (const [key, label] of totals) {
+      const td = cell(label, String(Number(row.totals?.[key] || 0)));
+      td.className = "journal-total-cell";
+      if (key === "remaining_now") td.title = "Залишилось зараз: баланс активних пакетів";
+      if (key === "scheduled" && row.totals?.in_progress) {
+        const ongoing = document.createElement("small");
+        ongoing.textContent = `Триває: ${Number(row.totals.in_progress)}`;
+        td.append(ongoing);
+      }
+      tr.append(td);
+    }
+    fragment.append(tr);
+  }
+  elements.sheetBody.replaceChildren(fragment);
+  elements.caption.textContent = `${year ? "Річна" : "Місячна"} відомість: ${elements.month.textContent}. Час — Київ.`;
+  elements.sheetWrap.hidden = data.rows.length === 0;
+  elements.empty.hidden = data.rows.length !== 0;
+  elements.empty.textContent = "За вибраний період занять немає.";
+  elements.sheetWrap.scrollTop = 0;
+  elements.sheetWrap.scrollLeft = 0;
+}
+
+async function loadStatement() {
+  const request = ++generation;
+  busy = true;
+  elements.loading.hidden = false;
+  elements.loading.textContent = "Завантажуємо відомість…";
+  elements.error.hidden = true;
+  elements.empty.hidden = true;
+  elements.count.hidden = true;
+  elements.sheetWrap.hidden = true;
+  elements.more.hidden = true;
+  try {
+    const { data, error } = await supabase.rpc("admin_lesson_statement", {
+      period_type: mode, period_start: mode === "year" ? `${month.slice(0, 4)}-01-01` : month,
+      teacher_filter: elements.teacher.value || null, student_filter: elements.student.value || null,
+      name_query: elements.search.value.trim() || null,
+    });
+    if (request !== generation) return;
+    if (error || !data || !Array.isArray(data.rows)) throw error || new Error("Invalid statement response");
+    setOptions(elements.teacher, data.teachers || [], "Усі викладачі");
+    setOptions(elements.student, data.students || [], "Усі учні");
+    renderStatement(data);
+  } catch {
+    if (request === generation) elements.error.hidden = false;
+  } finally {
+    if (request === generation) {
+      busy = false;
+      elements.loading.hidden = true;
+    }
+  }
 }
 
 function renderSummary(summary) {
@@ -151,6 +377,10 @@ function openDetails(lesson, button) {
     ["resolved_at (UTC)", lesson.resolved_at ? new Date(lesson.resolved_at).toISOString() : null],
     ["Завершення", lesson.completion_source === "automatic" ? "Проведено автоматично" : lesson.completion_source === "teacher" ? "Завершив викладач" : "—"],
   ];
+  if (lesson.series_id) {
+    fields.push(["Серія", "Щотижневі заняття"], ["Номер у серії", lesson.series_occurrence],
+      ["Зміна у серії", lesson.series_exception ? "Окремо змінений урок" : "За розкладом серії"]);
+  }
   const content = document.createDocumentFragment();
   for (const [label, value] of fields) content.append(detail(label, value));
   let destination;
@@ -171,7 +401,7 @@ function openDetails(lesson, button) {
     content.append(line);
   }
   elements.details.replaceChildren(content);
-  elements.dialog.showModal();
+  if (!elements.dialog.open) elements.dialog.showModal();
   document.body.classList.add("admin-dialog-open");
   elements.close.focus();
   if (destination) {
@@ -189,6 +419,7 @@ function openDetails(lesson, button) {
 }
 
 async function loadJournal(append = false) {
+  if (mode !== "records") return loadStatement();
   if (busy && append) return;
   const request = ++generation;
   busy = true;
@@ -234,11 +465,29 @@ async function loadJournal(append = false) {
 }
 
 export function initAdminJournal() {
-  elements.month.textContent = monthName.format(new Date(`${month}T12:00:00Z`));
+  updateMode();
   elements.prev.addEventListener("click", () => shiftMonth(-1));
   elements.next.addEventListener("click", () => shiftMonth(1));
   for (const select of [elements.teacher, elements.student, elements.status]) select.addEventListener("change", () => loadJournal());
   let timer;
+  for (const [index, button] of elements.modes.entries()) {
+    button.addEventListener("click", () => {
+      clearTimeout(timer);
+      if (mode !== button.dataset.journalMode) switchMode(button.dataset.journalMode);
+    });
+    button.addEventListener("keydown", (event) => {
+      let next;
+      if (event.key === "ArrowRight") next = (index + 1) % elements.modes.length;
+      if (event.key === "ArrowLeft") next = (index + elements.modes.length - 1) % elements.modes.length;
+      if (event.key === "Home") next = 0;
+      if (event.key === "End") next = elements.modes.length - 1;
+      if (next === undefined) return;
+      event.preventDefault();
+      clearTimeout(timer);
+      elements.modes[next].focus();
+      switchMode(elements.modes[next].dataset.journalMode);
+    });
+  }
   elements.search.addEventListener("input", () => {
     clearTimeout(timer);
     timer = setTimeout(() => loadJournal(), 250);
@@ -248,6 +497,7 @@ export function initAdminJournal() {
   elements.close.addEventListener("click", () => elements.dialog.close());
   elements.dialog.addEventListener("click", (event) => { if (event.target === elements.dialog) elements.dialog.close(); });
   elements.dialog.addEventListener("close", () => {
+    ++detailsGeneration;
     document.body.classList.remove("admin-dialog-open");
     if (opener?.isConnected) opener.focus();
     opener = null;
