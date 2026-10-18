@@ -1,3 +1,82 @@
+// Technical lead attribution for Web3Forms. Stores only the entry context of this browser
+// session (landing page, referrer, UTM, gclid) — never any form fields.
+const leadAttribution = (() => {
+  const storageKey = "nona_lead_attribution";
+  const paramLimits = {
+    utm_source: 200,
+    utm_medium: 200,
+    utm_campaign: 200,
+    utm_content: 200,
+    utm_term: 200,
+    gclid: 300,
+  };
+  const urlLimit = 2000;
+  const clean = (value, limit) => String(value ?? "").trim().slice(0, limit);
+
+  const readStored = () => {
+    try {
+      const stored = JSON.parse(window.sessionStorage.getItem(storageKey) || "null");
+      return stored && typeof stored === "object" ? stored : null;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const capture = () => {
+    let url = null;
+    try {
+      url = new URL(window.location.href);
+    } catch (error) {
+      // Without a readable URL there is no attribution to collect.
+    }
+    const stored = readStored();
+    const hasCampaignParams = Boolean(url) && Object.keys(paramLimits).some((key) => url.searchParams.get(key));
+    if (stored && !hasCampaignParams) return stored;
+
+    if (url) url.hash = "";
+    const context = {
+      landing_page: clean(url?.href, urlLimit),
+      referrer: clean(document.referrer, urlLimit),
+    };
+    Object.entries(paramLimits).forEach(([key, limit]) => {
+      context[key] = clean(url?.searchParams.get(key), limit);
+    });
+    try {
+      window.sessionStorage.setItem(storageKey, JSON.stringify(context));
+    } catch (error) {
+      // Storage may be unavailable; the context still lives for this page view.
+    }
+    return context;
+  };
+
+  const context = capture();
+
+  const createLeadId = () => {
+    try {
+      if (typeof window.crypto?.randomUUID === "function") return `nona_${window.crypto.randomUUID()}`;
+    } catch (error) {
+      // Fall through to the non-crypto id.
+    }
+    return `nona_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 12)}`;
+  };
+
+  // Always the same set of fields; missing values are sent as empty strings.
+  const fields = () => {
+    const result = {
+      lead_id: createLeadId(),
+      submitted_at: new Date().toISOString(),
+      landing_page: clean(context.landing_page, urlLimit),
+      referrer: clean(context.referrer, urlLimit),
+    };
+    Object.entries(paramLimits).forEach(([key, limit]) => {
+      result[key] = clean(context[key], limit);
+    });
+    return result;
+  };
+
+  return { fields };
+})();
+
 (() => {
   const dialog = document.getElementById("application-modal");
   const form = document.getElementById("guitar-application");
@@ -129,7 +208,8 @@
       const response = await fetch(form.action, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        // Form fields go last so attribution can never overwrite an existing field.
+        body: JSON.stringify({ ...leadAttribution.fields(), ...Object.fromEntries(new FormData(form)) }),
       });
       const result = await response.json();
       if (!response.ok || result.success !== true) throw new Error("Web3Forms rejected the submission");
@@ -235,7 +315,8 @@ document.querySelectorAll("[data-phone-click-location]").forEach((link) => {
       const response = await fetch(form.action, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        // Form fields go last so attribution can never overwrite an existing field.
+        body: JSON.stringify({ ...leadAttribution.fields(), ...Object.fromEntries(new FormData(form)) }),
       });
       const result = await response.json();
       if (!response.ok || result.success !== true) throw new Error("Web3Forms rejected the submission");
