@@ -115,7 +115,7 @@ function populatePackages(balances, lesson) {
   select.replaceChildren();
   const blank = document.createElement("option");
   blank.value = "";
-  blank.textContent = "Без пакета";
+  blank.textContent = "Пакет підбереться автоматично";
   select.append(blank);
   for (const balance of balances.filter((item) => item.status === "active" || item.package_id === lesson?.package_id)) {
     const option = document.createElement("option");
@@ -128,7 +128,7 @@ function populatePackages(balances, lesson) {
   }
   if (lesson) select.value = lesson.package_id || "";
   else if (select.options.length === 2) select.selectedIndex = 1;
-  field("teacher-lesson-consumes").checked = lesson ? !!lesson.consumes_lesson : !!select.value;
+  field("teacher-lesson-consumes").checked = lesson ? lesson.billing_status === "pending" || !!lesson.consumes_lesson : true;
   select.disabled = false;
   showPackageWarning();
 }
@@ -137,31 +137,17 @@ function packageWarning() {
   const packageId = field("teacher-lesson-package").value;
   if (!packageId) return "";
   const balance = packageBalances.find((item) => item.package_id === packageId);
-  if (!balance) return "Пакет початкового уроку більше недоступний. Оберіть інший пакет або свідомо змініть вибір на «Без пакета».";
-  if (balance.status !== "active") return "Цей пакет більше не активний. Оберіть інший пакет.";
-  const day = field("teacher-lesson-date").value;
-  if (day && balance.valid_from && day < balance.valid_from) return `Цей пакет діє лише з ${balance.valid_from}. Оберіть іншу дату або пакет.`;
-  if (day && balance.valid_until && day > balance.valid_until) return `Термін цього пакета закінчився ${balance.valid_until}. Оберіть іншу дату або пакет.`;
-  if (!selectedLesson && field("teacher-lesson-weekly").checked) {
-    const count = Number(field("teacher-series-count").value);
-    if (day && Number.isInteger(count) && count >= 2 && count <= 52) {
-      const last = new Date(`${day}T12:00:00Z`);
-      last.setUTCDate(last.getUTCDate() + (count - 1) * 7);
-      if (balance.valid_until && last.toISOString().slice(0, 10) > balance.valid_until)
-        return "Пакет не діє на одну або декілька дат цієї серії.";
-      if (field("teacher-lesson-consumes").checked && Number(balance.lessons_remaining) < count)
-        return `Пакета не вистачає для ${count} запланованих занять.`;
-    }
-  }
-  if (field("teacher-lesson-consumes").checked && Number(balance.lessons_remaining) <= 0)
-    return "У пакеті немає доступних занять. Оберіть інший пакет.";
+  if (!balance) return "Пакет початкового уроку більше недоступний. Оберіть інший пакет або автоматичний підбір.";
   return "";
 }
 
 function showPackageWarning() {
   const warning = field("teacher-package-warning");
-  warning.textContent = packageWarning();
-  warning.hidden = !warning.textContent;
+  const balance = packageBalances.find((item) => item.package_id === field("teacher-lesson-package").value);
+  warning.textContent = packageWarning() || (!field("teacher-lesson-consumes").checked
+    ? "Безкоштовне заняття. Пакет не списуватиметься й не призначатиметься автоматично."
+    : `${balance ? `У пакеті залишилось ${balance.lessons_remaining} занять. ` : ""}Увесь розклад буде збережено. Доступні пакети покриють заняття за датами, решта очікуватиме оплати. Залишок списується після проведення.`);
+  warning.hidden = false;
 }
 
 function scheduleErrorMessage(error) {
@@ -170,9 +156,6 @@ function scheduleErrorMessage(error) {
   let details = {};
   try { details = JSON.parse(error?.details || "{}"); } catch { /* Details are optional. */ }
   if (message === "Series count must be between 2 and 52") return "У серії може бути від 2 до 52 занять.";
-  if (message === "Series package insufficient") return Number.isInteger(details?.count)
-    ? `Пакета не вистачає для ${details.count} запланованих занять.` : "У пакеті недостатньо незарезервованих занять для серії.";
-  if (message === "Series package invalid on lesson dates") return "Пакет не діє на одну або декілька дат цієї серії.";
   if (message === "Series slot conflict") {
     const when = new Date(details?.scheduled_at);
     if (!Number.isNaN(when.getTime())) {
@@ -186,10 +169,9 @@ function scheduleErrorMessage(error) {
   if (/Reschedule must change lesson details/i.test(message)) return "Змініть дату, час або інші параметри уроку перед збереженням.";
   if (/already has a lesson at this time/i.test(message)) return "У цей час у викладача або учня вже є інший урок.";
   if (/active student package valid on lesson day/i.test(message)) return "Цей пакет недоступний для вибраної дати.";
-  if (/Package has no unreserved lessons/i.test(message)) return "У пакеті немає доступних занять.";
   if (/online lesson needs an HTTPS link|Invalid Google Meet URL/i.test(message)) return "Вкажіть коректне HTTPS-посилання.";
   if (/offline lesson needs a location/i.test(message)) return "Вкажіть місце заняття.";
-  if (/consuming lesson requires a package/i.test(message)) return "Оберіть пакет або зніміть позначку списання.";
+  if (/Student package required/i.test(message)) return "Оберіть пакет цього учня або автоматичний підбір.";
   if (/Invalid duration/i.test(message)) return "Оберіть тривалість від 15 до 180 хвилин.";
   return "Не вдалося зберегти урок. Перевірте дані й спробуйте ще раз.";
 }
@@ -224,7 +206,7 @@ export async function openTeacherSchedule(student, lesson, opener) {
     (lesson?.lesson_url || lesson?.meet_url ? "online" : lesson?.location_text ? "offline" : "online");
   field("teacher-lesson-url").value = lesson?.lesson_url || lesson?.meet_url || "";
   field("teacher-lesson-location").value = lesson?.location_text || "";
-  field("teacher-lesson-consumes").checked = lesson ? !!lesson.consumes_lesson : false;
+  field("teacher-lesson-consumes").checked = lesson ? lesson.billing_status === "pending" || !!lesson.consumes_lesson : true;
   updateFormat();
   updateRecurrence();
   scheduleDialog.showModal();
@@ -296,7 +278,6 @@ export function initTeacherActions(changed, reportStatus) {
   field("teacher-lesson-weekly").addEventListener("change", updateRecurrence);
   field("teacher-series-count").addEventListener("input", updateRecurrence);
   field("teacher-lesson-package").addEventListener("change", () => {
-    field("teacher-lesson-consumes").checked = !!field("teacher-lesson-package").value;
     showPackageWarning();
   });
   field("teacher-lesson-consumes").addEventListener("change", showPackageWarning);
@@ -356,10 +337,6 @@ export function initTeacherActions(changed, reportStatus) {
       showError(scheduleError, warning);
       return;
     }
-    if (consumes && !packageId) {
-      showError(scheduleError, "Оберіть пакет або зніміть позначку списання.");
-      return;
-    }
     scheduleBusy = true;
     const button = field("teacher-schedule-save");
     const label = button.textContent;
@@ -388,7 +365,7 @@ export function initTeacherActions(changed, reportStatus) {
       const result = requireData(await supabase.rpc(rpc, params));
       scheduleDialog.close();
       await onChanged();
-      setStatus(recurring ? `Серію заплановано: ${result.count} занять.`
+      setStatus(recurring ? `Серію заплановано: ${result.count} занять. Покрито пакетом: ${result.covered}; очікує оплати: ${result.pending}; безкоштовних: ${result.free}.`
         : following ? `Майбутні уроки серії змінено: ${result.count}.`
           : wasReschedule ? "Зміни уроку збережено." : "Урок заплановано.");
     } catch (error) {

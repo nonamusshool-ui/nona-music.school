@@ -1,4 +1,5 @@
 import { supabase } from "./supabase-client.js";
+import { lessonBillingLabel } from "./lesson-billing.js?v=1";
 import { detail, kyivDay, kyivTime, lessonPlace, lessonStatuses, requireData } from "./learning-ui.js?v=3";
 import { kyivMidnightUtc, mondayOf, shiftDay } from "./schedule-time.js?v=1";
 
@@ -9,7 +10,7 @@ const dayDate = new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long"
 const rangeStart = new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long", timeZone: "UTC" });
 const rangeEnd = new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 const fullDate = new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Kyiv" });
-const columns = "id,student_id,teacher_id,scheduled_at,duration_minutes,status,lesson_format,lesson_url,location_text,meet_url,package_id,consumes_lesson,resolved_at,series_id,series_exception";
+const columns = "id,student_id,teacher_id,scheduled_at,duration_minutes,status,lesson_format,lesson_url,location_text,meet_url,package_id,consumes_lesson,resolved_at,series_id,series_exception,billing_status";
 
 let role, userId, initialized = false, monday = mondayOf(kyivDay());
 let lessons = [], names = new Map(), requestId = 0, detailOpener = null;
@@ -25,13 +26,7 @@ function formatLabel(lesson) {
   return format === "online" ? "Онлайн" : format === "offline" ? "Офлайн" : "Формат не вказано";
 }
 function chargeLabel(lesson) {
-  if (!lesson.package_id) return "Без пакета";
-  if (lesson.consumes_lesson && (lesson.status === "completed"
-    || (lesson.status === "cancelled" && lesson.resolved_at))) return "Списано 1 заняття";
-  if (lesson.consumes_lesson && ["scheduled", "in_progress"].includes(lesson.status)) {
-    return "Буде списано після проведення";
-  }
-  return "Не списано";
+  return lessonBillingLabel(lesson);
 }
 function person(id, fallback) { return names.get(id) || fallback; }
 function identity(lesson) {

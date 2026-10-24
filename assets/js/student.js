@@ -1,7 +1,7 @@
 import { supabase } from "./supabase-client.js";
 import { detail, empty, kyivDateTime, kyivDay, lessonPlace, lessonStatuses, outcomeReasons, requireData } from "./learning-ui.js?v=3";
 import { initChat } from "./chat.js?v=3";
-import { initSchedule, refreshSchedule } from "./schedule.js?v=2";
+import { initSchedule, refreshSchedule } from "./schedule.js?v=3";
 
 const targets = {
   next: document.getElementById("student-next"),

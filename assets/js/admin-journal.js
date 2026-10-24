@@ -1,4 +1,5 @@
 import { supabase } from "./supabase-client.js";
+import { lessonBillingLabel } from "./lesson-billing.js?v=1";
 import { detail, kyivDate, kyivDateTime, kyivTime, lessonStatuses, outcomeReasons, safeLessonUrl } from "./learning-ui.js?v=3";
 
 const pageSize = 100;
@@ -144,7 +145,7 @@ async function loadStatementDetails(lesson, button) {
   elements.close.focus();
   try {
     const { data, error } = await supabase.rpc("staff_lesson_records")
-      .select("id,scheduled_at,duration_minutes,status,package_id,consumes_lesson,lesson_format,lesson_url,meet_url,location_text,outcome_reason,outcome_note,started_at,completed_at,resolved_at,completion_source,series_id,series_occurrence,series_exception")
+      .select("id,scheduled_at,duration_minutes,status,package_id,consumes_lesson,lesson_format,lesson_url,meet_url,location_text,outcome_reason,outcome_note,started_at,completed_at,resolved_at,completion_source,series_id,series_occurrence,series_exception,billing_status")
       .eq("id", lesson.lesson_id).maybeSingle();
     if (request !== detailsGeneration || !elements.dialog.open) return;
     if (error || !data) throw error || new Error("Lesson not found");
@@ -302,17 +303,14 @@ function cell(label, value) {
 }
 
 function chargeText(lesson) {
-  return lesson.charged ? "Списано 1 заняття"
-    : lesson.status === "scheduled" || lesson.status === "in_progress"
-      ? lesson.package_id && lesson.consumes_lesson ? "Буде списано після проведення" : "Не буде списуватись"
-      : "Не списано";
+  return lessonBillingLabel(lesson);
 }
 
 function packageText(lesson) {
   const packageName = lesson.package_id
     ? lesson.lessons_purchased ? `Пакет ${lesson.lessons_purchased} занять` : "Пакет"
     : "Без пакета";
-  return `${packageName} · ${chargeText(lesson)}`;
+  return lessonBillingLabel(lesson, packageName);
 }
 
 function renderRows() {

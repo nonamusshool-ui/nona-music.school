@@ -1,16 +1,17 @@
 import { supabase } from "./supabase-client.js";
+import { lessonBillingLabel } from "./lesson-billing.js?v=1";
 import { detail, empty, kyivDateTime, kyivDay, kyivTime, lessonPlace, lessonStatuses,
   outcomeReasons, requireData } from "./learning-ui.js?v=3";
 import { completeTeacherLesson, initTeacherActions, openTeacherOutcome,
-  openTeacherSchedule, startTeacherLesson } from "./teacher-actions.js?v=5";
-import { initSchedule, refreshSchedule } from "./schedule.js?v=2";
+  openTeacherSchedule, startTeacherLesson } from "./teacher-actions.js?v=6";
+import { initSchedule, refreshSchedule } from "./schedule.js?v=3";
 
 const todayTarget = document.getElementById("teacher-today");
 const studentsTarget = document.getElementById("teacher-students");
 const upcomingTarget = document.getElementById("teacher-upcoming");
 const status = document.getElementById("cabinet-status");
 const refresh = document.getElementById("teacher-refresh");
-const lessonColumns = "id,student_id,package_id,scheduled_at,duration_minutes,status,started_at,consumes_lesson,lesson_format,lesson_url,location_text,meet_url,outcome_reason,outcome_note,resolved_at,series_id,series_exception";
+const lessonColumns = "id,student_id,package_id,scheduled_at,duration_minutes,status,started_at,consumes_lesson,lesson_format,lesson_url,location_text,meet_url,outcome_reason,outcome_note,resolved_at,series_id,series_exception,billing_status";
 let teacherId;
 let teacherInitialized = false;
 let scheduleInitialized = false;
@@ -42,6 +43,7 @@ function lessonCard(lesson, student) {
   item.append(detail("Коли", kyivDateTime.format(new Date(lesson.scheduled_at))),
     detail("Учень", student.name), detail("Тривалість", `${lesson.duration_minutes} хв`),
     detail("Статус", lessonStatuses[lesson.status] || lesson.status), lessonPlace(lesson));
+  item.append(detail("Оплата", lessonBillingLabel(lesson)));
   if (lesson.outcome_reason) item.append(detail("Причина", outcomeReasons[lesson.outcome_reason] || "Інше"));
   if (lesson.outcome_note) item.append(detail("Внутрішній коментар", lesson.outcome_note));
   if (lesson.series_id) item.append(detail("Серія", lesson.series_exception ? "Щотижневий урок · окрема зміна цього уроку" : "Щотижневий урок"));
