@@ -26,11 +26,13 @@
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      try { var nonaInternal = new URLSearchParams(location.search).get('nona_internal'); if (nonaInternal === '1') localStorage.setItem('nona_internal', '1'); else if (nonaInternal === '0') localStorage.removeItem('nona_internal'); } catch(e){}
       gtag('js', new Date());
-      gtag('config', 'G-H3QLF10CVM');
+      gtag('config', 'G-H3QLF10CVM', (()=>{ try { return localStorage.getItem('nona_internal')==='1' ? { traffic_type: 'internal' } : {}; } catch(e){ return {}; } })());
     </script>
     <script src="../script.js?v=6" defer></script>
-    <script src="guitar.js?v=11" defer></script>
+    <script src="guitar.js?v=12" defer></script>
+    <script src="../assets/js/track.js?v=1" defer></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",

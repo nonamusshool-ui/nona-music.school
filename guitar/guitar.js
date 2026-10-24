@@ -77,6 +77,93 @@ const leadAttribution = (() => {
   return { fields };
 })();
 
+// Form behaviour analytics: field names and technical statuses only, never field values.
+const formTracking = (() => {
+  const serviceFields = new Set(["access_key", "botcheck", "subject", "from_name", "form_name", "lead_type", "lesson_package"]);
+
+  const send = (name, params) => {
+    if (typeof window.gtag !== "function") return;
+    try {
+      window.gtag("event", name, params);
+    } catch (error) {
+      // Analytics must not interrupt the form.
+    }
+  };
+
+  const create = (form, formName) => {
+    const order = [];
+    Array.from(form.elements).forEach((element) => {
+      if (!element.name || element.type === "hidden" || serviceFields.has(element.name) || order.includes(element.name)) return;
+      order.push(element.name);
+    });
+    const filled = new Set();
+    let lastField = "none";
+    let opened = false;
+    let validationReported = false;
+
+    const isFilled = (name) =>
+      Array.from(form.elements)
+        .filter((element) => element.name === name)
+        .some((element) => (element.type === "checkbox" || element.type === "radio" ? element.checked : element.value.trim() !== ""));
+
+    const onFieldDone = (event) => {
+      if (!event.isTrusted) return;
+      const name = event.target.name;
+      if (!order.includes(name) || filled.has(name) || !isFilled(name)) return;
+      filled.add(name);
+      lastField = name;
+      send("trial_form_field", { form_name: formName, field_name: name, field_order: order.indexOf(name) + 1 });
+    };
+    form.addEventListener("change", onFieldDone);
+    form.addEventListener("focusout", onFieldDone);
+
+    // Native validation blocks "submit", so a new attempt starts on the submit button click.
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton?.addEventListener("click", () => {
+      validationReported = false;
+    }, true);
+    form.addEventListener("invalid", (event) => {
+      if (validationReported) return;
+      validationReported = true;
+      send("trial_form_error", { form_name: formName, error_type: "validation", field_name: event.target.name || "none" });
+    }, true);
+
+    return {
+      // Call when the form is opened: fields already filled earlier are not reported again.
+      begin() {
+        filled.clear();
+        lastField = "none";
+        order.forEach((name) => {
+          if (isFilled(name)) {
+            filled.add(name);
+            lastField = name;
+          }
+        });
+        opened = true;
+      },
+      submitted() {
+        opened = false;
+      },
+      // Call when the dialog is closed: reported only if it was not submitted.
+      closed(ctaLocation) {
+        if (!opened) return;
+        opened = false;
+        send("trial_form_close", {
+          form_name: formName,
+          fields_completed: order.filter(isFilled).length,
+          last_field: lastField,
+          cta_location: ctaLocation,
+        });
+      },
+      failed(errorType) {
+        send("trial_form_error", { form_name: formName, error_type: errorType });
+      },
+    };
+  };
+
+  return { create };
+})();
+
 (() => {
   const dialog = document.getElementById("application-modal");
   const form = document.getElementById("guitar-application");
@@ -97,6 +184,7 @@ const leadAttribution = (() => {
   let submitting = false;
   let ctaLocation = "other";
   let formStarted = false;
+  const tracking = formTracking.create(form, "guitar_application");
 
   const openApplication = (trigger, selectedPackage = unspecified) => {
     if (document.querySelector("dialog[open]")) return;
@@ -108,6 +196,7 @@ const leadAttribution = (() => {
     formExtras.open = false;
     ctaLocation = trigger.closest("[data-cta-location]")?.dataset.ctaLocation ?? "other";
     formStarted = false;
+    tracking.begin();
     success.hidden = true;
     form.hidden = false;
     status.className = "form-status";
@@ -187,6 +276,7 @@ const leadAttribution = (() => {
     }
   });
   dialog.addEventListener("close", () => {
+    tracking.closed(ctaLocation);
     document.documentElement.classList.remove("application-modal-open");
     document.body.classList.remove("application-modal-open");
     opener?.focus({ preventScroll: true });
@@ -203,17 +293,22 @@ const leadAttribution = (() => {
     status.className = "form-status";
     status.textContent = "";
     const selectedPackage = packageInput.value;
+    let errorType = "network";
 
     try {
+      // One lead_id for both Web3Forms and the generate_lead event.
+      const attribution = leadAttribution.fields();
       const response = await fetch(form.action, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         // Form fields go last so attribution can never overwrite an existing field.
-        body: JSON.stringify({ ...leadAttribution.fields(), ...Object.fromEntries(new FormData(form)) }),
+        body: JSON.stringify({ ...attribution, ...Object.fromEntries(new FormData(form)) }),
       });
+      errorType = "rejected";
       const result = await response.json();
       if (!response.ok || result.success !== true) throw new Error("Web3Forms rejected the submission");
 
+      tracking.submitted();
       form.reset();
       form.hidden = true;
       packageSummary.hidden = true;
@@ -225,12 +320,14 @@ const leadAttribution = (() => {
             form_name: "guitar_application",
             lead_type: "free_trial",
             lesson_package: selectedPackage,
+            lead_id: attribution.lead_id,
           });
         } catch (error) {
           // Analytics must not replace a confirmed submission with an error message.
         }
       }
     } catch (error) {
+      tracking.failed(errorType);
       status.classList.add("is-error");
       status.textContent = "Не вдалося надіслати заявку. Спробуйте ще раз або зв’яжіться зі школою телефоном.";
     } finally {
@@ -267,6 +364,7 @@ document.querySelectorAll("[data-phone-click-location]").forEach((link) => {
   let opener = null;
   let pageScrollY = 0;
   let submitting = false;
+  const tracking = formTracking.create(form, "guitar_family_application");
 
   document.querySelectorAll("[data-open-family-application]").forEach((trigger) => {
     trigger.addEventListener("click", (event) => {
@@ -310,14 +408,18 @@ document.querySelectorAll("[data-phone-click-location]").forEach((link) => {
     status.className = "form-status";
     status.textContent = "";
     const selectedPackage = form.elements.lesson_package.value;
+    let errorType = "network";
 
     try {
+      // One lead_id for both Web3Forms and the generate_lead event.
+      const attribution = leadAttribution.fields();
       const response = await fetch(form.action, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         // Form fields go last so attribution can never overwrite an existing field.
-        body: JSON.stringify({ ...leadAttribution.fields(), ...Object.fromEntries(new FormData(form)) }),
+        body: JSON.stringify({ ...attribution, ...Object.fromEntries(new FormData(form)) }),
       });
+      errorType = "rejected";
       const result = await response.json();
       if (!response.ok || result.success !== true) throw new Error("Web3Forms rejected the submission");
 
@@ -331,12 +433,14 @@ document.querySelectorAll("[data-phone-click-location]").forEach((link) => {
             form_name: "guitar_family_application",
             lead_type: "family_price",
             lesson_package: selectedPackage,
+            lead_id: attribution.lead_id,
           });
         } catch (error) {
           // Analytics must not replace a confirmed submission with an error message.
         }
       }
     } catch (error) {
+      tracking.failed(errorType);
       status.classList.add("is-error");
       status.textContent = "Не вдалося надіслати заявку. Спробуйте ще раз або зв’яжіться зі школою телефоном.";
     } finally {

@@ -66,9 +66,21 @@
 | `trial_cta_click` | `guitar/guitar.js` | Клік по кнопці запису на пробний |
 | `trial_form_open` | `guitar/guitar.js` | Відкрилась форма заявки |
 | `trial_form_start` | `guitar/guitar.js` | Людина почала заповнювати форму |
-| `generate_lead` | `guitar/guitar.js` | Заявку успішно надіслано (**головна конверсія**) |
+| `generate_lead` | `guitar/guitar.js` | Заявку успішно надіслано (**головна конверсія**). Параметр `lead_id` = той самий id, що йде у Web3Forms |
 | `phone_click` | `guitar/guitar.js` | Клік по номеру телефону |
 | `facebook_click` | `script.js` | Клік по посиланню на Facebook |
+| `trial_form_field` | `guitar/guitar.js` | Поле форми вперше заповнене (`form_name`, `field_name`, `field_order`; без значення) |
+| `trial_form_close` | `guitar/guitar.js` | Модальну форму закрито без відправки (`form_name`, `fields_completed`, `last_field`, `cta_location`) |
+| `trial_form_error` | `guitar/guitar.js` | Помилка форми (`form_name`, `error_type` = validation / network / rejected, `field_name` для validation) |
+| `scroll_depth` | `assets/js/track.js` | Прокрутка 25 / 50 / 75 % (`percent`, `page_type`); 90 % рахує GA4 |
+| `section_view` | `assets/js/track.js` | Секція видна ≥ 50 % (`section_name`, `page_type`) |
+| `faq_open` | `assets/js/track.js` | Перше відкриття питання FAQ (`faq_question`, `page_type`) |
+| `teachers_open` | `assets/js/track.js` | Перше відкриття блоку викладачів (`page_type`) |
+| `video_start`, `video_progress`, `video_complete` | `assets/js/track.js` | Відео на `/guitar/` (`video_title`, `video_percent` 25/50/75, `page_type`) |
+| `internal_nav_click` | `assets/js/track.js` | Клік по посиланню на іншу сторінку сайту (`link_location`, `target_path`, `page_type`) |
+
+- `assets/js/track.js` підключений на всіх публічних сторінках (`/`, `/guitar/`, `/guitar/kids|adults|beginners|first-guitar/`); параметр `page_type` = home / guitar / kids / adults / beginners / first_guitar.
+- Внутрішній трафік: відкрий сайт з `?nona_internal=1` (вимкнути — `?nona_internal=0`); тоді `config` GA4 отримує `traffic_type: "internal"`. Фільтр «Internal traffic» у GA4 налаштовується окремо в адмінці.
 
 - Події відправляй лише після перевірки `typeof window.gtag === "function"` і в `try/catch` — аналітика ніколи не має ламати сайт.
 - **Жодних персональних даних у подіях** (ім'я, телефон, email, текст повідомлення).
