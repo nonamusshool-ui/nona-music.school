@@ -76,17 +76,21 @@ begin
   assert (select count(*)=before_lessons from public.lessons);
   assert (select count(*)=before_series from public.lesson_series);
 
-  -- E: insufficient capacity and per-date validity reject the entire series.
-  rejected := false;
+  -- E: capacity/validity now affect coverage, never creation of the schedule.
+  -- Roll these extra fixtures back so subsequent series/history checks stay exact.
   begin
-    perform public.teacher_schedule_lesson_series(sa,base_day+210,'14:00',60,'online','https://meet.google.com/test',null,small_pkg,true,8);
-  exception when sqlstate '22023' then rejected := sqlerrm='Series package insufficient'; end;
-  assert rejected;
-  rejected := false;
+    result := public.teacher_schedule_lesson_series(sa,base_day+210,'14:00',60,'online','https://meet.google.com/test',null,small_pkg,true,8);
+    assert result->>'count'='8';
+    assert result->>'covered'='5' and result->>'pending'='3';
+    raise exception 'Rollback extra fixtures' using errcode='ZX001';
+  exception when sqlstate 'ZX001' then null; end;
   begin
-    perform public.teacher_schedule_lesson_series(sa,base_day,'14:00',60,'online','https://meet.google.com/test',null,expired_pkg,true,8);
-  exception when sqlstate '22023' then rejected := sqlerrm='Series package invalid on lesson dates'; end;
-  assert rejected;
+    result := public.teacher_schedule_lesson_series(sa,base_day,'14:00',60,'online','https://meet.google.com/test',null,expired_pkg,true,8);
+    assert result->>'count'='8';
+    assert not exists(select 1 from public.lessons where series_id=(result->>'series_id')::uuid
+      and package_id=expired_pkg and (scheduled_at at time zone 'Europe/Kyiv')::date>base_day+14);
+    raise exception 'Rollback extra fixtures' using errcode='ZX001';
+  exception when sqlstate 'ZX001' then null; end;
   assert (select count(*)=before_lessons from public.lessons);
   assert (select count(*)=before_series from public.lesson_series);
   for n in select unnest(array[1,53]) loop
@@ -144,7 +148,7 @@ begin
   exception when sqlstate '22023' then rejected := true; end;
   assert rejected;
 
-  -- Bulk conflict and capacity failures leave both rule and history untouched.
+  -- Bulk conflicts leave both rule and history untouched.
   perform public.teacher_schedule_lesson(sb,dst_day+44,'16:00',45,'offline',null,'Test studio',null,false);
   saved := (select jsonb_agg(to_jsonb(l) order by l.id) from public.lessons l where series_id=series_uuid);
   series_before := (select to_jsonb(s) from public.lesson_series s where id=series_uuid);
@@ -156,18 +160,21 @@ begin
   assert rejected;
   assert saved=(select jsonb_agg(to_jsonb(l) order by l.id) from public.lessons l where series_id=series_uuid);
   assert series_before=(select to_jsonb(s) from public.lesson_series s where id=series_uuid);
-  -- Switching the future subset to a two-slot package cannot reserve three.
+  -- A two-slot preference can cover two; other eligible packages or pending
+  -- billing cover the rest of the same successfully edited schedule.
   insert into public.lesson_packages(student_id,lessons_purchased,status) values(sa,2,'active') returning id into small_pkg;
-  rejected := false;
   begin
-    perform public.teacher_update_lesson_series_from(lesson_id,dst_day+8,'16:00',45,'online','https://meet.google.com/test',null,small_pkg,true);
-  exception when sqlstate '22023' then rejected := sqlerrm='Series package insufficient'; end;
-  assert rejected;
-  rejected := false;
+    result := public.teacher_update_lesson_series_from(lesson_id,dst_day+8,'16:00',45,'online','https://meet.google.com/test',null,small_pkg,true);
+    assert result->>'count'='3';
+    assert (select count(*)=2 from public.lessons where package_id=small_pkg and status='scheduled');
+    raise exception 'Rollback extra fixtures' using errcode='ZX001';
+  exception when sqlstate 'ZX001' then null; end;
   begin
-    perform public.teacher_update_lesson_series_from(lesson_id,dst_day+8,'16:00',45,'online','https://meet.google.com/test',null,expired_pkg,true);
-  exception when sqlstate '22023' then rejected := sqlerrm='Series package invalid on lesson dates'; end;
-  assert rejected;
+    result := public.teacher_update_lesson_series_from(lesson_id,dst_day+8,'16:00',45,'online','https://meet.google.com/test',null,expired_pkg,true);
+    assert result->>'count'='3';
+    assert not exists(select 1 from public.lessons where series_id=series_uuid and status='scheduled' and package_id=expired_pkg);
+    raise exception 'Rollback extra fixtures' using errcode='ZX001';
+  exception when sqlstate 'ZX001' then null; end;
   assert saved=(select jsonb_agg(to_jsonb(l) order by l.id) from public.lessons l where series_id=series_uuid);
   assert series_before=(select to_jsonb(s) from public.lesson_series s where id=series_uuid);
   -- Protect exceptions even when they are selected as a bulk anchor.

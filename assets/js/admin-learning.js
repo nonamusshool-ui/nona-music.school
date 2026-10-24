@@ -1,6 +1,7 @@
 import { supabase } from "./supabase-client.js";
+import { lessonBillingLabel } from "./lesson-billing.js?v=1";
 import { detail, empty, kyivDateTime, lessonStatuses, outcomeReasons, requireData, safeMeetUrl } from "./learning-ui.js?v=3";
-import { refreshSchedule } from "./schedule.js?v=2";
+import { refreshSchedule } from "./schedule.js?v=3";
 
 const dialog = document.getElementById("admin-learning-dialog");
 const overview = document.getElementById("learning-overview");
@@ -53,7 +54,7 @@ async function loadOverview() {
         .eq("student_id", student.id).eq("status", "in_progress").limit(1),
       supabase.from("profiles").select("id,full_name").eq("status", "active")
         .or("role.eq.teacher,and(role.eq.admin,can_teach.eq.true)"),
-      supabase.rpc("staff_lesson_records").select("scheduled_at,started_at,completed_at,completion_source,status,outcome_reason,outcome_note,consumes_lesson,resolved_at")
+      supabase.rpc("staff_lesson_records").select("scheduled_at,started_at,completed_at,completion_source,status,outcome_reason,outcome_note,consumes_lesson,resolved_at,package_id,billing_status")
         .eq("student_id", student.id).in("status", ["completed", "cancelled", "rescheduled", "no_show"])
         .order("scheduled_at", { ascending: false }).limit(10),
     ]);
@@ -97,6 +98,7 @@ async function loadOverview() {
         const charged = lesson.consumes_lesson &&
           (lesson.status === "completed" || (lesson.status === "cancelled" && lesson.resolved_at));
         item.append(detail("Списано з пакета", charged ? "Так" : "Ні"));
+        item.append(detail("Оплата", lessonBillingLabel(lesson)));
         box.append(item);
       }
     } else box.append(empty("Результатів уроків ще немає"));
@@ -106,7 +108,7 @@ async function loadOverview() {
     options(scheduleTeacher, assignments.map((item) => [item.teacher_id, names.get(item.teacher_id) || "Викладач НОНА"]),
       "Спочатку призначте викладача");
     options(packageSelect, active.map((item) => [item.package_id,
-      `${item.lessons_remaining} з ${item.lessons_purchased} залишилось${item.valid_until ? ` · до ${item.valid_until}` : ""}`]), "Без пакета");
+      `${item.lessons_remaining} з ${item.lessons_purchased} залишилось${item.valid_until ? ` · до ${item.valid_until}` : ""}`]), "Пакет підбереться автоматично");
     if (assignments.length === 1) scheduleTeacher.value = assignments[0].teacher_id;
     if (active.length === 1) packageSelect.value = active[0].package_id;
   } catch {
@@ -184,10 +186,6 @@ export function initAdminLearning() {
     const packageId = packageSelect.value || null;
     const consumes = document.getElementById("schedule-consumes").checked;
     const meeting = document.getElementById("schedule-meet").value.trim();
-    if (consumes && !packageId) {
-      setFeedback("Оберіть пакет або зніміть позначку списання заняття.", true);
-      return;
-    }
     if (meeting && !safeMeetUrl(meeting)) {
       setFeedback("Вкажіть коректне HTTPS-посилання Google Meet.", true);
       return;
