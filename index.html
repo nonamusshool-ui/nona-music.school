@@ -14,10 +14,10 @@
     <meta name="theme-color" content="#17543c" />
     <link rel="describedby" href="llms.txt" type="text/plain" />
     <link rel="canonical" href="https://nonaschool.com.ua/" />
-    <title>НОНА Music School — онлайн-музична школа | Уроки гітари онлайн</title>
+    <title>НОНА — онлайн-музична школа для дітей і дорослих</title>
     <meta
       name="description"
-      content="НОНА — онлайн-музична школа для душі та саморозвитку. Наш поточний напрям — уроки гітари онлайн у Google Meet. Гітара для початківців: дітей, підлітків і дорослих."
+      content="НОНА — онлайн-музична школа для душі та саморозвитку. Зараз навчаємо гри на гітарі в Google Meet: діти, підлітки й дорослі, з нуля."
     />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="uk_UA" />
@@ -34,11 +34,11 @@
     <meta name="robots" content="max-image-preview:large" />
     <meta
       property="og:title"
-      content="НОНА Music School — онлайн-музична школа | Уроки гітари онлайн"
+      content="НОНА — онлайн-музична школа для дітей і дорослих"
     />
     <meta
       property="og:description"
-      content="НОНА — онлайн-музична школа для душі та саморозвитку. Наш поточний напрям — уроки гітари онлайн у Google Meet. Гітара для початківців: дітей, підлітків і дорослих."
+      content="НОНА — онлайн-музична школа для душі та саморозвитку. Зараз навчаємо гри на гітарі в Google Meet: діти, підлітки й дорослі, з нуля."
     />
     <link rel="icon" href="/assets/favicon.png" type="image/png" sizes="96x96" />
     <!-- Inline stylesheet avoids a render-blocking request. Keep in sync with styles.css. -->
@@ -983,6 +983,15 @@ h2 > span {
 .learning-details p:last-child { margin-bottom: 0; }
 @media (max-width: 720px) { .learning-details { grid-template-columns: 1fr; gap: 28px; } }
 
+.direction-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin: 0; padding: 0; list-style: none; }
+.direction-card { display: flex; flex-direction: column; gap: 10px; height: 100%; padding: 26px; border: 1px solid var(--line); border-radius: 18px; background: #fff; text-decoration: none; transition: border-color 0.18s, transform 0.18s; }
+.direction-card:hover { border-color: var(--green); transform: translateY(-2px); }
+.direction-card h3 { margin: 0; color: var(--green); font-size: 1.125rem; line-height: 1.35; }
+.direction-card p { margin: 0; color: var(--muted); font-size: 0.9375rem; }
+.direction-more { margin-top: auto; padding-top: 6px; color: var(--green); font-size: 0.875rem; font-weight: 700; }
+@media (max-width: 1000px) { .direction-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 720px) { .direction-grid { grid-template-columns: 1fr; gap: 14px; } .direction-card { padding: 22px; } }
+
     </style>
     <script src="script.js?v=6" defer></script>
     <script type="application/ld+json">
@@ -1278,6 +1287,51 @@ h2 > span {
           </article>
         </div>
         <a class="button learning-more" href="/guitar/">Переглянути програму та ціни <span aria-hidden="true">↗</span></a>
+      </section>
+      <section class="section wrap" id="guitar-directions" aria-labelledby="guitar-directions-title">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">УРОКИ ГІТАРИ В НОНА</p>
+            <h2 id="guitar-directions-title">Оберіть свій напрям</h2>
+          </div>
+        </div>
+        <ul class="direction-grid">
+          <li>
+            <a class="direction-card" href="/guitar/kids/">
+              <h3>Уроки гітари для дітей</h3>
+              <p>Знайомимо дитину з гітарою, нотами й табулатурами, ритмом і простими мелодіями.</p>
+              <span class="direction-more" aria-hidden="true">Детальніше ↗</span>
+            </a>
+          </li>
+          <li>
+            <a class="direction-card" href="/guitar/adults/">
+              <h3>Уроки гітари для дорослих</h3>
+              <p>Почати з нуля, повернутися після перерви або впевненіше грати улюблені пісні — у своєму темпі.</p>
+              <span class="direction-more" aria-hidden="true">Детальніше ↗</span>
+            </a>
+          </li>
+          <li>
+            <a class="direction-card" href="/guitar/beginners/">
+              <h3>Гітара з нуля для початківців</h3>
+              <p>Як тримати гітару, ставити руки, відчувати ритм і грати перші мелодії.</p>
+              <span class="direction-more" aria-hidden="true">Детальніше ↗</span>
+            </a>
+          </li>
+          <li>
+            <a class="direction-card" href="/guitar/first-guitar/">
+              <h3>Як вибрати першу гітару</h3>
+              <p>Класична чи акустична і на що звернути увагу перед покупкою інструмента.</p>
+              <span class="direction-more" aria-hidden="true">Детальніше ↗</span>
+            </a>
+          </li>
+          <li>
+            <a class="direction-card" href="/guitar/">
+              <h3>Усі деталі про уроки гри на гітарі</h3>
+              <p>Програма, формат занять, ціни та запис на безкоштовний пробний урок.</p>
+              <span class="direction-more" aria-hidden="true">Детальніше ↗</span>
+            </a>
+          </li>
+        </ul>
       </section>
       <section class="how-section" id="how" aria-labelledby="how-title">
         <div class="wrap how-layout">
