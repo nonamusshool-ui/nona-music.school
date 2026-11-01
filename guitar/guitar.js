@@ -250,7 +250,7 @@ const formTracking = (() => {
 
   const trackFormStart = (event) => {
     if (!event.isTrusted || !dialog.open || formStarted) return;
-    if (!event.target.matches('input[name="student_name"], input[name="student_type"], input[name="phone"]')) return;
+    if (!event.target.matches('input[name="student_name"], input[name="student_age"], input[name="phone"], input[name="ubd_status"]')) return;
     if (event.type === "keydown" && ["Tab", "Escape", "Shift", "Control", "Alt", "Meta"].includes(event.key)) return;
     formStarted = true;
     if (typeof window.gtag !== "function") return;
