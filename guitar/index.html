@@ -31,7 +31,7 @@
       gtag('config', 'G-H3QLF10CVM', (()=>{ try { return localStorage.getItem('nona_internal')==='1' ? { traffic_type: 'internal' } : {}; } catch(e){ return {}; } })());
     </script>
     <script src="../script.js?v=6" defer></script>
-    <script src="guitar.js?v=12" defer></script>
+    <script src="guitar.js?v=13" defer></script>
     <script src="../assets/js/track.js?v=1" defer></script>
     <script type="application/ld+json">
     {
@@ -362,15 +362,14 @@
             <p class="modal-phone-note">Зручніше телефоном? <a href="tel:+380732152008" data-phone-click-location="application_modal">073 215 20 08</a></p>
             <div class="form-grid">
               <div class="form-field"><label for="student-name">Ім’я</label><input id="student-name" name="student_name" type="text" placeholder="Як до тебе звертатися?" autocomplete="name" required /></div>
-              <fieldset class="form-field student-type"><legend>Кого записуємо?</legend><div class="radio-row"><label><input type="radio" name="student_type" value="Себе" required /> Себе</label><label><input type="radio" name="student_type" value="Дитину" required /> Дитину</label></div></fieldset>
+              <div class="form-field"><label for="student-age">Вік учня</label><input id="student-age" name="student_age" type="number" min="5" max="99" inputmode="numeric" placeholder="Наприклад, 10" required /></div>
               <div class="form-field form-wide"><label for="student-phone">Телефон / Viber</label><input id="student-phone" name="phone" type="tel" placeholder="+380..." autocomplete="tel" required /></div>
+              <fieldset class="form-field student-type form-wide"><legend>Чи має учень або хтось із батьків статус УБД?</legend><div class="radio-row"><label><input type="radio" name="ubd_status" value="Так" required /> Так</label><label><input type="radio" name="ubd_status" value="Ні" required /> Ні</label></div></fieldset>
               <details class="form-extras form-wide">
-                <summary>Додати деталі — необов’язково</summary>
+                <summary>Додати Telegram або коментар — необов’язково</summary>
                 <div class="form-extras-grid">
-                  <div class="form-field"><label for="student-age">Вік учня <span class="optional">необов’язково</span></label><input id="student-age" name="student_age" type="number" min="6" inputmode="numeric" /></div>
                   <div class="form-field"><label for="student-telegram">Telegram <span class="optional">необов’язково</span></label><input id="student-telegram" name="telegram" type="text" placeholder="@username" /></div>
-                  <div class="form-field"><label for="student-experience">Досвід гри <span class="optional">необов’язково</span></label><select id="student-experience" name="experience"><option value="" selected>Обери свій рівень</option><option>Ніколи не грав / не грала</option><option>Трохи пробував / пробувала</option><option>Вже маю базові навички</option></select></div>
-                  <div class="form-field form-wide"><label for="student-message">Коментар <span class="optional">необов’язково</span></label><textarea id="student-message" name="message" rows="4" placeholder="Наприклад: які пісні хочеш навчитися грати або коли зручно займатися"></textarea></div>
+                  <div class="form-field form-wide"><label for="student-message">Коментар <span class="optional">необов’язково</span></label><textarea id="student-message" name="message" rows="3" placeholder="Наприклад: коли зручно займатися"></textarea></div>
                 </div>
               </details>
             </div>
