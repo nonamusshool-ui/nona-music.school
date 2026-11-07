@@ -21,7 +21,7 @@
     <meta property="og:image:alt" content="НОНА Music School — обкладинка школи з гітарою, клавішами та нотами" />
     <link rel="icon" href="../assets/favicon.png" type="image/png" sizes="96x96" />
     <link rel="stylesheet" href="../styles.css?v=7" />
-    <link rel="stylesheet" href="guitar.css?v=15" />
+    <link rel="stylesheet" href="guitar.css?v=16" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3QLF10CVM"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -31,7 +31,7 @@
       gtag('config', 'G-H3QLF10CVM', (()=>{ try { return localStorage.getItem('nona_internal')==='1' ? { traffic_type: 'internal' } : {}; } catch(e){ return {}; } })());
     </script>
     <script src="../script.js?v=6" defer></script>
-    <script src="guitar.js?v=13" defer></script>
+    <script src="guitar.js?v=14" defer></script>
     <script src="../assets/js/track.js?v=1" defer></script>
     <script type="application/ld+json">
     {
@@ -375,6 +375,13 @@
             </div>
             <label class="consent-field"><input name="contact_consent" type="checkbox" value="Так" required /><span>Погоджуюсь на використання контактних даних для зв’язку щодо занять.</span></label>
             <div class="form-actions"><button class="button" type="submit">Записатися на безкоштовний урок</button><p class="form-status" id="form-status" role="status" aria-live="polite"></p></div>
+            <div class="messenger-links">
+              <p class="messenger-links-title">Або напишіть нам у месенджер:</p>
+              <div class="messenger-buttons">
+                <a class="button button-outline" href="https://t.me/nonamusicschool" target="_blank" rel="noopener" data-messenger="telegram" data-messenger-location="form">Telegram</a>
+                <a class="button button-outline" href="viber://chat?number=%2B380732152008" data-messenger="viber" data-messenger-location="form">Viber</a>
+              </div>
+            </div>
           </form>
         </div>
       </dialog>
@@ -396,6 +403,14 @@
               <span class="contact-option-label">Телефон</span>
               <p>Зателефонуйте до школи</p>
               <a class="contact-phone-link" href="tel:+380732152008">073 215 20 08</a>
+            </div>
+            <div class="contact-option contact-option-messengers">
+              <span class="contact-option-label">Месенджери</span>
+              <p>Або напишіть нам у месенджер:</p>
+              <div class="messenger-buttons">
+                <a class="button button-outline" href="https://t.me/nonamusicschool" target="_blank" rel="noopener" data-messenger="telegram" data-messenger-location="contacts">Telegram</a>
+                <a class="button button-outline" href="viber://chat?number=%2B380732152008" data-messenger="viber" data-messenger-location="contacts">Viber</a>
+              </div>
             </div>
           </div>
         </div>
