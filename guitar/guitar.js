@@ -352,6 +352,20 @@ document.querySelectorAll("[data-phone-click-location]").forEach((link) => {
   });
 });
 
+document.querySelectorAll("[data-messenger]").forEach((link) => {
+  link.addEventListener("click", () => {
+    if (typeof window.gtag !== "function") return;
+    try {
+      window.gtag("event", "messenger_click", {
+        messenger: link.dataset.messenger,
+        cta_location: link.dataset.messengerLocation,
+      });
+    } catch (error) {
+      // Analytics must not interrupt the messenger link.
+    }
+  });
+});
+
 (() => {
   const dialog = document.getElementById("family-application-modal");
   const form = document.getElementById("guitar-family-application");
