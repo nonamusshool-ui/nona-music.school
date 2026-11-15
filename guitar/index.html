@@ -21,7 +21,7 @@
     <meta property="og:image:alt" content="НОНА Music School — обкладинка школи з гітарою, клавішами та нотами" />
     <link rel="icon" href="../assets/favicon.png" type="image/png" sizes="96x96" />
     <link rel="stylesheet" href="../styles.css?v=7" />
-    <link rel="stylesheet" href="guitar.css?v=16" />
+    <link rel="stylesheet" href="guitar.css?v=17" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3QLF10CVM"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -31,7 +31,7 @@
       gtag('config', 'G-H3QLF10CVM', (()=>{ try { return localStorage.getItem('nona_internal')==='1' ? { traffic_type: 'internal' } : {}; } catch(e){ return {}; } })());
     </script>
     <script src="../script.js?v=6" defer></script>
-    <script src="guitar.js?v=14" defer></script>
+    <script src="guitar.js?v=15" defer></script>
     <script src="../assets/js/track.js?v=1" defer></script>
     <script type="application/ld+json">
     {
@@ -141,7 +141,7 @@
           <article class="audience-card"><span class="card-number">01 / ПЕРШИЙ КРОК</span><h3>Починаю з нуля</h3><p>Познайомимося з гітарою, посадкою, положенням рук, нотами та табулатурою.</p><a class="text-link" href="/guitar/beginners/">Детальніше про навчання з нуля →</a></article>
           <article class="audience-card"><span class="card-number">02 / СВОЯ МУЗИКА</span><h3>Хочу грати улюблені пісні</h3><p>Навчимося читати табулатури, розбирати мелодії й ритм та грати улюблені композиції.</p></article>
           <article class="audience-card"><span class="card-number">03 / НАСТУПНИЙ КРОК</span><h3>Хочу покращити базові навички</h3><p>Закріпимо ритм і техніку, навчимося впевненіше читати ноти й таби та застосовувати акорди.</p></article>
-          <article class="audience-card"><span class="card-number">04 / ДІТЯМ І БАТЬКАМ</span><h3>Шукаю заняття для дитини</h3><p>Допоможемо відкрити музику через доступні вправи та мелодії. Для зв’язку з батьками використовуємо Viber.</p><a class="text-link" href="/guitar/kids/">Детальніше про уроки для дітей →</a></article>
+          <article class="audience-card"><span class="card-number">04 / ДІТЯМ І БАТЬКАМ</span><h3>Шукаю заняття для дитини</h3><p>Допоможемо відкрити музику через доступні вправи та мелодії. Організаційні питання з батьками узгоджуємо телефоном або в Telegram.</p><a class="text-link" href="/guitar/kids/">Детальніше про уроки для дітей →</a></article>
         </div>
         <p class="hero-note"><a class="text-link" href="/guitar/adults/">Шукаєте уроки для дорослого? Переглянути уроки гітари для дорослих →</a></p>
       </section>
@@ -248,9 +248,9 @@
             <input class="botcheck" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <div class="form-grid">
               <div class="form-field"><label for="family-student-name">Ім’я</label><input id="family-student-name" name="student_name" type="text" autocomplete="name" required /></div>
-              <fieldset class="form-field student-type"><legend>Кого записуємо?</legend><div class="radio-row"><label><input type="radio" name="student_type" value="Себе" required /> Себе</label><label><input type="radio" name="student_type" value="Дитину" required /> Дитину</label></div></fieldset>
+              <fieldset class="form-field student-type"><legend>Кого хочете записати?</legend><div class="radio-row"><label><input type="radio" name="student_type" value="Себе" required /> Себе</label><label><input type="radio" name="student_type" value="Дитину" required /> Дитину</label></div></fieldset>
               <div class="form-field"><label for="family-student-age">Вік учня</label><input id="family-student-age" name="student_age" type="number" inputmode="numeric" required /></div>
-              <div class="form-field"><label for="family-student-phone">Телефон / Viber</label><input id="family-student-phone" name="phone" type="tel" autocomplete="tel" required /></div>
+              <div class="form-field"><label for="family-student-phone">Телефон</label><input id="family-student-phone" name="phone" type="tel" autocomplete="tel" required /></div>
               <div class="form-field"><label for="family-student-telegram">Telegram <span class="optional">необов’язково</span></label><input id="family-student-telegram" name="telegram" type="text" placeholder="@username" /></div>
               <div class="form-field"><label for="family-ubd-relation">Хто має статус УБД?</label><select id="family-ubd-relation" name="ubd_relation" required><option value="" disabled selected>Оберіть варіант</option><option>Сам учень</option><option>Мама або тато</option><option>Опікун</option></select></div>
               <div class="form-field form-wide"><label for="family-lesson-package">Який пакет вас цікавить?</label><select id="family-lesson-package" name="lesson_package"><option>Ще не визначився</option><option>1 заняття — 250 грн</option><option>2 заняття — 480 грн</option><option>4 заняття — 940 грн</option><option>6 занять — 1380 грн</option><option>8 занять — 1800 грн</option></select></div>
@@ -362,8 +362,9 @@
             <p class="modal-phone-note">Зручніше телефоном? <a href="tel:+380732152008" data-phone-click-location="application_modal">073 215 20 08</a></p>
             <div class="form-grid">
               <div class="form-field"><label for="student-name">Ім’я</label><input id="student-name" name="student_name" type="text" placeholder="Як до тебе звертатися?" autocomplete="name" required /></div>
+              <fieldset class="form-field student-type"><legend>Кого хочете записати?</legend><div class="radio-row"><label><input type="radio" name="student_type" value="Себе" required /> Себе</label><label><input type="radio" name="student_type" value="Дитину" required /> Дитину</label></div></fieldset>
               <div class="form-field"><label for="student-age">Вік учня</label><input id="student-age" name="student_age" type="number" min="5" max="99" inputmode="numeric" placeholder="Наприклад, 10" required /></div>
-              <div class="form-field form-wide"><label for="student-phone">Телефон / Viber</label><input id="student-phone" name="phone" type="tel" placeholder="+380..." autocomplete="tel" required /></div>
+              <div class="form-field"><label for="student-phone">Телефон</label><input id="student-phone" name="phone" type="tel" placeholder="+380..." autocomplete="tel" required /></div>
               <fieldset class="form-field student-type form-wide"><legend>Чи має учень або хтось із батьків статус УБД?</legend><div class="radio-row"><label><input type="radio" name="ubd_status" value="Так" required /> Так</label><label><input type="radio" name="ubd_status" value="Ні" required /> Ні</label></div></fieldset>
               <details class="form-extras form-wide">
                 <summary>Додати Telegram або коментар — необов’язково</summary>
@@ -376,10 +377,9 @@
             <label class="consent-field"><input name="contact_consent" type="checkbox" value="Так" required /><span>Погоджуюсь на використання контактних даних для зв’язку щодо занять.</span></label>
             <div class="form-actions"><button class="button" type="submit">Записатися на безкоштовний урок</button><p class="form-status" id="form-status" role="status" aria-live="polite"></p></div>
             <div class="messenger-links">
-              <p class="messenger-links-title">Або напишіть нам у месенджер:</p>
+              <p class="messenger-links-title">Зручніше написати?</p>
               <div class="messenger-buttons">
                 <a class="button button-outline" href="https://t.me/nonamusicschool" target="_blank" rel="noopener" data-messenger="telegram" data-messenger-location="form">Telegram</a>
-                <a class="button button-outline" href="viber://chat?number=%2B380732152008" data-messenger="viber" data-messenger-location="form">Viber</a>
               </div>
             </div>
           </form>
@@ -405,11 +405,10 @@
               <a class="contact-phone-link" href="tel:+380732152008">073 215 20 08</a>
             </div>
             <div class="contact-option contact-option-messengers">
-              <span class="contact-option-label">Месенджери</span>
-              <p>Або напишіть нам у месенджер:</p>
+              <span class="contact-option-label">Telegram</span>
+              <p>Написати повідомлення</p>
               <div class="messenger-buttons">
                 <a class="button button-outline" href="https://t.me/nonamusicschool" target="_blank" rel="noopener" data-messenger="telegram" data-messenger-location="contacts">Telegram</a>
-                <a class="button button-outline" href="viber://chat?number=%2B380732152008" data-messenger="viber" data-messenger-location="contacts">Viber</a>
               </div>
             </div>
           </div>

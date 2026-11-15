@@ -68,7 +68,7 @@
 | `trial_form_start` | `guitar/guitar.js` | Людина почала заповнювати форму |
 | `generate_lead` | `guitar/guitar.js` | Заявку успішно надіслано (**головна конверсія**). Параметр `lead_id` = той самий id, що йде у Web3Forms |
 | `phone_click` | `guitar/guitar.js` | Клік по номеру телефону |
-| `messenger_click` | `guitar/guitar.js` | Клік по кнопці Telegram / Viber на `/guitar/` (`messenger` = telegram / viber, `cta_location` = form / contacts) |
+| `messenger_click` | `guitar/guitar.js` | Клік по кнопці Telegram на `/guitar/` (`messenger` = telegram, `cta_location` = form / contacts) |
 | `facebook_click` | `script.js` | Клік по посиланню на Facebook |
 | `trial_form_field` | `guitar/guitar.js` | Поле форми вперше заповнене (`form_name`, `field_name`, `field_order`; без значення) |
 | `trial_form_close` | `guitar/guitar.js` | Модальну форму закрито без відправки (`form_name`, `fields_completed`, `last_field`, `cta_location`) |
